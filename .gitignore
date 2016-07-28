@@ -1,0 +1,63 @@
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+
+## JetBrains
+*.iml
+
+## Directory-based project format:
+.idea
+
+
+## OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+
+## Node
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Dependency directory
+# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
+node_modules
+
+# Optional npm cache directory
+.npm
+
+
+## Direnv
+# http://direnv.net/
+.envrc
+
+
+## JSPM
+jspm_packages
+
+
+## Distribution files
+dist/lib
+dist/bootstrap.*
+dist/jspm.config.js
+dist/package.json
+dist/index.html
+
+
+## Typings
+typings

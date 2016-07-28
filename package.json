@@ -1,0 +1,131 @@
+{
+    "name": "iloop-module-example",
+    "version": "0.0.0",
+    "description": "",
+    "keywords": [],
+    "homepage": "",
+    "license": "",
+    "author": {
+        "name": "Roland Groza",
+        "email": "rolandjitsu@gmail.com"
+    },
+    "main": "./dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "scripts": {
+        "start": "./node_modules/.bin/gulp"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "browser-sync": "^2.13.0",
+        "del": "^2.2.1",
+        "gulp": "gulpjs/gulp#4.0",
+        "gulp-autoprefixer": "^3.1.0",
+        "gulp-changed": "^1.3.0",
+        "gulp-plumber": "^1.1.0",
+        "gulp-size": "^2.1.0",
+        "gulp-sourcemaps": "^1.6.0",
+        "gulp-tslint": "^5.0.0",
+        "gulp-typescript": "^2.13.6",
+        "gulp-util": "^3.0.7",
+        "jspm": "beta",
+        "merge-stream": "^1.0.0",
+        "split2": "2.0.x",
+        "tslint": "^3.13.0",
+        "typescript": "^2.0.0-beta",
+        "typings": "^1.3.0"
+    },
+    "engines": {
+        "node": ">= 6.3"
+    },
+    "jspm": {
+        "main": "./dist/index.js",
+        "dependencies": {
+            "angular-material": "github:angular/bower-material@^1.0.9",
+            "css": "github:systemjs/plugin-css@^0.1.23",
+            "decaf-common": "github:biosustain/decaf-frontend-common@master"
+        },
+        "devDependencies": {},
+        "peerDependencies": {
+            "angular": "github:angular/bower-angular@^1.5.7",
+            "angular-ui-router": "github:angular-ui/angular-ui-router-bower@^0.3.1"
+        },
+        "overrides": {
+            "github:angular-ui/angular-ui-router-bower@0.3.1": {
+                "dependencies": {
+                    "angular": "*"
+                },
+                "meta": {
+                    "release/angular-ui-router.js.js": {
+                        "deps": [
+                            "angular"
+                        ],
+                        "format": "global"
+                    }
+                }
+            },
+            "github:angular/bower-angular-animate@1.5.7": {
+                "main": "angular-animate",
+                "registry": "jspm",
+                "dependencies": {
+                    "angular": "^1.3.0"
+                },
+                "meta": {
+                    "angular-animate.js": {
+                        "deps": [
+                            "angular"
+                        ],
+                        "format": "global"
+                    }
+                }
+            },
+            "github:angular/bower-angular-aria@1.5.7": {
+                "main": "angular-aria",
+                "registry": "jspm",
+                "dependencies": {
+                    "angular": "^1.3.0"
+                },
+                "meta": {
+                    "angular-aria.js": {
+                        "deps": [
+                            "angular"
+                        ],
+                        "format": "global"
+                    }
+                }
+            },
+            "github:angular/bower-angular@1.5.7": {
+                "main": "angular",
+                "meta": {
+                    "angular.js": {
+                        "exports": "angular",
+                        "format": "global"
+                    }
+                }
+            },
+            "github:angular/bower-material@1.0.9": {
+                "main": "angular-material",
+                "registry": "jspm",
+                "dependencies": {
+                    "angular": "^1.5.0",
+                    "angular-animate": "^1.5.0",
+                    "angular-aria": "^1.5.0",
+                    "css": "^0.1.0"
+                },
+                "meta": {
+                    "angular-material.js": {
+                        "deps": [
+                            "./angular-material.css!",
+                            "angular",
+                            "angular-animate",
+                            "angular-aria"
+                        ],
+                        "format": "global"
+                    }
+                }
+            }
+        }
+    }
+}
