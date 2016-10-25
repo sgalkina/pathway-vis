@@ -1,3 +1,4 @@
+/// <reference path="../../../typings/escher.d.ts"/>
 import * as escher from 'escher';
 
 // import './views/map.component.css!';

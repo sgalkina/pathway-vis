@@ -17,6 +17,7 @@
 		}
 	},
 	"files": [
-		"typings/index.d.ts"
+		"typings/index.d.ts",
+		"typings/escher.d.ts"
 	]
 }
