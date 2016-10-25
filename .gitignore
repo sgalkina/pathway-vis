@@ -52,12 +52,7 @@ jspm_packages
 
 
 ## Distribution files
-dist/lib
-dist/bootstrap.*
-dist/jspm.config.js
-dist/package.json
-dist/index.html
-
+dist
 
 ## Typings
 typings
