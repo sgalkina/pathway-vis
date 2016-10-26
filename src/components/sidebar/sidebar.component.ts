@@ -1,6 +1,7 @@
 /**
  * Sidebar component
  */
+const component = angular.module('pathwayvis.components.sidebar', []);
 
 class SidebarCtrl {
     /* @ngInject */
@@ -15,4 +16,4 @@ const SidebarComponent = {
     template: 'sidebar'
 }
 
-const component = angular.module('pathwayvis.components.sidebar', []).component('sidebar', SidebarComponent);
+component.component('sidebar', SidebarComponent);

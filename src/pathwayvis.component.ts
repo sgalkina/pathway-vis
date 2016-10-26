@@ -5,11 +5,13 @@ import * as angular from 'angular';
 // noinspection TypeScriptCheckImport
 import {Config, dirname} from 'decaf-common';
 
+import './api/api';
 import './components/base';
 import './views/pathwayvis.component.css!';
 
 export const COMPONENT_NAME = 'pathwayvis';
 const main = angular.module(COMPONENT_NAME, [
+    'pathwayvis.services.api',
     'pathwayvis.components'
 ]);
 
