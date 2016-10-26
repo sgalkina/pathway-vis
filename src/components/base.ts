@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-
 import './map/map.component';
 import './sidebar/sidebar.component';
 
