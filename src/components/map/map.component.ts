@@ -23,7 +23,7 @@ class MapComponentCtrl {
             var b = escher.Builder(data, null, null, d3.select('.map-container'), options);
         });
 
-        api.get('strains/2/model').then((data) => {
+        api.get('strains/:id/model', {id: 2, atrS: 'lala', bb: 33}).then((data) => {
             console.log(data);
         })
     }
