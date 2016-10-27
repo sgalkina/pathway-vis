@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 
 import {APIService} from '../../api/api';
 
-// import './views/map.component.css!';
+import './views/map.component.css!';
 const component = angular.module('pathwayvis.components.map', []);
 
 /**
@@ -18,10 +18,10 @@ class MapComponentCtrl {
 
         const uri = 'https://raw.githubusercontent.com/escher/escher-demo/gh-pages/minimal_embedded_map/e_coli.iJO1366.central_metabolism.json';
 
-        d3.json(uri, function(e, data) {
-            var options = { menu: 'zoom', fill_screen: true };
-            var b = escher.Builder(data, null, null, d3.select('.map-container'), options);
-        });
+        // d3.json(uri, function(e, data) {
+        //     var options = { menu: 'zoom', fill_screen: true };
+        //     var b = escher.Builder(data, null, null, d3.select('.map-container'), options);
+        // });
 
         api.get('strains/:id/model', {id: 2, atrS: 'lala', bb: 33}).then((data) => {
             console.log(data);

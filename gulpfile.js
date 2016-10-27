@@ -8,6 +8,7 @@ const plumber = require('gulp-plumber');
 const size = require('gulp-size');
 const sourcemaps = require('gulp-sourcemaps');
 const tslint = require('gulp-tslint');
+const sass = require('gulp-sass');
 const typescript = require('gulp-typescript');
 const {log} = require('gulp-util');
 const merge = require('merge-stream');
@@ -33,6 +34,7 @@ const PATHS = {
 		ts: ['src/**/*.ts'],
 		static: ['src/**/*.{svg,jpg,png,ico,txt}'],
 		css: ['src/**/*.css'],
+		sass: ['src/**/*.scss'],
 		html: ['src/**/*.html']
 	},
 	dist: 'dist'
@@ -196,22 +198,23 @@ gulp.task('build/js', function () {
 
 
 /**
- * Build CSS
+ * Build SASS
  */
-gulp.task('build/css', function () {
+gulp.task('build/sass', function () {
 	return gulp
-		.src(PATHS.src.css)
+		.src(PATHS.src.sass)
 		.pipe(changed(PATHS.dist, {
-			extension: '.css'
+			extension: '.scss'
 		}))
 		.pipe(plumber())
 		.pipe(sourcemaps.init())
-		.pipe(autoprefixer())
-		.pipe(sourcemaps.write('.'))
+        .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer())
+        .pipe(sourcemaps.write('.'))
 		.pipe(size(GULP_SIZE_DEFAULT_CONFIG))
 		.pipe(gulp.dest(PATHS.dist))
 		.pipe(bs.stream({
-			match: '**/*.css'
+			match: '**/*.scss'
 		}));
 });
 
@@ -223,7 +226,7 @@ gulp.task('build/component', gulp.parallel(
 	'build/static',
 	'build/html',
 	'build/js',
-	'build/css'
+	'build/sass'
 ));
 
 
@@ -264,10 +267,10 @@ gulp.task('serve', gulp.series(
 	'build',
 	function start() {
 		// Start watching files for changes
-		gulp.watch('jspm.config.js', gulp.task('build/deps'));
+		// gulp.watch('jspm.config.js', gulp.task('build/deps'));
 		gulp.watch([].concat(PATHS.src.ts, ['./bootstrap.config.ts', './bootstrap.ts']), gulp.task('build/js'));
 		gulp.watch(PATHS.src.static, gulp.task('build/static'));
-		gulp.watch(PATHS.src.css, gulp.task('build/css'));
+		gulp.watch(PATHS.src.sass, gulp.task('build/sass'));
 		gulp.watch([].concat(PATHS.src.html, ['./index.html']), gulp.task('build/html'));
 		// Start BS server
 		gulp.task('server')();
