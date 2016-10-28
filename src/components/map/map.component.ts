@@ -18,10 +18,10 @@ class MapComponentCtrl {
 
         const uri = 'https://raw.githubusercontent.com/escher/escher-demo/gh-pages/minimal_embedded_map/e_coli.iJO1366.central_metabolism.json';
 
-        // d3.json(uri, function(e, data) {
-        //     var options = { menu: 'zoom', fill_screen: true };
-        //     var b = escher.Builder(data, null, null, d3.select('.map-container'), options);
-        // });
+        d3.json(uri, (e, data) => {
+            var options = { menu: 'zoom', never_ask_before_quit: true };
+            var b = escher.Builder(data, null, null, d3.select('.map-container'), this.mapOptions);
+        });
 
         api.get('strains/:id/model', {id: 2, atrS: 'lala', bb: 33}).then((data) => {
             console.log(data);
@@ -36,4 +36,4 @@ const MapComponent = {
 }
 
 // Register component
-component.component('map', MapComponent);
+component.component('pvMap', MapComponent);

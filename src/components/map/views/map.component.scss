@@ -1,3 +1,9 @@
-.map-container {
-    border: 1px solid red;
+// Import pathway map styling
+@import 'escher_builder.scss';
+
+pv-map {
+    .map-container {
+        border: 1px solid grey;
+    }
 }
+
