@@ -1,0 +1,36 @@
+<div layout="column" layout-fill layout-padding flex>
+    <div flex class="sidebar">
+        <div flex class="sidebar-item">
+            <span class="md-headline">Map options</span>
+            <div class="sidebar-content" flex>
+                <form name="loadData" ng-submit="ctrl.onLoadDataSubmit($event)" novalidate layout="column">
+                    <md-input-container>
+                        <label>Organism</label>
+                        <md-select name="organism" ng-model="ctrl.loadData.organism" required>
+                            <md-option value="ecoli">E. coli</md-option>
+                            <md-option value="hsapiens">H. sapiens</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Map</label>
+                        <md-select name="map" ng-model="ctrl.loadData.map" required>
+                            <md-option value="ecoli_core">ecoli_core</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Model</label>
+                        <md-select name="model" ng-model="ctrl.loadData.model" required>
+                            <md-option value="ecoli_core">iJO1366</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container>
+                        <md-button type="submit" class="md-raised md-accent">Submit</md-button>
+                    </md-input-container>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

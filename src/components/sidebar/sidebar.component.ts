@@ -1,19 +1,39 @@
-/**
- * Sidebar component
- */
-const component = angular.module('pathwayvis.components.sidebar', []);
+import {APIService} from '../../api/api';
+import * as types from '../../types';
 
-class SidebarCtrl {
+import './views/sidebar.component.css!';
+const component = angular.module('pathwayvis.components.sidebar', [
+]);
+
+/**
+ * sidebar component
+ */
+class SidebarComponentCtrl {
+    public shared: types.Shared;
+    public loadData: Object;
+
     /* @ngInject */
-    constructor () {
-        console.log('sidebar');
+    constructor (api: APIService) {
+        this.loadData = {};
+    }
+
+    public onLoadDataSubmit($event): void {
+        this.shared.mapData = {
+            organism: 'Ecolo',
+            map: {},
+            model: {}
+        }
     }
 }
 
-const SidebarComponent = {
-    controller: SidebarCtrl,
-    controlerAs: 'ctrl',
-    template: 'sidebar'
+const SidebarComponent: angular.IComponentOptions = {
+    controller: SidebarComponentCtrl,
+    controllerAs: 'ctrl',
+    templateUrl: '/components/sidebar/views/sidebar.component.html',
+    bindings: {
+        shared: '='
+    }
 }
 
-component.component('sidebar', SidebarComponent);
+// Register component
+component.component('pvSidebar', SidebarComponent);

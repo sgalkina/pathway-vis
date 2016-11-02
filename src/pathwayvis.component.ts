@@ -48,12 +48,17 @@ main.config(function (platformProvider) {
 
 
 class PathwayVisComponentController {
+    public shared: Object;
+
     constructor(config: Config, sharing) {
         // Turn of WS inspection for TS
         // noinspection TypeScriptUnresolvedFunction
         let component = config.get('componentConfig');
         // Data from the sharing provider
         let money = sharing.items('money');
+
+        // Shared scope
+        this.shared = {};
     }
 }
 
