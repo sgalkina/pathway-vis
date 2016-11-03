@@ -1,0 +1,11 @@
+<div layout="column" layout-fill layout-padding flex>
+    <div>
+        <span class="md-headline">Pathway map</span>
+    </div>
+    <div flex>
+        <div class="map-container" layout-fill layout="column" layout-align="center center">
+            <span>Please load the map.</span>
+        </div>
+        <md-progress-linear md-mode="indeterminate" ng-if="ctrl.shared.loading > 0"></md-progress-linear>
+    </div>
+</div>
