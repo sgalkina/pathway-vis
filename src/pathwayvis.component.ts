@@ -4,6 +4,7 @@ import * as angular from 'angular';
 // Turn of WS TS inspection for the 'decaf-common' import.
 // noinspection TypeScriptCheckImport
 import {Config, dirname} from 'decaf-common';
+import * as types from './types';
 
 import './api/api';
 import './components/base';
@@ -48,7 +49,7 @@ main.config(function (platformProvider) {
 
 
 class PathwayVisComponentController {
-    public shared: Object;
+    public shared: types.Shared;
 
     constructor(config: Config, sharing) {
         // Turn of WS inspection for TS
@@ -57,8 +58,11 @@ class PathwayVisComponentController {
         // Data from the sharing provider
         let money = sharing.items('money');
 
-        // Shared scope
-        this.shared = {};
+        // Init shared scope
+        this.shared = {
+            loading: 0,
+            map: {}
+        };
     }
 }
 

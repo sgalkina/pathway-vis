@@ -1,8 +1,10 @@
 /// <reference path="../../../typings/escher.d.ts"/>
 import * as escher from 'escher';
 import * as d3 from 'd3';
+import * as _ from 'lodash';
 
 import {APIService} from '../../api/api';
+import * as types from '../../types';
 
 import './views/map.component.css!';
 const component = angular.module('pathwayvis.components.map', []);
@@ -12,24 +14,35 @@ const component = angular.module('pathwayvis.components.map', []);
  */
 class MapComponentCtrl {
     public title: string;
-    public shared: Object;
+    public shared: types.Shared;
+    private _builder: any;
+    private _api: APIService;
 
     /* @ngInject */
-    constructor ($scope: angular.IScope, $http: angular.IHttpService, api: APIService) {
-        $scope.$watch('ctrl.shared', () => {
-            // refresh map with this.shared.mapData
+    constructor ($scope: angular.IScope, api: APIService) {
+        this._api = api;
+
+        $scope.$watch('ctrl.shared.map.map', () => {
+            // Be careful that you init map only once!
+            if (!_.isEmpty(this.shared.map.map) && !this._builder) {
+                this._initMap();
+            }
         }, true);
 
-        const uri = 'https://raw.githubusercontent.com/escher/escher-demo/gh-pages/minimal_embedded_map/e_coli.iJO1366.central_metabolism.json';
+        $scope.$watch('ctrl.shared.map.reactionData', () => {
+            if (!_.isEmpty(this.shared.map.reactionData)) {
+                this._loadData();
+            }
+        }, true);
+    }
 
-        d3.json(uri, (e, data) => {
-            var options = { menu: 'zoom', never_ask_before_quit: true };
-            var b = escher.Builder(data, null, null, d3.select('.map-container'), options);
-        });
+    public _initMap(): void {
+        let options = { menu: 'zoom', never_ask_before_quit: true };
+        this._builder = escher.Builder(this.shared.map.map, null, null, d3.select('.map-container'), options);
+    }
 
-        api.get('strains/:id/model', {id: 2, atrS: 'lala', bb: 33}).then((data) => {
-            console.log(data);
-        })
+    public _loadData(): void {
+        this._builder.set_reaction_data(this.shared.map.reactionData);
     }
 }
 

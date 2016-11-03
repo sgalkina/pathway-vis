@@ -2,12 +2,17 @@
   Custom types
  */
 
-export interface MapData {
-    organism: string;
-    map: Object;
-    model: Object;
+export interface Map {
+    map?: Object;
+    config?: Object;
+    organism?: string;
+    model?: Object;
+    reactionData?: Object;
+    geneData?: Object;
+    metaboliteData?: Object;
 }
 
 export interface Shared {
-    mapData: MapData;
+    loading?: number;
+    map: Map;
 }
