@@ -1,5 +1,7 @@
 "use strict";
 var _ = require('lodash');
+// noinspection TypeScriptCheckImport
+var decaf_common_1 = require('decaf-common');
 require('./views/sidebar.component.css!');
 var component = angular.module('pathwayvis.components.sidebar', []);
 /**
@@ -39,7 +41,7 @@ var SidebarComponentCtrl = (function () {
         this._api.get('strains/:id/model/fluxes', { id: this.selected.strain }).then(function (response) {
             // Remove zero values
             _this.shared.map.reactionData = _.pickBy(response.data, function (value) {
-                if (value > Math.pow(10, -7))
+                if (Math.abs(value) > Math.pow(10, -7))
                     return true;
             });
             _this.shared.loading--;
@@ -50,7 +52,7 @@ var SidebarComponentCtrl = (function () {
 var SidebarComponent = {
     controller: SidebarComponentCtrl,
     controllerAs: 'ctrl',
-    templateUrl: '/components/sidebar/views/sidebar.component.html',
+    templateUrl: decaf_common_1.dirname(module.id) + "/views/sidebar.component.html",
     bindings: {
         shared: '='
     }

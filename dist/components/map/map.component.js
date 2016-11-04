@@ -3,6 +3,8 @@
 var escher = require('escher');
 var d3 = require('d3');
 var _ = require('lodash');
+// noinspection TypeScriptCheckImport
+var decaf_common_1 = require('decaf-common');
 require('./views/map.component.css!');
 var component = angular.module('pathwayvis.components.map', []);
 /**
@@ -26,7 +28,7 @@ var MapComponentCtrl = (function () {
         }, true);
     }
     MapComponentCtrl.prototype._initMap = function () {
-        var options = { menu: 'zoom', never_ask_before_quit: true };
+        var options = { menu: 'zoom', never_ask_before_quit: true, reaction_styles: ['color', 'size', 'text', 'abs'] };
         this._builder = escher.Builder(this.shared.map.map, null, null, d3.select('.map-container'), options);
     };
     MapComponentCtrl.prototype._loadData = function () {
@@ -37,7 +39,7 @@ var MapComponentCtrl = (function () {
 var MapComponent = {
     controller: MapComponentCtrl,
     controllerAs: 'ctrl',
-    templateUrl: '/components/map/views/map.component.html',
+    templateUrl: decaf_common_1.dirname(module.id) + "/views/map.component.html",
     bindings: {
         shared: '='
     }

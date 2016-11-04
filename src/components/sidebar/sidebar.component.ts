@@ -2,6 +2,8 @@ import * as _ from 'lodash';
 
 import {APIService} from '../../api/api';
 import * as types from '../../types';
+// noinspection TypeScriptCheckImport
+import {dirname} from 'decaf-common';
 
 import './views/sidebar.component.css!';
 
@@ -62,7 +64,7 @@ class SidebarComponentCtrl {
 
             // Remove zero values
             this.shared.map.reactionData = _.pickBy(response.data, (value: number) => {
-                if (value > Math.pow(10, -7)) return true;
+                if (Math.abs(value) > Math.pow(10, -7)) return true;
             });
 
             this.shared.loading--;
@@ -73,7 +75,7 @@ class SidebarComponentCtrl {
 const SidebarComponent: angular.IComponentOptions = {
     controller: SidebarComponentCtrl,
     controllerAs: 'ctrl',
-    templateUrl: '/components/sidebar/views/sidebar.component.html',
+    templateUrl: `${dirname(module.id)}/views/sidebar.component.html`,
     bindings: {
         shared: '='
     }

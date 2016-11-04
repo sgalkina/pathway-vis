@@ -2,6 +2,8 @@
 import * as escher from 'escher';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
+// noinspection TypeScriptCheckImport
+import {dirname} from 'decaf-common';
 
 import {APIService} from '../../api/api';
 import * as types from '../../types';
@@ -37,7 +39,7 @@ class MapComponentCtrl {
     }
 
     public _initMap(): void {
-        let options = { menu: 'zoom', never_ask_before_quit: true };
+        let options = { menu: 'zoom', never_ask_before_quit: true, reaction_styles: ['color', 'size', 'text', 'abs'] };
         this._builder = escher.Builder(this.shared.map.map, null, null, d3.select('.map-container'), options);
     }
 
@@ -49,7 +51,7 @@ class MapComponentCtrl {
 const MapComponent: angular.IComponentOptions = {
     controller: MapComponentCtrl,
     controllerAs: 'ctrl',
-    templateUrl: '/components/map/views/map.component.html',
+    templateUrl: `${dirname(module.id)}/views/map.component.html`,
     bindings: {
         shared: '='
     }
