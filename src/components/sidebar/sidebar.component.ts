@@ -59,7 +59,12 @@ class SidebarComponentCtrl {
         this.shared.loading++;
 
         this._api.get('strains/:id/model/fluxes', {id: this.selected.strain}).then((response: any) => {
-            this.shared.map.reactionData = response.data;
+
+            // Remove zero values
+            this.shared.map.reactionData = _.pickBy(response.data, (value: number) => {
+                if (value > Math.pow(10, -7)) return true;
+            });
+
             this.shared.loading--;
         });
     }

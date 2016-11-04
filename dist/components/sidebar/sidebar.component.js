@@ -37,7 +37,11 @@ var SidebarComponentCtrl = (function () {
         var _this = this;
         this.shared.loading++;
         this._api.get('strains/:id/model/fluxes', { id: this.selected.strain }).then(function (response) {
-            _this.shared.map.reactionData = response.data;
+            // Remove zero values
+            _this.shared.map.reactionData = _.pickBy(response.data, function (value) {
+                if (value > Math.pow(10, -7))
+                    return true;
+            });
             _this.shared.loading--;
         });
     };
