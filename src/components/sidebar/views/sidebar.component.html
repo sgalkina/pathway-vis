@@ -5,29 +5,29 @@
             <div class="sidebar-content" flex>
                 <form name="loadData" ng-submit="ctrl.onLoadDataSubmit($event)" novalidate layout="column">
                     <md-input-container>
-                        <label>Filter by organism</label>
-                        <md-select name="organism" ng-model="ctrl.loadData.organism" required disabled>
-                            <md-option value="ecoli">E. coli</md-option>
+                        <label>Experiment</label>
+                        <md-select name="experiment" ng-model="ctrl.selected.experiment" required>
+                            <md-option ng-repeat="experiment in ctrl.experiments" value="{{experiment.id}}">{{experiment.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Map</label>
-                        <md-select name="map" ng-model="ctrl.loadData.map" required disabled>
-                            <md-option value="ecoli_core">ecoli_core</md-option>
+                        <label>Strains</label>
+                        <md-select name="map" ng-model="ctrl.selected.strain" required>
+                            <md-option ng-repeat="strain in ctrl.strains" value="{{strain.id}}">{{strain.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Model</label>
+                        <label>Models</label>
                         <md-select name="model" ng-model="ctrl.loadData.model" required disabled>
                             <md-option value="ecoli_core">iJO1366</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
-                        <md-button type="submit" class="md-raised md-accent">Load map</md-button>
-                        <md-button type="button" class="md-raised md-accent" ng-click="ctrl.onLoadFluxClick($event)">
+                        <md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.strain">Load map</md-button>
+                        <md-button type="button" class="md-raised md-accent" ng-click="ctrl.onLoadFluxClick($event)" ng-disabled="!ctrl.shared.map.map">
                             Load reaction data
                         </md-button>
                     </md-input-container>

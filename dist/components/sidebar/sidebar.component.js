@@ -1,4 +1,5 @@
 "use strict";
+var _ = require('lodash');
 require('./views/sidebar.component.css!');
 var component = angular.module('pathwayvis.components.sidebar', []);
 /**
@@ -6,10 +7,22 @@ var component = angular.module('pathwayvis.components.sidebar', []);
  */
 var SidebarComponentCtrl = (function () {
     /* @ngInject */
-    function SidebarComponentCtrl(api, $http) {
+    function SidebarComponentCtrl($scope, $http, api) {
+        var _this = this;
         this.loadData = {};
+        this.selected = {};
         this._api = api;
         this._http = $http;
+        this._api.get('experiments').then(function (response) {
+            _this.experiments = response.data;
+        });
+        $scope.$watch('ctrl.selected.experiment', function () {
+            if (!_.isEmpty(_this.selected.experiment)) {
+                _this._api.get('experiments/:id/strains', { id: _this.selected.experiment }).then(function (response) {
+                    _this.strains = response.data;
+                });
+            }
+        });
     }
     SidebarComponentCtrl.prototype.onLoadDataSubmit = function ($event) {
         var _this = this;
@@ -23,7 +36,7 @@ var SidebarComponentCtrl = (function () {
     SidebarComponentCtrl.prototype.onLoadFluxClick = function ($event) {
         var _this = this;
         this.shared.loading++;
-        this._api.get('strains/:id/model/fluxes', { id: 2 }).then(function (response) {
+        this._api.get('strains/:id/model/fluxes', { id: this.selected.strain }).then(function (response) {
             _this.shared.map.reactionData = response.data;
             _this.shared.loading--;
         });

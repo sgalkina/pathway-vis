@@ -1,7 +1,15 @@
+import * as _ from 'lodash';
+
 import {APIService} from '../../api/api';
 import * as types from '../../types';
 
 import './views/sidebar.component.css!';
+
+interface SelectedItems {
+    experiment?: number;
+    strain?: number;
+}
+
 const component = angular.module('pathwayvis.components.sidebar', [
 ]);
 
@@ -10,15 +18,30 @@ const component = angular.module('pathwayvis.components.sidebar', [
  */
 class SidebarComponentCtrl {
     public shared: types.Shared;
-    public loadData: Object;
+    public loadData: Object = {};
+    public selected: SelectedItems = {};
+    public experiments: types.Experiment[];
+    public strains: types.Strain[];
+
     private _api: APIService;
     private _http: angular.IHttpService;
 
     /* @ngInject */
-    constructor (api: APIService, $http: angular.IHttpService) {
-        this.loadData = {};
+    constructor ($scope: angular.IScope, $http: angular.IHttpService, api: APIService) {
         this._api = api;
         this._http = $http;
+
+        this._api.get('experiments').then((response: any) => {
+            this.experiments = response.data;
+        });
+
+        $scope.$watch('ctrl.selected.experiment', () => {
+            if (!_.isEmpty(this.selected.experiment)) {
+                this._api.get('experiments/:id/strains', {id: this.selected.experiment}).then((response: any) => {
+                    this.strains = response.data;
+                });
+            }
+        });
     }
 
     public onLoadDataSubmit($event): void {
@@ -27,6 +50,7 @@ class SidebarComponentCtrl {
 
         this._http({ method: 'GET', url: mapUri }).then((response: any) => {
             this.shared.map.map = response.data;
+
             this.shared.loading--;
         });
     }
@@ -34,7 +58,7 @@ class SidebarComponentCtrl {
     public onLoadFluxClick($event): void {
         this.shared.loading++;
 
-        this._api.get('strains/:id/model/fluxes', {id: 2}).then((response: any) => {
+        this._api.get('strains/:id/model/fluxes', {id: this.selected.strain}).then((response: any) => {
             this.shared.map.reactionData = response.data;
             this.shared.loading--;
         });

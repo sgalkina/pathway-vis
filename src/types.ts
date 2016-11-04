@@ -5,7 +5,6 @@
 export interface Map {
     map?: Object;
     config?: Object;
-    organism?: string;
     model?: Object;
     reactionData?: Object;
     geneData?: Object;
@@ -16,3 +15,11 @@ export interface Shared {
     loading?: number;
     map: Map;
 }
+
+interface APIitem {
+    id: number;
+    name: string;
+}
+
+export interface Strain extends APIitem {}
+export interface Experiment extends APIitem {}
