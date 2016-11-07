@@ -11,8 +11,10 @@ const tslint = require('gulp-tslint');
 const sass = require('gulp-sass');
 const typescript = require('gulp-typescript');
 const {log} = require('gulp-util');
+const shell = require('gulp-shell');
 const merge = require('merge-stream');
 const split = require('split2');
+const clean = require('gulp-clean');
 
 const bs = create('iLoop');
 
@@ -37,7 +39,8 @@ const PATHS = {
 		sass: ['src/**/*.scss'],
 		html: ['src/**/*.html']
 	},
-	dist: 'dist'
+	dist: 'dist',
+	escher: ['../escher/**/*']
 };
 
 
@@ -50,9 +53,38 @@ gulp.task(function server() {
 	// When process exits kill browser-sync server
 	process.on('exit', () => {
 		bs.exit();
-});
+	});
 });
 
+/**
+ * Clean up
+ */
+gulp.task('clean', function () {
+    return gulp.src('dist/')
+        .pipe(clean({force: true}))
+        .pipe(gulp.dest('dist'));
+});
+
+/**
+ * Link Escher JSPM package
+ */
+gulp.task('link', function link() {
+	let proc = exec(`${__dirname}/node_modules/.bin/jspm link ../../escher/ github:nkran/escher@master -y`,  {cwd: PATHS.dist});
+
+	proc.stdout
+		.pipe(split())
+		.on('data', (data) => log(data));
+
+	proc.stderr
+		.pipe(split())
+		.on('data', (data) => log(data));
+
+	proc.on('close', () => {
+		log('closed')
+	});
+
+	return proc;
+});
 
 /**
  * Copy JSPM config and install all deps
@@ -64,7 +96,6 @@ gulp.task('jspm/config:copy', function () {
 			'jspm.config.js',
 			'package.json'
 		])
-		.pipe(changed(PATHS.dist))
 		.pipe(size(GULP_SIZE_DEFAULT_CONFIG))
 		.pipe(gulp.dest(PATHS.dist));
 });
@@ -234,6 +265,8 @@ gulp.task('build/component', gulp.parallel(
  * Build everything
  */
 gulp.task('build', gulp.series(
+	'clean',
+	'link',
 	'build/deps',
 	'build/component'
 ));
@@ -258,8 +291,6 @@ gulp.task(function lint(done) {
 			.on('error', (error) => done(error));
 });
 
-
-
 /**
  * Start server and open app in browser
  */
@@ -267,7 +298,8 @@ gulp.task('serve', gulp.series(
 	'build',
 	function start() {
 		// Start watching files for changes
-		// gulp.watch('jspm.config.js', gulp.task('build/deps'));
+		gulp.watch('jspm.config.js', gulp.task('build/deps'));
+		gulp.watch(PATHS.escher, gulp.task('link'));
 		gulp.watch([].concat(PATHS.src.ts, ['./bootstrap.config.ts', './bootstrap.ts']), gulp.task('build/js'));
 		gulp.watch(PATHS.src.static, gulp.task('build/static'));
 		gulp.watch(PATHS.src.sass, gulp.task('build/sass'));
@@ -282,11 +314,4 @@ gulp.task('serve', gulp.series(
  * Default
  */
 gulp.task('default', gulp.task('serve'));
-
-
-/**
- * Clean
- */
-gulp.task(function clean() {
-	return del([PATHS.dist]);
-});
+gulp.task('')
