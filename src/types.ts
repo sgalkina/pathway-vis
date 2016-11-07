@@ -4,7 +4,7 @@
 
 export interface Map {
     map?: Object;
-    config?: Object;
+    settings?: Object;
     model?: Object;
     reactionData?: Object;
     geneData?: Object;

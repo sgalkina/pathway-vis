@@ -26,10 +26,26 @@ var MapComponentCtrl = (function () {
                 _this._loadData();
             }
         }, true);
+        // Default map settings
+        this.shared.map.settings = {
+            menu: 'zoom',
+            never_ask_before_quit: true,
+            reaction_styles: ['color', 'size', 'text', 'abs'],
+            identifiers_on_map: 'bigg_id',
+            hide_all_labels: false,
+            hide_secondary_metabolites: false,
+            reaction_scale: [
+                { type: 'min', color: '#2664a3', size: 20 },
+                { type: 'median', color: '#e1e1e1', size: 20 },
+                { type: 'max', color: '#c2263f', size: 20 }
+            ],
+            reaction_no_data_color: '#c7c7c7',
+            reaction_no_data_size: 3
+        };
     }
     MapComponentCtrl.prototype._initMap = function () {
         var options = { menu: 'zoom', never_ask_before_quit: true, reaction_styles: ['color', 'size', 'text', 'abs'] };
-        this._builder = escher.Builder(this.shared.map.map, null, null, d3.select('.map-container'), options);
+        this._builder = escher.Builder(this.shared.map.map, null, null, d3.select('.map-container'), this.shared.map.settings);
     };
     MapComponentCtrl.prototype._loadData = function () {
         this._builder.set_reaction_data(this.shared.map.reactionData);
