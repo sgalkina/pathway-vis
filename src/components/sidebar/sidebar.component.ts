@@ -27,11 +27,13 @@ class SidebarComponentCtrl {
 
     private _api: APIService;
     private _http: angular.IHttpService;
+    private _q: angular.IQService;
 
     /* @ngInject */
-    constructor ($scope: angular.IScope, $http: angular.IHttpService, api: APIService) {
+    constructor ($scope: angular.IScope, $http: angular.IHttpService, $q: angular.IQService, api: APIService) {
         this._api = api;
         this._http = $http;
+        this._q = $q;
 
         this._api.get('experiments').then((response: any) => {
             this.experiments = response.data;
@@ -46,15 +48,22 @@ class SidebarComponentCtrl {
         });
     }
 
+    // Loads iJO1366 predefined map and model from API
     public onLoadDataSubmit($event): void {
         const mapUri = 'https://raw.githubusercontent.com/escher/escher-demo/gh-pages/minimal_embedded_map/e_coli.iJO1366.central_metabolism.json';
         this.shared.loading++;
 
-        this._http({ method: 'GET', url: mapUri }).then((response: any) => {
-            this.shared.map.map = response.data;
+        const mapPromise = this._http({ method: 'GET', url: mapUri });
+        const modelPromise = this._api.get('strains/:id/model', {id: this.selected.strain});
+
+        this._q.all([mapPromise, modelPromise]).then((responses: any) => {
+            this.shared.map.map = responses[0].data;
+            this.shared.map.model = responses[1].data;
 
             this.shared.loading--;
         });
+
+
     }
 
     public onLoadFluxClick($event): void {

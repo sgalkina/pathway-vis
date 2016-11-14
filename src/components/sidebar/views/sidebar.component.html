@@ -13,15 +13,15 @@
 
                     <md-input-container>
                         <label>Strains</label>
-                        <md-select name="map" ng-model="ctrl.selected.strain" required>
+                        <md-select name="strains" ng-model="ctrl.selected.strain" required>
                             <md-option ng-repeat="strain in ctrl.strains" value="{{strain.id}}">{{strain.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Models</label>
-                        <md-select name="model" ng-model="ctrl.loadData.model" required disabled>
-                            <md-option value="ecoli_core">iJO1366</md-option>
+                        <label>Model</label>
+                        <md-select name="model" ng-model="ctrl.selected.model" ng-disabled="true">
+                            <md-option ng-repeat="model in ctrl.models" value="{{model.id}}">{{model.name}}</md-option>
                         </md-select>
                     </md-input-container>
 

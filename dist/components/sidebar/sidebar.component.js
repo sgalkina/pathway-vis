@@ -9,12 +9,13 @@ var component = angular.module('pathwayvis.components.sidebar', []);
  */
 var SidebarComponentCtrl = (function () {
     /* @ngInject */
-    function SidebarComponentCtrl($scope, $http, api) {
+    function SidebarComponentCtrl($scope, $http, $q, api) {
         var _this = this;
         this.loadData = {};
         this.selected = {};
         this._api = api;
         this._http = $http;
+        this._q = $q;
         this._api.get('experiments').then(function (response) {
             _this.experiments = response.data;
         });
@@ -26,12 +27,16 @@ var SidebarComponentCtrl = (function () {
             }
         });
     }
+    // Loads iJO1366 predefined map and model from API
     SidebarComponentCtrl.prototype.onLoadDataSubmit = function ($event) {
         var _this = this;
         var mapUri = 'https://raw.githubusercontent.com/escher/escher-demo/gh-pages/minimal_embedded_map/e_coli.iJO1366.central_metabolism.json';
         this.shared.loading++;
-        this._http({ method: 'GET', url: mapUri }).then(function (response) {
-            _this.shared.map.map = response.data;
+        var mapPromise = this._http({ method: 'GET', url: mapUri });
+        var modelPromise = this._api.get('strains/:id/model', { id: this.selected.strain });
+        this._q.all([mapPromise, modelPromise]).then(function (responses) {
+            _this.shared.map.map = responses[0].data;
+            _this.shared.map.model = responses[1].data;
             _this.shared.loading--;
         });
     };
