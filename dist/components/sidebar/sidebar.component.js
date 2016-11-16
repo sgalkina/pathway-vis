@@ -21,8 +21,19 @@ var SidebarComponentCtrl = (function () {
         });
         $scope.$watch('ctrl.selected.experiment', function () {
             if (!_.isEmpty(_this.selected.experiment)) {
-                _this._api.get('experiments/:id/strains', { id: _this.selected.experiment }).then(function (response) {
-                    _this.strains = response.data;
+                _this._api.get('experiments/:experimentId/samples', {
+                    experimentId: _this.selected.experiment
+                }).then(function (response) {
+                    _this.samples = response.data;
+                });
+            }
+        });
+        $scope.$watch('ctrl.selected.sample', function () {
+            if (!_.isEmpty(_this.selected.sample)) {
+                _this._api.get('samples/:sampleId/phases', {
+                    sampleId: _this.selected.sample
+                }).then(function (response) {
+                    _this.phases = response.data;
                 });
             }
         });
@@ -33,19 +44,23 @@ var SidebarComponentCtrl = (function () {
         var mapUri = 'https://raw.githubusercontent.com/escher/escher-demo/gh-pages/minimal_embedded_map/e_coli.iJO1366.central_metabolism.json';
         this.shared.loading++;
         var mapPromise = this._http({ method: 'GET', url: mapUri });
-        var modelPromise = this._api.get('strains/:id/model', { id: this.selected.strain });
-        this._q.all([mapPromise, modelPromise]).then(function (responses) {
-            _this.shared.map.map = responses[0].data;
-            _this.shared.map.model = responses[1].data;
-            _this.shared.loading--;
+        var modelPromise = this._api.get('samples/:sampleId/model', {
+            'sampleId': this.selected.sample,
+            'phase-id': this.selected.phase
         });
-    };
-    SidebarComponentCtrl.prototype.onLoadFluxClick = function ($event) {
-        var _this = this;
-        this.shared.loading++;
-        this._api.get('strains/:id/model/fluxes', { id: this.selected.strain }).then(function (response) {
+        var fluxesPromise = this._api.get('samples/:sampleId/fluxes', {
+            'sampleId': this.selected.sample,
+            'phase-id': this.selected.phase
+        });
+        this._q.all([mapPromise, modelPromise, fluxesPromise]).then(function (responses) {
+            // Add loaded data to shared scope
+            _this.shared.map.map = responses[0].data;
+            _this.shared.map.model = {
+                id: responses[1].data['model-id'],
+                data: responses[1].data['model']
+            };
             // Remove zero values
-            _this.shared.map.reactionData = _.pickBy(response.data, function (value) {
+            _this.shared.map.reactionData = _.pickBy(responses[2].data['fluxes'], function (value) {
                 if (Math.abs(value) > Math.pow(10, -7))
                     return true;
             });

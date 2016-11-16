@@ -5,7 +5,7 @@ var d3 = require('d3');
 var _ = require('lodash');
 // noinspection TypeScriptCheckImport
 var decaf_common_1 = require('decaf-common');
-require('../../services/actions');
+require('../../services/actions/actions.service');
 require('./views/map.component.css!');
 var component = angular.module('pathwayvis.components.map', [
     'pathwayvis.services.actions'
@@ -63,7 +63,7 @@ var MapComponentCtrl = (function () {
      * Loads model to the map
      */
     MapComponentCtrl.prototype._loadModel = function () {
-        this._builder.load_model(this.shared.map.model);
+        this._builder.load_model(this.shared.map.model.data);
     };
     /**
      * Loads data to the map
@@ -86,6 +86,9 @@ var MapComponentCtrl = (function () {
             _this.contextElement = d;
             _this._renderContextMenu(contextMenu, selection);
             d3.event.preventDefault();
+        });
+        d3.select(document).on('click', function () {
+            contextMenu.style('display', 'none');
         });
     };
     /**

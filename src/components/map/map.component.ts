@@ -9,7 +9,7 @@ import {APIService} from '../../services/api';
 import {ActionsService} from '../../services/actions/actions.service';
 
 import * as types from '../../types';
-import '../../services/actions';
+import '../../services/actions/actions.service';
 
 import './views/map.component.css!';
 const component = angular.module('pathwayvis.components.map', [
@@ -25,6 +25,7 @@ class MapComponentCtrl {
     public actions: ActionsService;
     public contextActions: types.Action[];
     public contextElement: Object;
+
     private _builder: any;
     private _api: APIService;
     private $scope: angular.IScope;
@@ -81,7 +82,7 @@ class MapComponentCtrl {
      * Loads model to the map
      */
     private _loadModel(): void {
-        this._builder.load_model(this.shared.map.model);
+        this._builder.load_model(this.shared.map.model.data);
     }
 
     /**
@@ -108,6 +109,10 @@ class MapComponentCtrl {
                 this._renderContextMenu(contextMenu, selection);
                 d3.event.preventDefault();
             });
+
+        d3.select(document).on('click', () => {
+            contextMenu.style('display', 'none');
+        });
     }
 
     /**

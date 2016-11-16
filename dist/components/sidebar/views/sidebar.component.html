@@ -12,24 +12,21 @@
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Strains</label>
-                        <md-select name="strains" ng-model="ctrl.selected.strain" required>
-                            <md-option ng-repeat="strain in ctrl.strains" value="{{strain.id}}">{{strain.name}}</md-option>
+                        <label>Samples</label>
+                        <md-select name="samples" ng-model="ctrl.selected.sample" required>
+                            <md-option ng-repeat="sample in ctrl.samples" value="{{sample.id}}">{{sample.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Model</label>
-                        <md-select name="model" ng-model="ctrl.selected.model" ng-disabled="true">
-                            <md-option ng-repeat="model in ctrl.models" value="{{model.id}}">{{model.name}}</md-option>
+                        <label>Phases</label>
+                        <md-select name="phase" ng-model="ctrl.selected.phase" required>
+                            <md-option ng-repeat="phase in ctrl.phases" value="{{phase.id}}">{{phase.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
-                        <md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.strain">Load map</md-button>
-                        <md-button type="button" class="md-raised md-accent" ng-click="ctrl.onLoadFluxClick($event)" ng-disabled="!ctrl.shared.map.map">
-                            Load reaction data
-                        </md-button>
+                        <md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.phase">Load map</md-button>
                     </md-input-container>
                 </form>
             </div>

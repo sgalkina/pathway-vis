@@ -9,7 +9,8 @@ import './views/sidebar.component.css!';
 
 interface SelectedItems {
     experiment?: number;
-    strain?: number;
+    sample?: number;
+    phase?: number;
 }
 
 const component = angular.module('pathwayvis.components.sidebar', [
@@ -23,7 +24,8 @@ class SidebarComponentCtrl {
     public loadData: Object = {};
     public selected: SelectedItems = {};
     public experiments: types.Experiment[];
-    public strains: types.Strain[];
+    public samples: types.Sample[];
+    public phases: types.Phase[];
 
     private _api: APIService;
     private _http: angular.IHttpService;
@@ -41,8 +43,20 @@ class SidebarComponentCtrl {
 
         $scope.$watch('ctrl.selected.experiment', () => {
             if (!_.isEmpty(this.selected.experiment)) {
-                this._api.get('experiments/:id/strains', {id: this.selected.experiment}).then((response: any) => {
-                    this.strains = response.data;
+                this._api.get('experiments/:experimentId/samples', {
+                    experimentId: this.selected.experiment
+                }).then((response: any) => {
+                    this.samples = response.data;
+                });
+            }
+        });
+
+        $scope.$watch('ctrl.selected.sample', () => {
+            if (!_.isEmpty(this.selected.sample)) {
+                this._api.get('samples/:sampleId/phases', {
+                    sampleId: this.selected.sample
+                }).then((response: any) => {
+                    this.phases = response.data;
                 });
             }
         });
@@ -54,25 +68,26 @@ class SidebarComponentCtrl {
         this.shared.loading++;
 
         const mapPromise = this._http({ method: 'GET', url: mapUri });
-        const modelPromise = this._api.get('strains/:id/model', {id: this.selected.strain});
-
-        this._q.all([mapPromise, modelPromise]).then((responses: any) => {
-            this.shared.map.map = responses[0].data;
-            this.shared.map.model = responses[1].data;
-
-            this.shared.loading--;
+        const modelPromise = this._api.get('samples/:sampleId/model', {
+            'sampleId': this.selected.sample,
+            'phase-id': this.selected.phase
+        });
+        const fluxesPromise = this._api.get('samples/:sampleId/fluxes', {
+            'sampleId': this.selected.sample,
+            'phase-id': this.selected.phase
         });
 
+        this._q.all([mapPromise, modelPromise, fluxesPromise]).then((responses: any) => {
 
-    }
-
-    public onLoadFluxClick($event): void {
-        this.shared.loading++;
-
-        this._api.get('strains/:id/model/fluxes', {id: this.selected.strain}).then((response: any) => {
+            // Add loaded data to shared scope
+            this.shared.map.map = responses[0].data;
+            this.shared.map.model = {
+                id: responses[1].data['model-id'],
+                data: responses[1].data['model']
+            };
 
             // Remove zero values
-            this.shared.map.reactionData = _.pickBy(response.data, (value: number) => {
+            this.shared.map.reactionData = _.pickBy(responses[2].data['fluxes'], (value: number) => {
                 if (Math.abs(value) > Math.pow(10, -7)) return true;
             });
 
