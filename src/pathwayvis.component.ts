@@ -6,7 +6,7 @@ import * as angular from 'angular';
 import {Config, dirname} from 'decaf-common';
 import * as types from './types';
 
-import './api/api';
+import './services/api';
 import './components/base';
 import './views/pathwayvis.component.css!';
 

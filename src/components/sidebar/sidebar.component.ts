@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import {APIService} from '../../api/api';
+import {APIService} from '../../services/api';
 import * as types from '../../types';
 // noinspection TypeScriptCheckImport
 import {dirname} from 'decaf-common';

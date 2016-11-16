@@ -23,3 +23,9 @@ interface APIitem {
 
 export interface Strain extends APIitem {}
 export interface Experiment extends APIitem {}
+
+export interface Action {
+    label: string;
+    callback: any;
+    canDisplay: any;
+}

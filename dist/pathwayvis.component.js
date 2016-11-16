@@ -4,7 +4,7 @@ var angular = require('angular');
 // Turn of WS TS inspection for the 'decaf-common' import.
 // noinspection TypeScriptCheckImport
 var decaf_common_1 = require('decaf-common');
-require('./api/api');
+require('./services/api');
 require('./components/base');
 require('./views/pathwayvis.component.css!');
 exports.COMPONENT_NAME = 'pathwayvis';

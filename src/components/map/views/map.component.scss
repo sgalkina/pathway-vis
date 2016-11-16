@@ -5,5 +5,12 @@ pv-map {
     .map-container {
         border: 1px solid grey;
     }
+
+    .map-context-menu {
+        background-color: #FFFFFF;
+        z-index: 199;
+        display: none;
+        min-width: 200px;
+    }
 }
 
