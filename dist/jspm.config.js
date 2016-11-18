@@ -255,7 +255,7 @@ SystemJS.config({
 		"npm:stream-browserify@2.0.1": {
 			"map": {
 				"inherits": "npm:inherits@2.0.3",
-				"readable-stream": "npm:readable-stream@2.2.1"
+				"readable-stream": "npm:readable-stream@2.2.2"
 			}
 		},
 		"npm:readable-stream@2.1.5": {
@@ -274,7 +274,7 @@ SystemJS.config({
 				"mousetrap": "npm:mousetrap@1.6.0",
 				"underscore": "npm:underscore@1.8.3",
 				"d3": "npm:d3@3.5.14",
-				"baconjs": "npm:baconjs@0.7.88",
+				"baconjs": "npm:baconjs@0.7.89",
 				"vkbeautify": "npm:vkbeautify@0.99.1",
 				"filesaverjs": "npm:filesaverjs@0.2.2"
 			}
@@ -316,15 +316,15 @@ SystemJS.config({
 				"minimalistic-assert": "npm:minimalistic-assert@1.0.0"
 			}
 		},
-		"npm:readable-stream@2.2.1": {
+		"npm:readable-stream@2.2.2": {
 			"map": {
 				"isarray": "npm:isarray@1.0.0",
 				"inherits": "npm:inherits@2.0.3",
+				"string_decoder": "npm:string_decoder@0.10.31",
 				"buffer-shims": "npm:buffer-shims@1.0.0",
-				"core-util-is": "npm:core-util-is@1.0.2",
-				"process-nextick-args": "npm:process-nextick-args@1.0.7",
 				"util-deprecate": "npm:util-deprecate@1.0.2",
-				"string_decoder": "npm:string_decoder@0.10.31"
+				"process-nextick-args": "npm:process-nextick-args@1.0.7",
+				"core-util-is": "npm:core-util-is@1.0.2"
 			}
 		}
 	}

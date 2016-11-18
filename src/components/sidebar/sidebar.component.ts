@@ -87,10 +87,7 @@ class SidebarComponentCtrl {
             };
 
             // Remove zero values
-            this.shared.map.reactionData = _.pickBy(responses[2].data['fluxes'], (value: number) => {
-                if (Math.abs(value) > Math.pow(10, -7)) return true;
-            });
-
+            this.shared.map.reactionData = responses[2].data['fluxes'];
             this.shared.loading--;
         });
     }

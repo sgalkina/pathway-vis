@@ -5,11 +5,13 @@ var angular = require('angular');
 // noinspection TypeScriptCheckImport
 var decaf_common_1 = require('decaf-common');
 require('./services/api');
+require('./services/ws');
 require('./components/base');
 require('./views/pathwayvis.component.css!');
 exports.COMPONENT_NAME = 'pathwayvis';
 var main = angular.module(exports.COMPONENT_NAME, [
     'pathwayvis.services.api',
+    'pathwayvis.services.ws',
     'pathwayvis.components'
 ]);
 // TODO: we need to make it so the module name and the .register() are decoupled and not dependant on each other

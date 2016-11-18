@@ -7,12 +7,14 @@ import {Config, dirname} from 'decaf-common';
 import * as types from './types';
 
 import './services/api';
+import './services/ws';
 import './components/base';
 import './views/pathwayvis.component.css!';
 
 export const COMPONENT_NAME = 'pathwayvis';
 const main = angular.module(COMPONENT_NAME, [
     'pathwayvis.services.api',
+    'pathwayvis.services.ws',
     'pathwayvis.components'
 ]);
 

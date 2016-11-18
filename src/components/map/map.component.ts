@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 // noinspection TypeScriptCheckImport
 import {dirname} from 'decaf-common';
 import {APIService} from '../../services/api';
+import {WSService} from '../../services/ws';
 import {ActionsService} from '../../services/actions/actions.service';
 
 import * as types from '../../types';
@@ -28,11 +29,14 @@ class MapComponentCtrl {
 
     private _builder: any;
     private _api: APIService;
+    private _ws: WSService;
     private $scope: angular.IScope;
 
     /* @ngInject */
-    constructor ($scope: angular.IScope, api: APIService, actions: ActionsService) {
+    constructor ($scope: angular.IScope, api: APIService, actions: ActionsService, ws: WSService) {
         this._api = api;
+        this._ws = ws;
+
         this.actions = actions;
         this.$scope = $scope;
 
@@ -45,7 +49,7 @@ class MapComponentCtrl {
         }, true);
 
         // Reaction data watcher
-        $scope.$watch('ctrl.shared.map.reactionData', () => {
+        $scope.$watch('[ctrl.shared.map.reactionData, shared.map.reactionData]', () => {
             if (!_.isEmpty(this.shared.map.reactionData)) {
                 this._loadData();
             }
@@ -76,6 +80,7 @@ class MapComponentCtrl {
         this._builder = escher.Builder(this.shared.map.map, null, null, d3.select('.map-container'), this.shared.map.settings);
         if (!_.isEmpty(this.shared.map.model)) this._loadModel();
         this._loadContextMenu();
+        this._enableKnockout();
     }
 
     /**
@@ -90,7 +95,13 @@ class MapComponentCtrl {
      * TODO: handle metabolite and gene data
      */
     private _loadData(): void {
-        this._builder.set_reaction_data(this.shared.map.reactionData);
+
+        // Remove zero values
+        let reactionData = _.pickBy(this.shared.map.reactionData, (value: number) => {
+            if (Math.abs(value) > Math.pow(10, -7)) return true;
+        });
+
+        this._builder.set_reaction_data(reactionData);
     }
 
     /**
@@ -127,11 +138,18 @@ class MapComponentCtrl {
         this.$scope.$apply();
     }
 
+    private _enableKnockout(): void {
+        this._ws.connect(true, this.shared.map.model.id);
+    }
+
     /**
      * Callback function for clicked action button in context menu
      */
     public onActionClick(action, data) {
-        return this.actions.callAction(action, {object: data});
+        this.actions.callAction(action, {object: data}).then((response) => {
+            this.shared.map.reactionData = response.fluxes;
+            this._loadData();
+        });
     }
 }
 

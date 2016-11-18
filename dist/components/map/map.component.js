@@ -15,9 +15,10 @@ var component = angular.module('pathwayvis.components.map', [
  */
 var MapComponentCtrl = (function () {
     /* @ngInject */
-    function MapComponentCtrl($scope, api, actions) {
+    function MapComponentCtrl($scope, api, actions, ws) {
         var _this = this;
         this._api = api;
+        this._ws = ws;
         this.actions = actions;
         this.$scope = $scope;
         // Map watcher
@@ -28,7 +29,7 @@ var MapComponentCtrl = (function () {
             }
         }, true);
         // Reaction data watcher
-        $scope.$watch('ctrl.shared.map.reactionData', function () {
+        $scope.$watch('[ctrl.shared.map.reactionData, shared.map.reactionData]', function () {
             if (!_.isEmpty(_this.shared.map.reactionData)) {
                 _this._loadData();
             }
@@ -58,6 +59,7 @@ var MapComponentCtrl = (function () {
         if (!_.isEmpty(this.shared.map.model))
             this._loadModel();
         this._loadContextMenu();
+        this._enableKnockout();
     };
     /**
      * Loads model to the map
@@ -70,7 +72,12 @@ var MapComponentCtrl = (function () {
      * TODO: handle metabolite and gene data
      */
     MapComponentCtrl.prototype._loadData = function () {
-        this._builder.set_reaction_data(this.shared.map.reactionData);
+        // Remove zero values
+        var reactionData = _.pickBy(this.shared.map.reactionData, function (value) {
+            if (Math.abs(value) > Math.pow(10, -7))
+                return true;
+        });
+        this._builder.set_reaction_data(reactionData);
     };
     /**
      * Loads context menu and fetches list of actions for selected map element
@@ -102,11 +109,18 @@ var MapComponentCtrl = (function () {
             .style('display', 'inline-block');
         this.$scope.$apply();
     };
+    MapComponentCtrl.prototype._enableKnockout = function () {
+        this._ws.connect(true, this.shared.map.model.id);
+    };
     /**
      * Callback function for clicked action button in context menu
      */
     MapComponentCtrl.prototype.onActionClick = function (action, data) {
-        return this.actions.callAction(action, { object: data });
+        var _this = this;
+        this.actions.callAction(action, { object: data }).then(function (response) {
+            _this.shared.map.reactionData = response.fluxes;
+            _this._loadData();
+        });
     };
     return MapComponentCtrl;
 }());

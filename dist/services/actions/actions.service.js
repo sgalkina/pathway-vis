@@ -30,8 +30,9 @@ var actions = angular.module('pathwayvis.services.actions', []);
  * Actions service provides all registered actions as injectable service.
  */
 var ActionsService = (function () {
-    function ActionsService($injector) {
+    function ActionsService($injector, $q) {
         this.$injector = $injector;
+        this._q = $q;
     }
     /**
      * Returns list of all actions filtered by context
@@ -63,7 +64,16 @@ var Knockout = (function (_super) {
         this.label = 'Knockout';
     }
     // @ngInject
-    Knockout.prototype.callback = function (api) {
+    Knockout.prototype.callback = function (ws, $timeout) {
+        var data = {
+            'to-return': ['fluxes'],
+            'reactions-knockout': [this.object.bigg_id]
+        };
+        return $timeout(function () {
+            return ws.send(data).then(function (data) {
+                return data;
+            });
+        }, 0, false);
     };
     Knockout = __decorate([
         registerAction, 

@@ -60,10 +60,7 @@ var SidebarComponentCtrl = (function () {
                 data: responses[1].data['model']
             };
             // Remove zero values
-            _this.shared.map.reactionData = _.pickBy(responses[2].data['fluxes'], function (value) {
-                if (Math.abs(value) > Math.pow(10, -7))
-                    return true;
-            });
+            _this.shared.map.reactionData = responses[2].data['fluxes'];
             _this.shared.loading--;
         });
     };
