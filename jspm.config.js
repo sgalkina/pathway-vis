@@ -40,7 +40,7 @@ SystemJS.config({
 		"constants": "github:jspm/nodelibs-constants@0.2.0-alpha",
 		"crypto": "github:jspm/nodelibs-crypto@0.2.0-alpha",
 		"css": "github:systemjs/plugin-css@0.1.23",
-		"d3": "npm:d3@3.5.14",
+		"d3": "npm:d3@3.5.17",
 		"decaf-common": "github:biosustain/decaf-frontend-common@master",
 		"escher": "github:nkran/escher@master",
 		"events": "github:jspm/nodelibs-events@0.2.0-alpha",

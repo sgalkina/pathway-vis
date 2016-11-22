@@ -46,7 +46,7 @@
   "jspm": {
     "dependencies": {
       "css": "github:systemjs/plugin-css@^0.1.23",
-      "d3": "npm:d3@3.5.14",
+      "d3": "npm:d3@^3.5",
       "decaf-common": "github:biosustain/decaf-frontend-common@master",
       "escher": "github:nkran/escher@master",
       "lodash": "npm:lodash@^4.16.4"
@@ -173,7 +173,7 @@
           "core-js": "^1.2.0"
         }
       },
-      "npm:d3@3.5.14": {
+      "npm:d3@3.5.17": {
         "meta": {
           "d3.js": {
             "exports": "d3",
