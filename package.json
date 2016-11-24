@@ -49,6 +49,7 @@
       "d3": "npm:d3@^3.5",
       "decaf-common": "github:biosustain/decaf-frontend-common@master",
       "escher": "github:nkran/escher@master",
+      "jquery": "npm:jquery@^3.1.1",
       "lodash": "npm:lodash@^4.16.4"
     },
     "devDependencies": {
@@ -185,6 +186,9 @@
         "ignore": [
           "test.js"
         ]
+      },
+      "npm:jquery@3.1.1": {
+        "format": "amd"
       },
       "npm:lodash@4.16.4": {
         "map": {
