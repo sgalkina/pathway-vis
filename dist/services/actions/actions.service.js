@@ -66,7 +66,7 @@ var Knockout = (function (_super) {
     // @ngInject
     Knockout.prototype.callback = function (ws, $timeout) {
         var data = {
-            'to-return': ['fluxes'],
+            'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
             'reactions-knockout': [this.object.bigg_id]
         };
         return $timeout(function () {

@@ -62,7 +62,7 @@ class Knockout extends ReactionAction {
     // @ngInject
     public callback(ws: WSService, $timeout: angular.ITimeoutService): any {
         const data = {
-            'to-return': ['fluxes'],
+            'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
             'reactions-knockout': [this.object.bigg_id]
         }
 

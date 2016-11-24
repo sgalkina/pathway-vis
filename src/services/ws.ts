@@ -3,7 +3,13 @@ import * as _ from 'lodash';
 interface RequestDetails {
     path: string;
     params: Object;
-}
+};
+
+interface Callback {
+    id: string;
+    deffered: angular.IDeferred<any>;
+    data: string;
+};
 
 const ws = angular.module('pathwayvis.services.ws', []);
 
@@ -20,7 +26,7 @@ export class WSService {
     private _timedOut: boolean = false;
     private _ws: WebSocket;
     private _url: string;
-    private _callbacks; // TODO: add type
+    private _callbacks: Callback[] = [];
     private _q: angular.IQService;
     private _requestID: string;
 
@@ -31,7 +37,6 @@ export class WSService {
     public onerror: (ev:ErrorEvent) => void = function (event: ErrorEvent) {};
 
     constructor($q: angular.IQService) {
-        this._callbacks = {};
         this._q = $q;
     }
 
@@ -57,15 +62,17 @@ export class WSService {
             this._timedOut = false;
         }, this.timeoutInterval);
 
-        this._ws.onopen = (event:Event) => {
+        this._ws.onopen = (event: Event) => {
             clearTimeout(timeout);
             console.log('ReconnectingWebSocket', 'onopen', this._url);
             this.readyState = WebSocket.OPEN;
             reconnectAttempt = false;
+
+            this._processRequests();
             this.onopen(event);
         };
 
-        this._ws.onclose = (event:CloseEvent) => {
+        this._ws.onclose = (event: CloseEvent) => {
             clearTimeout(timeout);
             this._ws = null;
             if (this._forcedClose) {
@@ -86,7 +93,11 @@ export class WSService {
 
         this._ws.onmessage = (event) => {
             const result = JSON.parse(event.data);
-            return this._callbacks[this._requestID].resolve(result);
+            const requestId = result['request-id'];
+            const callback = _.find(this._callbacks, 'id', requestId);
+
+            _.remove(this._callbacks, (cb) => cb.id === requestId);
+            return callback.deffered.resolve(result);
         };
 
         this._ws.onerror = (event) => {
@@ -96,14 +107,35 @@ export class WSService {
     }
 
     public send(data: any): angular.IPromise<any> {
-        this._requestID = this._generateID();
-        this._callbacks[this._requestID] = this._q.defer();
+        const requestId = this._generateID();
 
-        if (this._ws) {
-            this._ws.send(JSON.stringify(data));
-            return this._callbacks[this._requestID].promise;
+        _.assign(data, {
+            'request-id': requestId
+        });
+
+        const callback = {
+            id: requestId,
+            deffered: this._q.defer(),
+            data: JSON.stringify(data)
+        };
+
+        this._callbacks.push(callback);
+
+        if (this._ws && this._ws.readyState === WebSocket.OPEN) {
+            this._processRequests();
+            return callback.deffered.promise;
         } else {
             throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
+        }
+    }
+
+    private _processRequests(): void {
+        if (!this._callbacks.length) {
+            return;
+        }
+
+        for (let request of this._callbacks) {
+            this._ws.send(request.data);
         }
     }
 

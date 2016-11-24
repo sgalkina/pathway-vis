@@ -1,4 +1,7 @@
 "use strict";
+var _ = require('lodash');
+;
+;
 var ws = angular.module('pathwayvis.services.ws', []);
 // WS url
 exports.WS_ROOT_URL = 'ws://api.dd-decaf.eu/wsmodels/';
@@ -8,12 +11,12 @@ var WSService = (function () {
         this.timeoutInterval = 10000;
         this._forcedClose = false;
         this._timedOut = false;
+        this._callbacks = [];
         this.onopen = function (event) { };
         this.onclose = function (event) { };
         this.onconnecting = function () { };
         this.onmessage = function (event) { };
         this.onerror = function (event) { };
-        this._callbacks = {};
         this._q = $q;
     }
     WSService.prototype._generateID = function () {
@@ -38,6 +41,7 @@ var WSService = (function () {
             console.log('ReconnectingWebSocket', 'onopen', _this._url);
             _this.readyState = WebSocket.OPEN;
             reconnectAttempt = false;
+            _this._processRequests();
             _this.onopen(event);
         };
         this._ws.onclose = function (event) {
@@ -61,7 +65,10 @@ var WSService = (function () {
         };
         this._ws.onmessage = function (event) {
             var result = JSON.parse(event.data);
-            return _this._callbacks[_this._requestID].resolve(result);
+            var requestId = result['request-id'];
+            var callback = _.find(_this._callbacks, 'id', requestId);
+            _.remove(_this._callbacks, function (cb) { return cb.id === requestId; });
+            return callback.deffered.resolve(result);
         };
         this._ws.onerror = function (event) {
             console.log('ReconnectingWebSocket', 'onerror', _this._url, event);
@@ -69,14 +76,31 @@ var WSService = (function () {
         };
     };
     WSService.prototype.send = function (data) {
-        this._requestID = this._generateID();
-        this._callbacks[this._requestID] = this._q.defer();
-        if (this._ws) {
-            this._ws.send(JSON.stringify(data));
-            return this._callbacks[this._requestID].promise;
+        var requestId = this._generateID();
+        _.assign(data, {
+            'request-id': requestId
+        });
+        var callback = {
+            id: requestId,
+            deffered: this._q.defer(),
+            data: JSON.stringify(data)
+        };
+        this._callbacks.push(callback);
+        if (this._ws && this._ws.readyState === WebSocket.OPEN) {
+            this._processRequests();
+            return callback.deffered.promise;
         }
         else {
             throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
+        }
+    };
+    WSService.prototype._processRequests = function () {
+        if (!this._callbacks.length) {
+            return;
+        }
+        for (var _i = 0, _a = this._callbacks; _i < _a.length; _i++) {
+            var request = _a[_i];
+            this._ws.send(request.data);
         }
     };
     /**
