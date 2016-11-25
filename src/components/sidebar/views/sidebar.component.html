@@ -29,6 +29,33 @@
                         <md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.phase">Load map</md-button>
                     </md-input-container>
                 </form>
+                <div ng-if="ctrl.info['genotype-changes']">
+                    <md-subheader class="md-no-sticky">Genotype changes</md-subheader>
+                    <p>
+                    <div layout="row" ng-repeat="change in ctrl.info['genotype-changes']">
+                        <div flex>{{ change }}</div>
+                    </div>
+                    </p>
+                    <md-divider></md-divider>
+
+                    <md-subheader class="md-no-sticky">Measurements</md-subheader>
+                    <p>
+                    <div layout="row" ng-repeat="change in ctrl.info['measurements']">
+                        <div flex>{{ change["name"] }}</div>
+                        <div flex>{{ change["measurement"] }}</div>
+                        <div flex>{{ change["unit"] }}/gh<sup>-1</sup></div>
+                    </div>
+                    </p>
+                    <md-divider></md-divider>
+
+                    <md-subheader class="md-no-sticky">Medium</md-subheader>
+                    <p>
+                    <div layout="row" ng-repeat="change in ctrl.info['medium']">
+                        <div flex>{{ change["name"] }}</div>
+                        <div flex>{{ change["concentration"] }}</div>
+                    </div>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
