@@ -13,8 +13,7 @@ interface SelectedItems {
     phase?: number;
 }
 
-const component = angular.module('pathwayvis.components.sidebar', [
-]);
+const component = angular.module('pathwayvis.components.sidebar', []);
 
 /**
  * sidebar component
@@ -64,7 +63,7 @@ class SidebarComponentCtrl {
     }
 
     // Loads iJO1366 predefined map and model from API
-    public onLoadDataSubmit($event): void {
+    public onLoadDataSubmit($event?): void {
         const mapUri = 'https://raw.githubusercontent.com/escher/escher-demo/gh-pages/minimal_embedded_map/e_coli.iJO1366.central_metabolism.json';
         this.shared.loading++;
 

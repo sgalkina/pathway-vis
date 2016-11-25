@@ -118,7 +118,7 @@ SystemJS.config({
 				"inherits": "npm:inherits@2.0.3",
 				"cipher-base": "npm:cipher-base@1.0.3",
 				"ripemd160": "npm:ripemd160@1.0.1",
-				"sha.js": "npm:sha.js@2.4.5"
+				"sha.js": "npm:sha.js@2.4.8"
 			}
 		},
 		"npm:create-hmac@1.1.4": {
@@ -202,30 +202,18 @@ SystemJS.config({
 				"create-hash": "npm:create-hash@1.1.2"
 			}
 		},
-		"npm:sha.js@2.4.5": {
-			"map": {
-				"inherits": "npm:inherits@2.0.3"
-			}
-		},
 		"npm:parse-asn1@5.0.0": {
 			"map": {
 				"create-hash": "npm:create-hash@1.1.2",
 				"evp_bytestokey": "npm:evp_bytestokey@1.0.0",
 				"pbkdf2": "npm:pbkdf2@3.0.9",
-				"asn1.js": "npm:asn1.js@4.8.1",
+				"asn1.js": "npm:asn1.js@4.9.0",
 				"browserify-aes": "npm:browserify-aes@1.0.6"
 			}
 		},
 		"npm:hash.js@1.0.3": {
 			"map": {
 				"inherits": "npm:inherits@2.0.3"
-			}
-		},
-		"npm:asn1.js@4.8.1": {
-			"map": {
-				"bn.js": "npm:bn.js@4.11.6",
-				"inherits": "npm:inherits@2.0.3",
-				"minimalistic-assert": "npm:minimalistic-assert@1.0.0"
 			}
 		},
 		"npm:browserify-des@1.0.0": {
@@ -268,7 +256,7 @@ SystemJS.config({
 		"npm:stream-browserify@2.0.1": {
 			"map": {
 				"inherits": "npm:inherits@2.0.3",
-				"readable-stream": "npm:readable-stream@2.1.5"
+				"readable-stream": "npm:readable-stream@2.2.2"
 			}
 		},
 		"npm:readable-stream@2.1.5": {
@@ -287,7 +275,7 @@ SystemJS.config({
 				"mousetrap": "npm:mousetrap@1.6.0",
 				"underscore": "npm:underscore@1.8.3",
 				"d3": "npm:d3@3.5.17",
-				"baconjs": "npm:baconjs@0.7.88",
+				"baconjs": "npm:baconjs@0.7.89",
 				"vkbeautify": "npm:vkbeautify@0.99.1",
 				"filesaverjs": "npm:filesaverjs@0.2.2"
 			}
@@ -315,6 +303,29 @@ SystemJS.config({
 				"to-arraybuffer": "npm:to-arraybuffer@1.0.1",
 				"inherits": "npm:inherits@2.0.3",
 				"readable-stream": "npm:readable-stream@2.1.5"
+			}
+		},
+		"npm:sha.js@2.4.8": {
+			"map": {
+				"inherits": "npm:inherits@2.0.3"
+			}
+		},
+		"npm:asn1.js@4.9.0": {
+			"map": {
+				"bn.js": "npm:bn.js@4.11.6",
+				"inherits": "npm:inherits@2.0.3",
+				"minimalistic-assert": "npm:minimalistic-assert@1.0.0"
+			}
+		},
+		"npm:readable-stream@2.2.2": {
+			"map": {
+				"isarray": "npm:isarray@1.0.0",
+				"inherits": "npm:inherits@2.0.3",
+				"string_decoder": "npm:string_decoder@0.10.31",
+				"buffer-shims": "npm:buffer-shims@1.0.0",
+				"core-util-is": "npm:core-util-is@1.0.2",
+				"process-nextick-args": "npm:process-nextick-args@1.0.7",
+				"util-deprecate": "npm:util-deprecate@1.0.2"
 			}
 		}
 	}

@@ -38,6 +38,9 @@ var SidebarComponentCtrl = (function () {
                 });
             }
         });
+        this.selected.sample = 1;
+        this.selected.phase = 1;
+        this.onLoadDataSubmit();
     }
     // Loads iJO1366 predefined map and model from API
     SidebarComponentCtrl.prototype.onLoadDataSubmit = function ($event) {

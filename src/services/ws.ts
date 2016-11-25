@@ -51,12 +51,9 @@ export class WSService {
         this._ws = new WebSocket(this._url);
         this.onconnecting();
 
-        console.log('ReconnectingWebSocket', 'attempt-connect', this._url);
-
         var localWs = this._ws;
 
         var timeout = setTimeout(() => {
-            console.log('ReconnectingWebSocket', 'connection-timeout', this._url);
             this._timedOut = true;
             localWs.close();
             this._timedOut = false;
@@ -64,7 +61,6 @@ export class WSService {
 
         this._ws.onopen = (event: Event) => {
             clearTimeout(timeout);
-            console.log('ReconnectingWebSocket', 'onopen', this._url);
             this.readyState = WebSocket.OPEN;
             reconnectAttempt = false;
 
@@ -82,7 +78,6 @@ export class WSService {
                 this.readyState = WebSocket.CONNECTING;
                 this.onconnecting();
                 if (!reconnectAttempt && !this._timedOut) {
-                    console.log('ReconnectingWebSocket', 'onclose', this._url);
                     this.onclose(event);
                 }
                 setTimeout(() => {
@@ -101,7 +96,6 @@ export class WSService {
         };
 
         this._ws.onerror = (event) => {
-            console.log('ReconnectingWebSocket', 'onerror', this._url, event);
             this.onerror(event);
         };
     }
@@ -124,8 +118,6 @@ export class WSService {
         if (this._ws && this._ws.readyState === WebSocket.OPEN) {
             this._processRequests();
             return callback.deffered.promise;
-        } else {
-            throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
         }
     }
 

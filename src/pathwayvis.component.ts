@@ -63,7 +63,8 @@ class PathwayVisComponentController {
         // Init shared scope
         this.shared = {
             loading: 0,
-            map: {}
+            map: {},
+            sections: {}
         };
     }
 }

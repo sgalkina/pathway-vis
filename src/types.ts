@@ -9,11 +9,14 @@ export interface Map {
     reactionData?: Object;
     geneData?: Object;
     metaboliteData?: Object;
+    growthRate?: string;
+    removedReactions?: string[];
 }
 
 export interface Shared {
     loading?: number;
     map: Map;
+    sections?: any;
 }
 
 export interface Model {

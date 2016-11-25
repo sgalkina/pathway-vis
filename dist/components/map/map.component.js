@@ -30,7 +30,7 @@ var MapComponentCtrl = (function () {
         }, true);
         // Reaction data watcher
         $scope.$watch('[ctrl.shared.map.reactionData, shared.map.reactionData]', function () {
-            if (!_.isEmpty(_this.shared.map.reactionData)) {
+            if (_this.shared.map.reactionData) {
                 _this._loadData();
             }
         }, true);
@@ -48,8 +48,11 @@ var MapComponentCtrl = (function () {
                 { type: 'max', color: '#0776AC', size: 20 }
             ],
             reaction_no_data_color: '#CBCBCB',
-            reaction_no_data_size: 10
+            reaction_no_data_size: 10,
         };
+        $scope.$on("$destroy", function handler() {
+            ws.close();
+        });
     }
     /**
      * Initializes map
@@ -89,10 +92,16 @@ var MapComponentCtrl = (function () {
         selection.selectAll('.reaction, .reaction-label')
             .style('cursor', 'pointer')
             .on('contextmenu', function (d) {
-            _this.contextActions = _this.actions.getList({ type: 'map:reaction' });
             _this.contextElement = d;
-            _this._renderContextMenu(contextMenu, selection);
-            d3.event.preventDefault();
+            _this.contextActions = _this.actions.getList({
+                type: 'map:reaction',
+                shared: _this.shared,
+                element: _this.contextElement
+            });
+            if (_this.contextElement) {
+                _this._renderContextMenu(contextMenu, selection);
+                d3.event.preventDefault();
+            }
         });
         d3.select(document).on('click', function () {
             contextMenu.style('display', 'none');
@@ -117,9 +126,15 @@ var MapComponentCtrl = (function () {
      */
     MapComponentCtrl.prototype.onActionClick = function (action, data) {
         var _this = this;
-        this.actions.callAction(action, { object: data }).then(function (response) {
-            _this.shared.map.reactionData = response.fluxes;
-            _this._loadData();
+        var shared = {
+            element: data,
+            shared: this.shared
+        };
+        this.actions.callAction(action, shared).then(function (response) {
+            _this.shared.map.growthRate = response['growth-rate'];
+            _this.shared.map.removedReactions = response['removed-reactions'];
+            _this.shared.map.reactionData = response['fluxes'];
+            _this.$scope.$apply();
         });
     };
     return MapComponentCtrl;

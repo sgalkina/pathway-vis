@@ -57,14 +57,14 @@ actions.service('actions', ActionsService);
 class Knockout extends ReactionAction {
     public ws: WSService;
     public label = 'Knockout';
-    public object: any;
+    public element: any;
 
     // @ngInject
     public callback(ws: WSService, $timeout: angular.ITimeoutService): any {
         const data = {
             'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
-            'reactions-knockout': [this.object.bigg_id]
-        }
+            'reactions-knockout': [this.element.bigg_id]
+        };
 
         return $timeout(() => {
             return ws.send(data).then((data) => {
@@ -72,5 +72,43 @@ class Knockout extends ReactionAction {
             });
         }, 0, false);
     }
+
+    public canDisplay(context) {
+        const isRemoved = !_.includes(context.shared.map.removedReactions, context.element.bigg_id);
+        return context.type === 'map:reaction' && isRemoved;
+    }
 }
 
+/**
+ * Undo knockout reaction
+ */
+@registerAction
+class UndoKnockout extends Action {
+    public ws: WSService;
+    public label = 'Undo knockout';
+    public element: any;
+    public shared: types.Shared;
+
+    // @ngInject
+    public callback(ws: WSService, $timeout: angular.ITimeoutService): any {
+        const data = {
+            'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
+            'reactions-knockout-undo': [this.element.bigg_id]
+        };
+
+        return $timeout(() => {
+            return ws.send(data).then((data) => {
+                return data;
+            });
+        }, 0, false);
+    }
+
+    public canDisplay(context) {
+        if (context.shared.map.removedReactions) {
+            const isRemoved = _.includes(context.shared.map.removedReactions, context.element.bigg_id);
+            return context.type === 'map:reaction' && isRemoved;
+        }
+
+        return false;
+    }
+}

@@ -67,7 +67,7 @@ var Knockout = (function (_super) {
     Knockout.prototype.callback = function (ws, $timeout) {
         var data = {
             'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
-            'reactions-knockout': [this.object.bigg_id]
+            'reactions-knockout': [this.element.bigg_id]
         };
         return $timeout(function () {
             return ws.send(data).then(function (data) {
@@ -75,11 +75,49 @@ var Knockout = (function (_super) {
             });
         }, 0, false);
     };
+    Knockout.prototype.canDisplay = function (context) {
+        var isRemoved = !_.includes(context.shared.map.removedReactions, context.element.bigg_id);
+        return context.type === 'map:reaction' && isRemoved;
+    };
     Knockout = __decorate([
         registerAction, 
         __metadata('design:paramtypes', [])
     ], Knockout);
     return Knockout;
 }(base_1.ReactionAction));
+/**
+ * Undo knockout reaction
+ */
+var UndoKnockout = (function (_super) {
+    __extends(UndoKnockout, _super);
+    function UndoKnockout() {
+        _super.apply(this, arguments);
+        this.label = 'Undo knockout';
+    }
+    // @ngInject
+    UndoKnockout.prototype.callback = function (ws, $timeout) {
+        var data = {
+            'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
+            'reactions-knockout-undo': [this.element.bigg_id]
+        };
+        return $timeout(function () {
+            return ws.send(data).then(function (data) {
+                return data;
+            });
+        }, 0, false);
+    };
+    UndoKnockout.prototype.canDisplay = function (context) {
+        if (context.shared.map.removedReactions) {
+            var isRemoved = _.includes(context.shared.map.removedReactions, context.element.bigg_id);
+            return context.type === 'map:reaction' && isRemoved;
+        }
+        return false;
+    };
+    UndoKnockout = __decorate([
+        registerAction, 
+        __metadata('design:paramtypes', [])
+    ], UndoKnockout);
+    return UndoKnockout;
+}(base_1.Action));
 
 //# sourceMappingURL=actions.service.js.map

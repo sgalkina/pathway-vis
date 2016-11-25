@@ -54,7 +54,8 @@ var PathwayVisComponentController = (function () {
         // Init shared scope
         this.shared = {
             loading: 0,
-            map: {}
+            map: {},
+            sections: {}
         };
     }
     return PathwayVisComponentController;
