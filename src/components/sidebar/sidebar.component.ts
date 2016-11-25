@@ -70,14 +70,11 @@ class SidebarComponentCtrl {
         const mapPromise = this._http({ method: 'GET', url: mapUri });
         const modelPromise = this._api.get('samples/:sampleId/model', {
             'sampleId': this.selected.sample,
-            'phase-id': this.selected.phase
-        });
-        const fluxesPromise = this._api.get('samples/:sampleId/fluxes', {
-            'sampleId': this.selected.sample,
-            'phase-id': this.selected.phase
+            'phase-id': this.selected.phase,
+            'with-fluxes': 1
         });
 
-        this._q.all([mapPromise, modelPromise, fluxesPromise]).then((responses: any) => {
+        this._q.all([mapPromise, modelPromise]).then((responses: any) => {
 
             // Add loaded data to shared scope
             this.shared.map.map = responses[0].data;
@@ -86,8 +83,7 @@ class SidebarComponentCtrl {
                 data: responses[1].data['model']
             };
 
-            // Remove zero values
-            this.shared.map.reactionData = responses[2].data['fluxes'];
+            this.shared.map.reactionData = responses[1].data['fluxes'];
             this.shared.loading--;
         });
     }

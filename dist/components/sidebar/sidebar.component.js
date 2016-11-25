@@ -46,21 +46,17 @@ var SidebarComponentCtrl = (function () {
         var mapPromise = this._http({ method: 'GET', url: mapUri });
         var modelPromise = this._api.get('samples/:sampleId/model', {
             'sampleId': this.selected.sample,
-            'phase-id': this.selected.phase
+            'phase-id': this.selected.phase,
+            'with-fluxes': 1
         });
-        var fluxesPromise = this._api.get('samples/:sampleId/fluxes', {
-            'sampleId': this.selected.sample,
-            'phase-id': this.selected.phase
-        });
-        this._q.all([mapPromise, modelPromise, fluxesPromise]).then(function (responses) {
+        this._q.all([mapPromise, modelPromise]).then(function (responses) {
             // Add loaded data to shared scope
             _this.shared.map.map = responses[0].data;
             _this.shared.map.model = {
                 id: responses[1].data['model-id'],
                 data: responses[1].data['model']
             };
-            // Remove zero values
-            _this.shared.map.reactionData = responses[2].data['fluxes'];
+            _this.shared.map.reactionData = responses[1].data['fluxes'];
             _this.shared.loading--;
         });
     };
