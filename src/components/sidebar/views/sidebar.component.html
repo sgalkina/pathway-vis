@@ -1,35 +1,62 @@
 <div layout="column" layout-fill layout-padding flex>
-    <div flex class="sidebar">
-        <div flex class="sidebar-item">
-            <span class="md-headline">Map options</span>
-            <div class="sidebar-content" flex>
-                <form name="loadData" ng-submit="ctrl.onLoadDataSubmit($event)" novalidate layout="column">
-                    <md-input-container>
-                        <label>Experiment</label>
-                        <md-select name="experiment" ng-model="ctrl.selected.experiment" required>
-                            <md-option ng-repeat="experiment in ctrl.experiments" value="{{experiment.id}}">{{experiment.name}}</md-option>
-                        </md-select>
-                    </md-input-container>
+	<div flex class="sidebar">
+		<div flex class="sidebar-item">
+			<span class="md-headline">Map options</span>
+			<div class="sidebar-content" flex>
+				<form name="loadData" ng-submit="ctrl.onLoadDataSubmit($event)" novalidate layout="column">
+					<md-input-container>
+						<label>Experiment</label>
+						<md-select name="experiment" ng-model="ctrl.selected.experiment" required>
+							<md-option ng-repeat="experiment in ctrl.experiments" value="{{experiment.id}}">{{experiment.name}}</md-option>
+						</md-select>
+					</md-input-container>
 
-                    <md-input-container>
-                        <label>Samples</label>
-                        <md-select name="samples" ng-model="ctrl.selected.sample" required>
-                            <md-option ng-repeat="sample in ctrl.samples" value="{{sample.id}}">{{sample.name}}</md-option>
-                        </md-select>
-                    </md-input-container>
+					<md-input-container>
+						<label>Samples</label>
+						<md-select name="samples" ng-model="ctrl.selected.sample" required>
+							<md-option ng-repeat="sample in ctrl.samples" value="{{sample.id}}">{{sample.name}}</md-option>
+						</md-select>
+					</md-input-container>
 
-                    <md-input-container>
-                        <label>Phases</label>
-                        <md-select name="phase" ng-model="ctrl.selected.phase" required>
-                            <md-option ng-repeat="phase in ctrl.phases" value="{{phase.id}}">{{phase.name}}</md-option>
-                        </md-select>
-                    </md-input-container>
+					<md-input-container>
+						<label>Phases</label>
+						<md-select name="phase" ng-model="ctrl.selected.phase" required>
+							<md-option ng-repeat="phase in ctrl.phases" value="{{phase.id}}">{{phase.name}}</md-option>
+						</md-select>
+					</md-input-container>
 
-                    <md-input-container>
-                        <md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.phase">Load map</md-button>
-                    </md-input-container>
-                </form>
-            </div>
-        </div>
-    </div>
+					<md-input-container>
+						<md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.phase">Load map</md-button>
+					</md-input-container>
+				</form>
+				<div ng-if="ctrl.info['genotype-changes']">
+					<md-subheader class="md-no-sticky">Genotype changes</md-subheader>
+					<p>
+					<div layout="row" ng-repeat="change in ctrl.info['genotype-changes']">
+						<div flex>{{ change }}</div>
+					</div>
+					</p>
+					<md-divider></md-divider>
+
+					<md-subheader class="md-no-sticky">Measurements</md-subheader>
+					<p>
+					<div layout="row" ng-repeat="change in ctrl.info['measurements']">
+						<div flex>{{ change["name"] }}</div>
+						<div flex>{{ change["measurement"] }}</div>
+						<div flex>{{ change["unit"] }}/gh<sup>-1</sup></div>
+					</div>
+					</p>
+					<md-divider></md-divider>
+
+					<md-subheader class="md-no-sticky">Medium</md-subheader>
+					<p>
+					<div layout="row" ng-repeat="change in ctrl.info['medium']">
+						<div flex>{{ change["name"] }}</div>
+						<div flex>{{ change["concentration"] }}</div>
+					</div>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

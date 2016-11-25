@@ -26,6 +26,7 @@ class SidebarComponentCtrl {
     public experiments: types.Experiment[];
     public samples: types.Sample[];
     public phases: types.Phase[];
+    public info: Object = {};
 
     private _api: APIService;
     private _http: angular.IHttpService;
@@ -74,7 +75,12 @@ class SidebarComponentCtrl {
             'with-fluxes': 1
         });
 
-        this._q.all([mapPromise, modelPromise]).then((responses: any) => {
+		const infoPromise = this._api.get('samples/:sampleId/info', {
+            'sampleId': this.selected.sample,
+            'phase-id': this.selected.phase,
+        });
+
+        this._q.all([mapPromise, modelPromise, infoPromise]).then((responses: any) => {
 
             // Add loaded data to shared scope
             this.shared.map.map = responses[0].data;
@@ -85,6 +91,8 @@ class SidebarComponentCtrl {
 
             this.shared.map.reactionData = responses[1].data['fluxes'];
             this.shared.loading--;
+
+			this.info = responses[2].data;
         });
     }
 }

@@ -13,6 +13,7 @@ var SidebarComponentCtrl = (function () {
         var _this = this;
         this.loadData = {};
         this.selected = {};
+        this.info = {};
         this._api = api;
         this._http = $http;
         this._q = $q;
@@ -49,7 +50,11 @@ var SidebarComponentCtrl = (function () {
             'phase-id': this.selected.phase,
             'with-fluxes': 1
         });
-        this._q.all([mapPromise, modelPromise]).then(function (responses) {
+        var infoPromise = this._api.get('samples/:sampleId/info', {
+            'sampleId': this.selected.sample,
+            'phase-id': this.selected.phase,
+        });
+        this._q.all([mapPromise, modelPromise, infoPromise]).then(function (responses) {
             // Add loaded data to shared scope
             _this.shared.map.map = responses[0].data;
             _this.shared.map.model = {
@@ -58,6 +63,7 @@ var SidebarComponentCtrl = (function () {
             };
             _this.shared.map.reactionData = responses[1].data['fluxes'];
             _this.shared.loading--;
+            _this.info = responses[2].data;
         });
     };
     return SidebarComponentCtrl;
