@@ -1,15 +1,13 @@
 <div flex class="sidebar-item" ng-if="ctrl.removedReactions.length > 0">
     <span class="md-headline">Knockout simulation</span>
-    <div class="sidebar-content" flex layout-padding>
-        <span ng-if="ctrl.growthRate" flex>
-            Growth rate: {{ctrl.growthRate}}
-        </span>
-        <div layout="column" ng-if="ctrl.removedReactions">
-            <span>Removed reactions</span>
+    <div class="sidebar-content" flex>
+        <div layout="column" class="sidebar-cell" ng-if="ctrl.growthRate">
+            <h3 class="md-no-sticky">Results</h3>
+            <span flex>Growth rate: {{ctrl.growthRate}}</span>
+        </div>
+        <div layout="column" ng-if="ctrl.removedReactions" class="sidebar-cell">
+            <h3 class="md-no-sticky">Removed reactions</h3>
             <md-chips ng-model="ctrl.removedReactions" readonly="true" md-removable="false">
-                <button md-chip-remove on>
-                    <md-icon md-svg-icon="md-close"></md-icon>
-                </button>
             </md-chips>
         </div>
     </div>

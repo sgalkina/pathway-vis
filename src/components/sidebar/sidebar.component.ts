@@ -25,7 +25,7 @@ class SidebarComponentCtrl {
     public experiments: types.Experiment[];
     public samples: types.Sample[];
     public phases: types.Phase[];
-    public info: Object = {};
+    public info: Object;
 
     private _api: APIService;
     private _http: angular.IHttpService;

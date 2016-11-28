@@ -13,7 +13,6 @@ var SidebarComponentCtrl = (function () {
         var _this = this;
         this.loadData = {};
         this.selected = {};
-        this.info = {};
         this._api = api;
         this._http = $http;
         this._q = $q;
