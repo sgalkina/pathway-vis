@@ -51,7 +51,7 @@ SystemJS.config({
 		"lodash": "npm:lodash@4.16.4",
 		"os": "npm:jspm-nodelibs-os@0.2.0",
 		"path": "npm:jspm-nodelibs-path@0.2.0",
-		"process": "npm:jspm-nodelibs-process@0.2.0",
+		"process": "github:jspm/nodelibs-process@0.2.0-alpha",
 		"stream": "npm:jspm-nodelibs-stream@0.2.0",
 		"string_decoder": "npm:jspm-nodelibs-string_decoder@0.2.0",
 		"url": "npm:jspm-nodelibs-url@0.2.0",
@@ -282,9 +282,14 @@ SystemJS.config({
 				"readable-stream": "npm:readable-stream@2.1.5"
 			}
 		},
-		"npm:jspm-nodelibs-http@0.2.0": {
+		"npm:jspm-nodelibs-crypto@0.2.0": {
 			"map": {
-				"http-browserify": "npm:stream-http@2.4.0"
+				"crypto-browserify": "npm:crypto-browserify@3.11.0"
+			}
+		},
+		"npm:jspm-nodelibs-url@0.2.0": {
+			"map": {
+				"url-browserify": "npm:url@0.11.0"
 			}
 		},
 		"npm:jspm-nodelibs-buffer@0.2.0": {
@@ -292,14 +297,9 @@ SystemJS.config({
 				"buffer-browserify": "npm:buffer@4.9.1"
 			}
 		},
-		"npm:jspm-nodelibs-crypto@0.2.0": {
+		"npm:jspm-nodelibs-http@0.2.0": {
 			"map": {
-				"crypto-browserify": "npm:crypto-browserify@3.11.0"
-			}
-		},
-		"npm:jspm-nodelibs-string_decoder@0.2.0": {
-			"map": {
-				"string_decoder-browserify": "npm:string_decoder@0.10.31"
+				"http-browserify": "npm:stream-http@2.4.0"
 			}
 		},
 		"npm:jspm-nodelibs-os@0.2.0": {
@@ -312,9 +312,9 @@ SystemJS.config({
 				"stream-browserify": "npm:stream-browserify@2.0.1"
 			}
 		},
-		"npm:jspm-nodelibs-url@0.2.0": {
+		"npm:jspm-nodelibs-string_decoder@0.2.0": {
 			"map": {
-				"url-browserify": "npm:url@0.11.0"
+				"string_decoder-browserify": "npm:string_decoder@0.10.31"
 			}
 		}
 	}

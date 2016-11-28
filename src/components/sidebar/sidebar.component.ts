@@ -75,7 +75,7 @@ class SidebarComponentCtrl {
             'with-fluxes': 1
         });
 
-		const infoPromise = this._api.get('samples/:sampleId/info', {
+        const infoPromise = this._api.get('samples/:sampleId/info', {
             'sampleId': this.selected.sample,
             'phase-id': this.selected.phase,
         });
@@ -92,7 +92,7 @@ class SidebarComponentCtrl {
             this.shared.map.reactionData = responses[1].data['fluxes'];
             this.shared.loading--;
 
-			this.info = responses[2].data;
+            this.info = responses[2].data;
         });
     }
 }
