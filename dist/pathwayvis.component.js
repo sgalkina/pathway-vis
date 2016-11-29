@@ -4,12 +4,14 @@ var angular = require('angular');
 // Turn of WS TS inspection for the 'decaf-common' import.
 // noinspection TypeScriptCheckImport
 var decaf_common_1 = require('decaf-common');
-require('./api/api');
+require('./services/api');
+require('./services/ws');
 require('./components/base');
 require('./views/pathwayvis.component.css!');
 exports.COMPONENT_NAME = 'pathwayvis';
 var main = angular.module(exports.COMPONENT_NAME, [
     'pathwayvis.services.api',
+    'pathwayvis.services.ws',
     'pathwayvis.components'
 ]);
 // TODO: we need to make it so the module name and the .register() are decoupled and not dependant on each other
@@ -33,7 +35,7 @@ main.config(function (platformProvider) {
         onEnter: function (config) {
             // Turn of WS inspection for TS
             // noinspection TypeScriptUnresolvedFunction
-            config.set('color', '#ff5200');
+            config.set('color', '#34495e');
         },
         onExit: function (config) {
             // Turn of WS inspection for TS
@@ -52,7 +54,8 @@ var PathwayVisComponentController = (function () {
         // Init shared scope
         this.shared = {
             loading: 0,
-            map: {}
+            map: {},
+            sections: {}
         };
     }
     return PathwayVisComponentController;

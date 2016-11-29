@@ -6,13 +6,15 @@ import * as angular from 'angular';
 import {Config, dirname} from 'decaf-common';
 import * as types from './types';
 
-import './api/api';
+import './services/api';
+import './services/ws';
 import './components/base';
 import './views/pathwayvis.component.css!';
 
 export const COMPONENT_NAME = 'pathwayvis';
 const main = angular.module(COMPONENT_NAME, [
     'pathwayvis.services.api',
+    'pathwayvis.services.ws',
     'pathwayvis.components'
 ]);
 
@@ -37,7 +39,7 @@ main.config(function (platformProvider) {
             onEnter(config: Config) {
                 // Turn of WS inspection for TS
                 // noinspection TypeScriptUnresolvedFunction
-                config.set('color', '#ff5200');
+                config.set('color', '#34495e');
             },
             onExit(config: Config) {
                 // Turn of WS inspection for TS
@@ -61,7 +63,8 @@ class PathwayVisComponentController {
         // Init shared scope
         this.shared = {
             loading: 0,
-            map: {}
+            map: {},
+            sections: {}
         };
     }
 }

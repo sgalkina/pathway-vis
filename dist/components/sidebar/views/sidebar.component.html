@@ -12,27 +12,58 @@
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Strains</label>
-                        <md-select name="map" ng-model="ctrl.selected.strain" required>
-                            <md-option ng-repeat="strain in ctrl.strains" value="{{strain.id}}">{{strain.name}}</md-option>
+                        <label>Samples</label>
+                        <md-select name="samples" ng-model="ctrl.selected.sample" required>
+                            <md-option ng-repeat="sample in ctrl.samples" value="{{sample.id}}">{{sample.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Models</label>
-                        <md-select name="model" ng-model="ctrl.loadData.model" required disabled>
-                            <md-option value="ecoli_core">iJO1366</md-option>
+                        <label>Phases</label>
+                        <md-select name="phase" ng-model="ctrl.selected.phase" required>
+                            <md-option ng-repeat="phase in ctrl.phases" value="{{phase.id}}">{{phase.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
-                        <md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.strain">Load map</md-button>
-                        <md-button type="button" class="md-raised md-accent" ng-click="ctrl.onLoadFluxClick($event)" ng-disabled="!ctrl.shared.map.map">
-                            Load reaction data
-                        </md-button>
+                        <md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.phase">Load map</md-button>
                     </md-input-container>
                 </form>
             </div>
         </div>
+
+        <div flex class="sidebar-item" ng-if="ctrl.info">
+            <span class="md-headline">Map Info</span>
+            <div class="sidebar-content" flex>
+                <div ng-if="ctrl.info">
+                    <div ng-if="ctrl.info['genotype-changes'].length > 0" flex layout="column">
+                        <h3 class="md-no-sticky">Genotype changes</h3>
+                        <div layout="row" ng-repeat="change in ctrl.info['genotype-changes']" class="sidebar-cell">
+                            <span flex>{{ change }}</span>
+                        </div>
+                        <md-divider></md-divider>
+                    </div>
+
+                    <div ng-if="ctrl.info['measurements'].length > 0" flex layout="column">
+                        <h3 class="md-no-sticky">Measurements</h3>
+                            <div layout="row" ng-repeat="change in ctrl.info['measurements']" class="sidebar-cell">
+                                <span flex="60">{{ change["name"] }}</span>
+                                <span>{{ change["measurement"] }} {{ change["unit"] }}/gh<sup>-1</sup></span>
+                            </div>
+                        <md-divider></md-divider>
+                    </div>
+
+                    <div ng-if="ctrl.info['medium'].length > 0" flex layout="column">
+                        <h3 class="md-no-sticky">Medium</h3>
+                        <div layout="row" ng-repeat="change in ctrl.info['medium']" class="sidebar-cell">
+                            <span flex="60">{{ change["name"] }}</span>
+                            <span>{{ change["concentration"] }}</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <pv-knockout shared="ctrl.shared" flex></pv-knockout>
     </div>
 </div>

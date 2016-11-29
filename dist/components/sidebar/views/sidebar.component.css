@@ -1,2 +1,7 @@
+pv-sidebar .sidebar-item {
+  margin-bottom: 15px; }
+
+pv-sidebar .sidebar-cell {
+  margin: 4px 0px; }
 
 /*# sourceMappingURL=sidebar.component.css.map */
