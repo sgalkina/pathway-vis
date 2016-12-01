@@ -321,11 +321,11 @@ SystemJS.config({
 			"map": {
 				"isarray": "npm:isarray@1.0.0",
 				"inherits": "npm:inherits@2.0.3",
-				"string_decoder": "npm:string_decoder@0.10.31",
 				"buffer-shims": "npm:buffer-shims@1.0.0",
-				"core-util-is": "npm:core-util-is@1.0.2",
 				"process-nextick-args": "npm:process-nextick-args@1.0.7",
-				"util-deprecate": "npm:util-deprecate@1.0.2"
+				"core-util-is": "npm:core-util-is@1.0.2",
+				"util-deprecate": "npm:util-deprecate@1.0.2",
+				"string_decoder": "npm:string_decoder@0.10.31"
 			}
 		}
 	}

@@ -62,6 +62,7 @@ var Knockout = (function (_super) {
     function Knockout() {
         _super.apply(this, arguments);
         this.label = 'Knockout';
+        this.type = 'reaction:knockout:do';
     }
     // @ngInject
     Knockout.prototype.callback = function (ws, $timeout) {
@@ -93,6 +94,7 @@ var UndoKnockout = (function (_super) {
     function UndoKnockout() {
         _super.apply(this, arguments);
         this.label = 'Undo knockout';
+        this.type = 'reaction:knockout:undo';
     }
     // @ngInject
     UndoKnockout.prototype.callback = function (ws, $timeout) {

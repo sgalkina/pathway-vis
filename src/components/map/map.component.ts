@@ -27,6 +27,7 @@ class MapComponentCtrl {
     public contextActions: types.Action[];
     public contextElement: Object;
 
+    private _mapElement: d3.Selection<any>;
     private _builder: any;
     private _api: APIService;
     private _ws: WSService;
@@ -36,6 +37,8 @@ class MapComponentCtrl {
     constructor ($scope: angular.IScope, api: APIService, actions: ActionsService, ws: WSService) {
         this._api = api;
         this._ws = ws;
+        this._mapElement = d3.select('.map-container');
+
         this.actions = actions;
         this.$scope = $scope;
 
@@ -77,10 +80,30 @@ class MapComponentCtrl {
     }
 
     /**
+     * Callback function for clicked action button in context menu
+     */
+    public onActionClick(action, data) {
+        let shared = {
+            element: data,
+            shared: this.shared
+        };
+
+        this.actions.callAction(action, shared).then((response) => {
+            this.shared.map.growthRate = response['growth-rate'];
+            this.shared.map.removedReactions = response['removed-reactions'];
+            this.shared.map.reactionData = response['fluxes'];
+            this.$scope.$apply();
+
+            this._builder.set_knockout_reactions(this.shared.map.removedReactions);
+        });
+
+    }
+
+    /**
      * Initializes map
      */
     private _initMap(): void {
-        this._builder = escher.Builder(this.shared.map.map, null, null, d3.select('.map-container'), this.shared.map.settings);
+        this._builder = escher.Builder(this.shared.map.map, null, null, this._mapElement, this.shared.map.settings);
         if (!_.isEmpty(this.shared.map.model)) this._loadModel();
         this._loadContextMenu();
         this._enableKnockout();
@@ -149,23 +172,6 @@ class MapComponentCtrl {
 
     private _enableKnockout(): void {
         this._ws.connect(true, this.shared.map.model.id);
-    }
-
-    /**
-     * Callback function for clicked action button in context menu
-     */
-    public onActionClick(action, data) {
-        let shared = {
-            element: data,
-            shared: this.shared
-        };
-
-        this.actions.callAction(action, shared).then((response) => {
-            this.shared.map.growthRate = response['growth-rate'];
-            this.shared.map.removedReactions = response['removed-reactions'];
-            this.shared.map.reactionData = response['fluxes'];
-            this.$scope.$apply();
-        });
     }
 }
 

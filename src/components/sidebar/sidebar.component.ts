@@ -60,6 +60,11 @@ class SidebarComponentCtrl {
                 });
             }
         });
+
+        this.selected.experiment = 1;
+        this.selected.sample = 1;
+        this.selected.phase = 1;
+        this.onLoadDataSubmit();
     }
 
     // Loads iJO1366 predefined map and model from API

@@ -3,6 +3,7 @@
  */
 export abstract class Action {
     public label: string;
+    public type: string;
     public abstract canDisplay(context): boolean;
     public abstract callback(... args): void;
 }

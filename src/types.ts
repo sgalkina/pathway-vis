@@ -34,6 +34,7 @@ export interface Sample extends APIitem {}
 export interface Experiment extends APIitem {}
 
 export interface Action {
+    type: string;
     label: string;
     callback: any;
     canDisplay: any;

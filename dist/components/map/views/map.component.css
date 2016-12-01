@@ -456,4 +456,8 @@ pv-map .map-context-menu {
   display: none;
   min-width: 200px; }
 
+pv-map .ko-sign {
+  color: red;
+  font-size: 40px; }
+
 /*# sourceMappingURL=map.component.css.map */
