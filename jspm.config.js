@@ -33,6 +33,7 @@ SystemJS.config({
 	map: {
 		"angular": "github:angular/bower-angular@1.5.7",
 		"angular-material": "github:angular/bower-material@1.0.9",
+		"angular-toastr": "github:Foxandxss/angular-toastr@2.1.1",
 		"angular-ui-router": "github:angular-ui/angular-ui-router-bower@0.3.1",
 		"assert": "github:jspm/nodelibs-assert@0.2.0-alpha",
 		"buffer": "github:jspm/nodelibs-buffer@0.2.0-alpha",

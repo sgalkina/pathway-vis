@@ -1,3 +1,5 @@
+import 'angular-toastr';
+
 /// <reference path="../typings/index.d.ts"/>
 import * as angular from 'angular';
 
@@ -15,7 +17,8 @@ export const COMPONENT_NAME = 'pathwayvis';
 const main = angular.module(COMPONENT_NAME, [
     'pathwayvis.services.api',
     'pathwayvis.services.ws',
-    'pathwayvis.components'
+    'pathwayvis.components',
+    'toastr',
 ]);
 
 // TODO: we need to make it so the module name and the .register() are decoupled and not dependant on each other
@@ -53,7 +56,7 @@ main.config(function (platformProvider) {
 class PathwayVisComponentController {
     public shared: types.Shared;
 
-    constructor(config: Config, sharing) {
+    constructor(config: Config, toastr: angular.toastr.IToastrService, sharing) {
         // Turn of WS inspection for TS
         // noinspection TypeScriptUnresolvedFunction
         let component = config.get('componentConfig');
@@ -66,6 +69,12 @@ class PathwayVisComponentController {
             map: {},
             sections: {}
         };
+
+        toastr.info('This app is still under development.', '', {
+            closeButton: true,
+            timeOut: 0,
+            extendedTimeOut: 0
+        });
     }
 }
 

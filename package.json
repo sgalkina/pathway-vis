@@ -45,6 +45,7 @@
   },
   "jspm": {
     "dependencies": {
+      "angular-toastr": "github:Foxandxss/angular-toastr@^2.1.1",
       "css": "github:systemjs/plugin-css@^0.1.23",
       "d3": "npm:d3@^3.5",
       "decaf-common": "github:biosustain/decaf-frontend-common@master",

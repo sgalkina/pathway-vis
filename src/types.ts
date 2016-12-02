@@ -9,7 +9,7 @@ export interface Map {
     reactionData?: Object;
     geneData?: Object;
     metaboliteData?: Object;
-    growthRate?: string;
+    growthRate?: number;
     removedReactions?: string[];
 }
 

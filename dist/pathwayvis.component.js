@@ -1,4 +1,5 @@
 "use strict";
+require('angular-toastr');
 /// <reference path="../typings/index.d.ts"/>
 var angular = require('angular');
 // Turn of WS TS inspection for the 'decaf-common' import.
@@ -12,7 +13,8 @@ exports.COMPONENT_NAME = 'pathwayvis';
 var main = angular.module(exports.COMPONENT_NAME, [
     'pathwayvis.services.api',
     'pathwayvis.services.ws',
-    'pathwayvis.components'
+    'pathwayvis.components',
+    'toastr',
 ]);
 // TODO: we need to make it so the module name and the .register() are decoupled and not dependant on each other
 main.config(function (platformProvider) {
@@ -45,7 +47,7 @@ main.config(function (platformProvider) {
     });
 });
 var PathwayVisComponentController = (function () {
-    function PathwayVisComponentController(config, sharing) {
+    function PathwayVisComponentController(config, toastr, sharing) {
         // Turn of WS inspection for TS
         // noinspection TypeScriptUnresolvedFunction
         var component = config.get('componentConfig');
@@ -57,6 +59,11 @@ var PathwayVisComponentController = (function () {
             map: {},
             sections: {}
         };
+        toastr.info('This app is still under development.', '', {
+            closeButton: true,
+            timeOut: 0,
+            extendedTimeOut: 0
+        });
     }
     return PathwayVisComponentController;
 }());
