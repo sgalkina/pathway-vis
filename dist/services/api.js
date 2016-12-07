@@ -3,7 +3,7 @@ var angular = require('angular');
 var _ = require('lodash');
 var api = angular.module('pathwayvis.services.api', []);
 // API url
-exports.API_ROOT_URL = 'http://api.dd-decaf.eu/';
+exports.API_ROOT_URL = 'https://api.dd-decaf.eu/';
 var APIService = (function () {
     function APIService($http) {
         this._http = $http;

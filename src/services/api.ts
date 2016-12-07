@@ -10,7 +10,7 @@ interface RequestDetails {
 const api = angular.module('pathwayvis.services.api', []);
 
 // API url
-export const API_ROOT_URL = 'http://api.dd-decaf.eu/';
+export const API_ROOT_URL = 'https://api.dd-decaf.eu/';
 
 export class APIService {
     private _http: angular.IHttpService;
