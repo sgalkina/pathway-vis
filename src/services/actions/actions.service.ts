@@ -57,7 +57,7 @@ actions.service('actions', ActionsService);
 class Knockout extends ReactionAction implements Action {
     public ws: WSService;
     public label = 'Knockout';
-    public type: string = 'reaction:knockout:do'
+    public type: string = 'reaction:knockout:do';
     public element: any;
 
     // @ngInject
@@ -87,7 +87,7 @@ class Knockout extends ReactionAction implements Action {
 class UndoKnockout extends Action {
     public ws: WSService;
     public label = 'Undo knockout';
-    public type: string = 'reaction:knockout:undo'
+    public type: string = 'reaction:knockout:undo';
     public element: any;
     public shared: types.Shared;
 

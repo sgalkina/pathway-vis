@@ -14,7 +14,7 @@ interface Callback {
 const ws = angular.module('pathwayvis.services.ws', []);
 
 // WS url
-export const WS_ROOT_URL = 'ws://api.dd-decaf.eu/wsmodels/';
+export const WS_ROOT_URL = 'wss://api.dd-decaf.eu/wsmodels/';
 
 export class WSService {
 

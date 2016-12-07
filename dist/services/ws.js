@@ -4,7 +4,7 @@ var _ = require('lodash');
 ;
 var ws = angular.module('pathwayvis.services.ws', []);
 // WS url
-exports.WS_ROOT_URL = 'ws://api.dd-decaf.eu/wsmodels/';
+exports.WS_ROOT_URL = 'wss://api.dd-decaf.eu/wsmodels/';
 var WSService = (function () {
     function WSService($q) {
         this.reconnectInterval = 1000;

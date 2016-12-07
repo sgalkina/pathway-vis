@@ -89,7 +89,7 @@ class MapComponentCtrl {
         };
 
         this.actions.callAction(action, shared).then((response) => {
-            this.shared.map.growthRate = parseInt(response['growth-rate']);
+            this.shared.map.growthRate = parseFloat(response['growth-rate']);
             this.shared.map.removedReactions = response['removed-reactions'];
             this.shared.map.reactionData = response['fluxes'];
             this.$scope.$apply();
