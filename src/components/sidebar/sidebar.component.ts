@@ -64,7 +64,7 @@ class SidebarComponentCtrl {
 
     // Loads iJO1366 predefined map and model from API
     public onLoadDataSubmit($event?): void {
-        const mapUri = 'https://raw.githubusercontent.com/escher/escher-demo/gh-pages/minimal_embedded_map/e_coli.iJO1366.central_metabolism.json';
+        const mapUri = 'https://cdn.rawgit.com/escher/escher.github.io/master/1-0-0/maps/Escherichia coli/iJO1366.Central metabolism.json'
         this.shared.loading++;
 
         const mapPromise = this._http({ method: 'GET', url: mapUri });

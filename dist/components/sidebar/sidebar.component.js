@@ -41,7 +41,7 @@ var SidebarComponentCtrl = (function () {
     // Loads iJO1366 predefined map and model from API
     SidebarComponentCtrl.prototype.onLoadDataSubmit = function ($event) {
         var _this = this;
-        var mapUri = 'https://raw.githubusercontent.com/escher/escher-demo/gh-pages/minimal_embedded_map/e_coli.iJO1366.central_metabolism.json';
+        var mapUri = 'https://cdn.rawgit.com/escher/escher.github.io/master/1-0-0/maps/Escherichia coli/iJO1366.Central metabolism.json';
         this.shared.loading++;
         var mapPromise = this._http({ method: 'GET', url: mapUri });
         var modelPromise = this._api.get('samples/:sampleId/model', {
