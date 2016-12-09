@@ -24,6 +24,7 @@ class SidebarComponentCtrl {
     public selected: SelectedItems = {};
     public experiments: types.Experiment[];
     public samples: types.Sample[];
+    public samplesSpecies: any;
     public phases: types.Phase[];
     public info: Object;
 
@@ -41,12 +42,18 @@ class SidebarComponentCtrl {
             this.experiments = response.data;
         });
 
+		this.samplesSpecies = {};
+
         $scope.$watch('ctrl.selected.experiment', () => {
             if (!_.isEmpty(this.selected.experiment)) {
                 this._api.get('experiments/:experimentId/samples', {
                     experimentId: this.selected.experiment
                 }).then((response: any) => {
                     this.samples = response.data;
+					this.samples.forEach((value) => {
+						console.log(value);
+						this.samplesSpecies[value.id] = value.organism;
+					})
                 });
             }
         });
@@ -64,10 +71,18 @@ class SidebarComponentCtrl {
 
     // Loads iJO1366 predefined map and model from API
     public onLoadDataSubmit($event?): void {
-        const mapUri = 'https://cdn.rawgit.com/escher/escher.github.io/master/1-0-0/maps/Escherichia coli/iJO1366.Central metabolism.json'
+        const mapUris = {
+			'ECO': '/assets/maps/iJO1366.Central metabolism.json',
+			'SCE': '/assets/maps/iMM904.Central carbon metabolism.json',
+		};
         this.shared.loading++;
 
-        const mapPromise = this._http({ method: 'GET', url: mapUri });
+		console.log(this.samples);
+
+        const mapPromise = this._http({
+			method: 'GET',
+			url: mapUris[this.samplesSpecies[this.selected.sample]]
+		});
         const modelPromise = this._api.get('samples/:sampleId/model', {
             'sampleId': this.selected.sample,
             'phase-id': this.selected.phase,

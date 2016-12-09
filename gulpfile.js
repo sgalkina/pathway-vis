@@ -34,7 +34,7 @@ const PATHS = {
 	],
 	src: {
 		ts: ['src/**/*.ts'],
-		static: ['src/**/*.{svg,jpg,png,ico,txt}'],
+		static: ['src/**/*.{svg,jpg,png,ico,txt,json}'],
 		css: ['src/**/*.css'],
 		sass: ['src/**/*.scss'],
 		html: ['src/**/*.html']
@@ -142,7 +142,7 @@ gulp.task('build/static', function () {
 		.pipe(size(GULP_SIZE_DEFAULT_CONFIG))
 		.pipe(gulp.dest(PATHS.dist))
 		.pipe(bs.stream({
-			match: '**/*.{svg,jpg,png,ico,txt}'
+			match: '**/*.{svg,jpg,png,ico,txt,json}'
 		}));
 });
 

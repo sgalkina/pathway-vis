@@ -30,7 +30,9 @@ interface APIitem {
 }
 
 export interface Phase extends APIitem {}
-export interface Sample extends APIitem {}
+export interface Sample extends APIitem {
+	organism: string;
+}
 export interface Experiment extends APIitem {}
 
 export interface Action {
