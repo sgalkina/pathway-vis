@@ -27,7 +27,6 @@ var SidebarComponentCtrl = (function () {
                 }).then(function (response) {
                     _this.samples = response.data;
                     _this.samples.forEach(function (value) {
-                        console.log(value);
                         _this.samplesSpecies[value.id] = value.organism;
                     });
                 });
@@ -47,11 +46,10 @@ var SidebarComponentCtrl = (function () {
     SidebarComponentCtrl.prototype.onLoadDataSubmit = function ($event) {
         var _this = this;
         var mapUris = {
-            'ECO': '/assets/maps/iJO1366.Central metabolism.json',
-            'SCE': '/assets/maps/iMM904.Central carbon metabolism.json',
+            'ECO': decaf_common_1.dirname(module.id) + "/assets/maps/iJO1366.Central metabolism.json",
+            'SCE': decaf_common_1.dirname(module.id) + "/assets/maps/iMM904.Central carbon metabolism.json",
         };
         this.shared.loading++;
-        console.log(this.samples);
         var mapPromise = this._http({
             method: 'GET',
             url: mapUris[this.samplesSpecies[this.selected.sample]]

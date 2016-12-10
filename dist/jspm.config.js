@@ -283,14 +283,14 @@ SystemJS.config({
 				"readable-stream": "npm:readable-stream@2.1.5"
 			}
 		},
-		"npm:jspm-nodelibs-buffer@0.2.0": {
-			"map": {
-				"buffer-browserify": "npm:buffer@4.9.1"
-			}
-		},
 		"npm:jspm-nodelibs-crypto@0.2.0": {
 			"map": {
 				"crypto-browserify": "npm:crypto-browserify@3.11.0"
+			}
+		},
+		"npm:jspm-nodelibs-buffer@0.2.0": {
+			"map": {
+				"buffer-browserify": "npm:buffer@4.9.1"
 			}
 		},
 		"npm:jspm-nodelibs-http@0.2.0": {
@@ -303,14 +303,14 @@ SystemJS.config({
 				"os-browserify": "npm:os-browserify@0.2.1"
 			}
 		},
-		"npm:jspm-nodelibs-string_decoder@0.2.0": {
-			"map": {
-				"string_decoder-browserify": "npm:string_decoder@0.10.31"
-			}
-		},
 		"npm:jspm-nodelibs-url@0.2.0": {
 			"map": {
 				"url-browserify": "npm:url@0.11.0"
+			}
+		},
+		"npm:jspm-nodelibs-string_decoder@0.2.0": {
+			"map": {
+				"string_decoder-browserify": "npm:string_decoder@0.10.31"
 			}
 		},
 		"npm:jspm-nodelibs-stream@0.2.0": {

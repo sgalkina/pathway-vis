@@ -51,7 +51,6 @@ class SidebarComponentCtrl {
                 }).then((response: any) => {
                     this.samples = response.data;
 					this.samples.forEach((value) => {
-						console.log(value);
 						this.samplesSpecies[value.id] = value.organism;
 					})
                 });
@@ -72,12 +71,10 @@ class SidebarComponentCtrl {
     // Loads iJO1366 predefined map and model from API
     public onLoadDataSubmit($event?): void {
         const mapUris = {
-			'ECO': '/assets/maps/iJO1366.Central metabolism.json',
-			'SCE': '/assets/maps/iMM904.Central carbon metabolism.json',
+			'ECO': `${dirname(module.id)}/assets/maps/iJO1366.Central metabolism.json`,
+			'SCE': `${dirname(module.id)}/assets/maps/iMM904.Central carbon metabolism.json`,
 		};
         this.shared.loading++;
-
-		console.log(this.samples);
 
         const mapPromise = this._http({
 			method: 'GET',
