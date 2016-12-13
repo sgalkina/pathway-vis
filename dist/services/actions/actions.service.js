@@ -68,6 +68,7 @@ var Knockout = (function (_super) {
     Knockout.prototype.callback = function (ws, $timeout) {
         var data = {
             'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
+            'simulation-method': this.shared.method,
             'reactions-knockout': [this.element.bigg_id]
         };
         return $timeout(function () {
@@ -100,7 +101,8 @@ var UndoKnockout = (function (_super) {
     UndoKnockout.prototype.callback = function (ws, $timeout) {
         var data = {
             'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
-            'reactions-knockout-undo': [this.element.bigg_id]
+            'simulation-method': this.shared.method,
+            'reactions-knockout-undo': [this.element.bigg_id],
         };
         return $timeout(function () {
             return ws.send(data).then(function (data) {

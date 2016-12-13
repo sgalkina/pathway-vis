@@ -17,6 +17,7 @@ export interface Shared {
     loading?: number;
     map: Map;
     sections?: any;
+    method?: string;
 }
 
 export interface Model {
