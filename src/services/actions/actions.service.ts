@@ -59,11 +59,13 @@ class Knockout extends ReactionAction implements Action {
     public label = 'Knockout';
     public type: string = 'reaction:knockout:do';
     public element: any;
+	public shared: types.Shared;
 
     // @ngInject
     public callback(ws: WSService, $timeout: angular.ITimeoutService): any {
         const data = {
             'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
+			'simulation-method': this.shared.method,
             'reactions-knockout': [this.element.bigg_id]
         };
 
@@ -95,7 +97,8 @@ class UndoKnockout extends Action {
     public callback(ws: WSService, $timeout: angular.ITimeoutService): any {
         const data = {
             'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
-            'reactions-knockout-undo': [this.element.bigg_id]
+			'simulation-method': this.shared.method,
+            'reactions-knockout-undo': [this.element.bigg_id],
         };
 
         return $timeout(() => {

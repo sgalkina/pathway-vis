@@ -114,6 +114,7 @@ class SidebarComponentCtrl {
 
             this.shared.map.reactionData = responses[1].data['fluxes'];
             this.shared.loading--;
+			this.shared.method = this.selected.method;
 
             this.info = responses[2].data;
         });
