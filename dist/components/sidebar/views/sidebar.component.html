@@ -5,6 +5,13 @@
             <div class="sidebar-content" flex>
                 <form name="loadData" ng-submit="ctrl.onLoadDataSubmit($event)" novalidate layout="column">
                     <md-input-container>
+                        <label>Method</label>
+                        <md-select name="method" ng-model="ctrl.selected.method" required>
+                            <md-option ng-repeat="method in ctrl.methods" value="{{method.id}}">{{method.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container>
                         <label>Experiment</label>
                         <md-select name="experiment" ng-model="ctrl.selected.experiment" required>
                             <md-option ng-repeat="experiment in ctrl.experiments" value="{{experiment.id}}">{{experiment.name}}</md-option>
