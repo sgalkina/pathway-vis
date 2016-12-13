@@ -11,6 +11,7 @@ interface SelectedItems {
     experiment?: number;
     sample?: number;
     phase?: number;
+    method?: string;
 }
 
 const component = angular.module('pathwayvis.components.sidebar', []);
@@ -22,6 +23,7 @@ class SidebarComponentCtrl {
     public shared: types.Shared;
     public loadData: Object = {};
     public selected: SelectedItems = {};
+    public methods: types.Method[];
     public experiments: types.Experiment[];
     public samples: types.Sample[];
     public samplesSpecies: any;
@@ -37,6 +39,15 @@ class SidebarComponentCtrl {
         this._api = api;
         this._http = $http;
         this._q = $q;
+		this.methods = [
+			{'id': 'fba', 'name': 'FBA'},
+			{'id': 'pfba', 'name': 'pFBA'},
+			{'id': 'fva', 'name': 'FVA'},
+			{'id': 'moma', 'name': 'MOMA'},
+			{'id': 'lmoma', 'name': 'lMOMA'},
+			{'id': 'room', 'name': 'ROOM'},
+		];
+		this.selected.method = 'pfba';
 
         this._api.get('experiments').then((response: any) => {
             this.experiments = response.data;
@@ -83,6 +94,7 @@ class SidebarComponentCtrl {
         const modelPromise = this._api.get('samples/:sampleId/model', {
             'sampleId': this.selected.sample,
             'phase-id': this.selected.phase,
+			'method': this.selected.method,
             'with-fluxes': 1
         });
 

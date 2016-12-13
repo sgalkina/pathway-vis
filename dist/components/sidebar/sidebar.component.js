@@ -16,6 +16,15 @@ var SidebarComponentCtrl = (function () {
         this._api = api;
         this._http = $http;
         this._q = $q;
+        this.methods = [
+            { 'id': 'fba', 'name': 'FBA' },
+            { 'id': 'pfba', 'name': 'pFBA' },
+            { 'id': 'fva', 'name': 'FVA' },
+            { 'id': 'moma', 'name': 'MOMA' },
+            { 'id': 'lmoma', 'name': 'lMOMA' },
+            { 'id': 'room', 'name': 'ROOM' },
+        ];
+        this.selected.method = 'pfba';
         this._api.get('experiments').then(function (response) {
             _this.experiments = response.data;
         });
@@ -57,6 +66,7 @@ var SidebarComponentCtrl = (function () {
         var modelPromise = this._api.get('samples/:sampleId/model', {
             'sampleId': this.selected.sample,
             'phase-id': this.selected.phase,
+            'method': this.selected.method,
             'with-fluxes': 1
         });
         var infoPromise = this._api.get('samples/:sampleId/info', {
