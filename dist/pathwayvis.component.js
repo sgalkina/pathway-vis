@@ -47,7 +47,7 @@ main.config(function (platformProvider) {
     });
 });
 var PathwayVisComponentController = (function () {
-    function PathwayVisComponentController(config, toastr, sharing) {
+    function PathwayVisComponentController(config, sharing) {
         // Turn of WS inspection for TS
         // noinspection TypeScriptUnresolvedFunction
         var component = config.get('componentConfig');
@@ -59,11 +59,6 @@ var PathwayVisComponentController = (function () {
             map: {},
             sections: {}
         };
-        toastr.info('This app is still under development.', '', {
-            closeButton: true,
-            timeOut: 0,
-            extendedTimeOut: 0
-        });
     }
     return PathwayVisComponentController;
 }());

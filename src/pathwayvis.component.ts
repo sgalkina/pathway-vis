@@ -56,7 +56,7 @@ main.config(function (platformProvider) {
 class PathwayVisComponentController {
     public shared: types.Shared;
 
-    constructor(config: Config, toastr: angular.toastr.IToastrService, sharing) {
+    constructor(config: Config, sharing) {
         // Turn of WS inspection for TS
         // noinspection TypeScriptUnresolvedFunction
         let component = config.get('componentConfig');
@@ -69,12 +69,6 @@ class PathwayVisComponentController {
             map: {},
             sections: {}
         };
-
-        toastr.info('This app is still under development.', '', {
-            closeButton: true,
-            timeOut: 0,
-            extendedTimeOut: 0
-        });
     }
 }
 
