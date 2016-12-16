@@ -14,6 +14,11 @@ interface SelectedItems {
     method?: string;
 }
 
+interface Method {
+    id: string;
+    name: string;
+}
+
 const component = angular.module('pathwayvis.components.sidebar', []);
 
 /**
@@ -23,7 +28,7 @@ class SidebarComponentCtrl {
     public shared: types.Shared;
     public loadData: Object = {};
     public selected: SelectedItems = {};
-    public methods: types.Method[];
+    public methods: Method[];
     public experiments: types.Experiment[];
     public samples: types.Sample[];
     public samplesSpecies: any;
@@ -39,21 +44,21 @@ class SidebarComponentCtrl {
         this._api = api;
         this._http = $http;
         this._q = $q;
-		this.methods = [
-			{'id': 'fba', 'name': 'FBA'},
-			{'id': 'pfba', 'name': 'pFBA'},
-			{'id': 'fva', 'name': 'FVA'},
-			{'id': 'moma', 'name': 'MOMA'},
-			{'id': 'lmoma', 'name': 'lMOMA'},
-			{'id': 'room', 'name': 'ROOM'},
-		];
-		this.selected.method = 'pfba';
+        this.methods = [
+            {'id': 'fba', 'name': 'FBA'},
+            {'id': 'pfba', 'name': 'pFBA'},
+            {'id': 'fva', 'name': 'FVA'},
+            {'id': 'moma', 'name': 'MOMA'},
+            {'id': 'lmoma', 'name': 'lMOMA'},
+            {'id': 'room', 'name': 'ROOM'},
+        ];
+        this.selected.method = 'pfba';
 
         this._api.get('experiments').then((response: any) => {
             this.experiments = response.data;
         });
 
-		this.samplesSpecies = {};
+        this.samplesSpecies = {};
 
         $scope.$watch('ctrl.selected.experiment', () => {
             if (!_.isEmpty(this.selected.experiment)) {
@@ -61,9 +66,9 @@ class SidebarComponentCtrl {
                     experimentId: this.selected.experiment
                 }).then((response: any) => {
                     this.samples = response.data;
-					this.samples.forEach((value) => {
-						this.samplesSpecies[value.id] = value.organism;
-					})
+                    this.samples.forEach((value) => {
+                        this.samplesSpecies[value.id] = value.organism;
+                    })
                 });
             }
         });
@@ -82,19 +87,20 @@ class SidebarComponentCtrl {
     // Loads iJO1366 predefined map and model from API
     public onLoadDataSubmit($event?): void {
         const mapUris = {
-			'ECO': `${dirname(module.id)}/assets/maps/iJO1366.Central metabolism.json`,
-			'SCE': `${dirname(module.id)}/assets/maps/iMM904.Central carbon metabolism.json`,
-		};
+            'ECO': `${dirname(module.id)}/assets/maps/iJO1366.Central metabolism.json`,
+            'SCE': `${dirname(module.id)}/assets/maps/iMM904.Central carbon metabolism.json`,
+        };
         this.shared.loading++;
 
         const mapPromise = this._http({
-			method: 'GET',
-			url: mapUris[this.samplesSpecies[this.selected.sample]]
-		});
+            method: 'GET',
+            url: mapUris[this.samplesSpecies[this.selected.sample]]
+        });
+
         const modelPromise = this._api.get('samples/:sampleId/model', {
             'sampleId': this.selected.sample,
             'phase-id': this.selected.phase,
-			'method': this.selected.method,
+            'method': this.selected.method,
             'with-fluxes': 1
         });
 
@@ -113,10 +119,10 @@ class SidebarComponentCtrl {
             };
 
             this.shared.map.reactionData = responses[1].data['fluxes'];
-            this.shared.loading--;
-			this.shared.method = this.selected.method;
-
+            this.shared.method = this.selected.method;
             this.info = responses[2].data;
+
+            this.shared.loading--;
         });
     }
 }

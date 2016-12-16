@@ -81,9 +81,9 @@ var SidebarComponentCtrl = (function () {
                 data: responses[1].data['model']
             };
             _this.shared.map.reactionData = responses[1].data['fluxes'];
-            _this.shared.loading--;
             _this.shared.method = _this.selected.method;
             _this.info = responses[2].data;
+            _this.shared.loading--;
         });
     };
     return SidebarComponentCtrl;
