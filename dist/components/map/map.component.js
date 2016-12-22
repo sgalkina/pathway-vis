@@ -122,7 +122,7 @@ var MapComponentCtrl = (function () {
             }
         });
         d3.select(document).on('click', function () {
-            contextMenu.style('display', 'none');
+            contextMenu.style('visibility', 'hidden');
         });
     };
     /**
@@ -133,7 +133,7 @@ var MapComponentCtrl = (function () {
         contextMenu.style('position', 'absolute')
             .style('left', position[0] + "px")
             .style('top', position[1] + "px")
-            .style('display', 'inline-block');
+            .style('visibility', 'visible');
         this.$scope.$apply();
     };
     MapComponentCtrl.prototype._enableKnockout = function () {

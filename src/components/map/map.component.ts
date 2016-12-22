@@ -154,7 +154,7 @@ class MapComponentCtrl {
             });
 
         d3.select(document).on('click', () => {
-            contextMenu.style('display', 'none');
+            contextMenu.style('visibility', 'hidden');
         });
     }
 
@@ -166,7 +166,7 @@ class MapComponentCtrl {
         contextMenu.style('position', 'absolute')
             .style('left', position[0] + "px")
             .style('top', position[1] + "px")
-            .style('display', 'inline-block');
+            .style('visibility', 'visible');
         this.$scope.$apply();
     }
 

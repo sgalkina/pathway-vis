@@ -453,7 +453,7 @@ pv-map .map-container {
 pv-map .map-context-menu {
   background-color: #FFFFFF;
   z-index: 199;
-  display: none;
+  visibility: hidden;
   min-width: 200px; }
 
 pv-map .ko-sign {
