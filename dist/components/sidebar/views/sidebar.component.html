@@ -13,21 +13,21 @@
 
                     <md-input-container>
                         <label>Experiment</label>
-                        <md-select name="experiment" ng-model="ctrl.selected.experiment" required>
+                        <md-select name="experiment" ng-model="ctrl.selected.experiment" ng-disabled="!ctrl.experiments || ctrl.experiments.length === 0" required>
                             <md-option ng-repeat="experiment in ctrl.experiments" value="{{experiment.id}}">{{experiment.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
                         <label>Samples</label>
-                        <md-select name="samples" ng-model="ctrl.selected.sample" required>
+                        <md-select name="samples" ng-model="ctrl.selected.sample" ng-disabled="!ctrl.samples || ctrl.samples.length === 0" required>
                             <md-option ng-repeat="sample in ctrl.samples" value="{{sample.id}}">{{sample.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
                         <label>Phases</label>
-                        <md-select name="phase" ng-model="ctrl.selected.phase" required>
+                        <md-select name="phase" ng-model="ctrl.selected.phase" ng-disabled="!ctrl.phases || ctrl.phases.length === 0" required>
                             <md-option ng-repeat="phase in ctrl.phases" value="{{phase.id}}">{{phase.name}}</md-option>
                         </md-select>
                     </md-input-container>

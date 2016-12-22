@@ -113,12 +113,19 @@ class SidebarComponentCtrl {
 
             // Add loaded data to shared scope
             this.shared.map.map = responses[0].data;
-            this.shared.map.model = {
-                id: responses[1].data['model-id'],
-                data: responses[1].data['model']
-            };
-
+            this.shared.model = responses[1].data['model'];
+            this.shared.model.uid = responses[1].data['model-id'];
             this.shared.map.reactionData = responses[1].data['fluxes'];
+
+            // Check removed and added reactions and genes
+            const changes = this.shared.model.notes.changes;
+
+            if (!_.isEmpty(changes)) {
+                this.shared.map.removedReactions = _.map(changes.removed.reactions, (reaction: types.Reaction) => {
+                    return reaction.id;
+                });
+            }
+
             this.shared.method = this.selected.method;
             this.info = responses[2].data;
 

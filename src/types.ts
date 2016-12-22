@@ -3,26 +3,44 @@
  */
 
 export interface Map {
-    map?: Object;
-    settings?: Object;
-    model?: Model;
-    reactionData?: Object;
-    geneData?: Object;
-    metaboliteData?: Object;
-    growthRate?: number;
-    removedReactions?: string[];
+    map: Object;
+    settings: Object;
+    reactionData: Object;
+    geneData: Object;
+    metaboliteData: Object;
+    growthRate: number;
+    removedReactions: string[];
+}
+
+export interface Model {
+    compartments: any;
+    genes: any;
+    id: string;
+    uid: string;
+    metabolites: any;
+    notes: any;
+    reactions: Reaction[];
+    version: number;
+}
+
+export interface Reaction {
+        annotation: Object;
+        gene_reaction_rule: any;
+        id: string;
+        lower_bound: number;
+        metabolites: Object;
+        name: string;
+        notes: Object;
+        subsystem: string;
+        upper_bound: number;
 }
 
 export interface Shared {
     loading?: number;
-    map: Map;
+    map?: Map;
+    model?: Model;
     sections?: any;
     method?: string;
-}
-
-export interface Model {
-    data: Object;
-    id: string;
 }
 
 interface APIitem {

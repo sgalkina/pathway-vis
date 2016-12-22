@@ -64,10 +64,11 @@ class PathwayVisComponentController {
         let money = sharing.items('money');
 
         // Init shared scope
-        this.shared = {
+        this.shared = <any>{
             loading: 0,
             map: {},
-            sections: {}
+            model: {},
+            sections: {},
         };
     }
 }

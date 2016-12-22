@@ -104,7 +104,7 @@ class MapComponentCtrl {
      */
     private _initMap(): void {
         this._builder = escher.Builder(this.shared.map.map, null, null, this._mapElement, this.shared.map.settings);
-        if (!_.isEmpty(this.shared.map.model)) this._loadModel();
+        if (!_.isEmpty(this.shared.model)) this._loadModel();
         this._loadContextMenu();
         this._enableKnockout();
     }
@@ -113,7 +113,7 @@ class MapComponentCtrl {
      * Loads model to the map
      */
     private _loadModel(): void {
-        this._builder.load_model(this.shared.map.model.data);
+        this._builder.load_model(this.shared.model);
     }
 
     /**
@@ -171,7 +171,13 @@ class MapComponentCtrl {
     }
 
     private _enableKnockout(): void {
-        this._ws.connect(true, this.shared.map.model.id);
+        // Connect to WS
+        this._ws.connect(true, this.shared.model.uid);
+
+        // Check if loaded model has got any removed reactions
+        if (this.shared.map.removedReactions) {
+            this._builder.set_knockout_reactions(this.shared.map.removedReactions);
+        }
     }
 }
 

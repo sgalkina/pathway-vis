@@ -77,7 +77,7 @@ var MapComponentCtrl = (function () {
      */
     MapComponentCtrl.prototype._initMap = function () {
         this._builder = escher.Builder(this.shared.map.map, null, null, this._mapElement, this.shared.map.settings);
-        if (!_.isEmpty(this.shared.map.model))
+        if (!_.isEmpty(this.shared.model))
             this._loadModel();
         this._loadContextMenu();
         this._enableKnockout();
@@ -86,7 +86,7 @@ var MapComponentCtrl = (function () {
      * Loads model to the map
      */
     MapComponentCtrl.prototype._loadModel = function () {
-        this._builder.load_model(this.shared.map.model.data);
+        this._builder.load_model(this.shared.model);
     };
     /**
      * Loads data to the map
@@ -137,7 +137,12 @@ var MapComponentCtrl = (function () {
         this.$scope.$apply();
     };
     MapComponentCtrl.prototype._enableKnockout = function () {
-        this._ws.connect(true, this.shared.map.model.id);
+        // Connect to WS
+        this._ws.connect(true, this.shared.model.uid);
+        // Check if loaded model has got any removed reactions
+        if (this.shared.map.removedReactions) {
+            this._builder.set_knockout_reactions(this.shared.map.removedReactions);
+        }
     };
     return MapComponentCtrl;
 }());

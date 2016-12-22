@@ -57,7 +57,8 @@ var PathwayVisComponentController = (function () {
         this.shared = {
             loading: 0,
             map: {},
-            sections: {}
+            model: {},
+            sections: {},
         };
     }
     return PathwayVisComponentController;
