@@ -87,7 +87,6 @@ var MapComponentCtrl = (function () {
         if (!_.isEmpty(this.shared.model))
             this._loadModel();
         this._loadContextMenu();
-        this._enableKnockout();
     };
     /**
      * Loads model to the map
@@ -106,6 +105,8 @@ var MapComponentCtrl = (function () {
         }
         // Set knocked-out reactions from model
         this._builder.set_knockout_reactions(this.shared.map.removedReactions);
+        // Open WS connection for model
+        this._ws.connect(true, this.shared.model.uid);
     };
     /**
      * Loads data to the map
@@ -154,14 +155,6 @@ var MapComponentCtrl = (function () {
             .style('top', position[1] + "px")
             .style('visibility', 'visible');
         this.$scope.$apply();
-    };
-    MapComponentCtrl.prototype._enableKnockout = function () {
-        // Connect to WS
-        this._ws.connect(true, this.shared.model.uid);
-        // Check if loaded model has got any removed reactions
-        if (this.shared.map.removedReactions) {
-            this._builder.set_knockout_reactions(this.shared.map.removedReactions);
-        }
     };
     return MapComponentCtrl;
 }());

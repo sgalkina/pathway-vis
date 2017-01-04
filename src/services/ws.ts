@@ -29,15 +29,17 @@ export class WSService {
     private _callbacks: Callback[] = [];
     private _q: angular.IQService;
     private _requestID: string;
+    private _toastr: angular.toastr.IToastrService;
 
     public onopen: (ev: Event) => void = function (event: Event) {};
-    public onclose: (ev:CloseEvent) => void = function (event: CloseEvent) {};
+    public onclose: (ev: CloseEvent) => void = function (event: CloseEvent) {};
     public onconnecting: () => void = function () {};
-    public onmessage: (ev:MessageEvent) => void = function (event: MessageEvent) {};
-    public onerror: (ev:ErrorEvent) => void = function (event: ErrorEvent) {};
+    public onmessage: (ev: MessageEvent) => void = function (event: MessageEvent) {};
+    public onerror: (ev: ErrorEvent) => void = function (event: ErrorEvent) {};
 
-    constructor($q: angular.IQService) {
+    constructor($q: angular.IQService, toastr: angular.toastr.IToastrService) {
         this._q = $q;
+        this._toastr = toastr;
     }
 
     private _generateID(): string {
@@ -96,6 +98,13 @@ export class WSService {
         };
 
         this._ws.onerror = (event) => {
+
+            this._toastr.error('Oops! WebSocket error. Try again', '', {
+                closeButton: true,
+                timeOut: 2500
+            });
+
+            this._callbacks = [];
             this.onerror(event);
         };
     }

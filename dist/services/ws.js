@@ -6,7 +6,7 @@ var ws = angular.module('pathwayvis.services.ws', []);
 // WS url
 exports.WS_ROOT_URL = 'wss://api.dd-decaf.eu/wsmodels/';
 var WSService = (function () {
-    function WSService($q) {
+    function WSService($q, toastr) {
         this.reconnectInterval = 1000;
         this.timeoutInterval = 10000;
         this._forcedClose = false;
@@ -18,6 +18,7 @@ var WSService = (function () {
         this.onmessage = function (event) { };
         this.onerror = function (event) { };
         this._q = $q;
+        this._toastr = toastr;
     }
     WSService.prototype._generateID = function () {
         return Math.random().toString(36).slice(2);
@@ -67,6 +68,11 @@ var WSService = (function () {
             return callback.deffered.resolve(result);
         };
         this._ws.onerror = function (event) {
+            _this._toastr.error('Oops! WebSocket error. Try again', '', {
+                closeButton: true,
+                timeOut: 2500
+            });
+            _this._callbacks = [];
             _this.onerror(event);
         };
     };

@@ -114,7 +114,6 @@ class MapComponentCtrl {
         this._builder = escher.Builder(this.shared.map.map, null, null, this._mapElement, this.shared.map.settings);
         if (!_.isEmpty(this.shared.model)) this._loadModel();
         this._loadContextMenu();
-        this._enableKnockout();
     }
 
     /**
@@ -129,7 +128,6 @@ class MapComponentCtrl {
 
         // Check removed and added reactions and genes from model
         const changes = this.shared.model.notes.changes;
-
         if (!_.isEmpty(changes)) {
             this.shared.map.removedReactions = _.map(changes.removed.reactions, (reaction: types.Reaction) => {
                 return reaction.id;
@@ -138,6 +136,9 @@ class MapComponentCtrl {
 
         // Set knocked-out reactions from model
         this._builder.set_knockout_reactions(this.shared.map.removedReactions);
+
+        // Open WS connection for model
+        this._ws.connect(true, this.shared.model.uid);
     }
 
     /**
@@ -192,16 +193,6 @@ class MapComponentCtrl {
             .style('top', position[1] + "px")
             .style('visibility', 'visible');
         this.$scope.$apply();
-    }
-
-    private _enableKnockout(): void {
-        // Connect to WS
-        this._ws.connect(true, this.shared.model.uid);
-
-        // Check if loaded model has got any removed reactions
-        if (this.shared.map.removedReactions) {
-            this._builder.set_knockout_reactions(this.shared.map.removedReactions);
-        }
     }
 }
 
