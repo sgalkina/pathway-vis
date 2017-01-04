@@ -37,7 +37,8 @@ var MapComponentCtrl = (function () {
         }, true);
         // Default map settings
         this.shared.map.settings = {
-            menu: 'zoom',
+            menu: 'all',
+            ignore_bootstrap: true,
             never_ask_before_quit: true,
             reaction_styles: ['color', 'size', 'text', 'abs'],
             identifiers_on_map: 'bigg_id',

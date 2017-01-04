@@ -377,8 +377,7 @@ resizes. */
 .escher-container ul#button-panel {
   position: absolute;
   left: 4px;
-  top: 20%;
-  margin-top: -30px;
+  top: 5%;
   /* top: 81px; //max */
   /* top: 20px; //min */
   pointer-events: none;
@@ -446,6 +445,63 @@ resizes. */
 @media (max-width: 550px) {
   .escher-container #quick-jump-menu {
     display: none; } }
+
+/* Radio buttons without Bootstrap */
+#button-panel label,
+#button-panel button {
+  display: table;
+  cursor: pointer;
+  padding: 0; }
+
+#button-panel .simple-button:before {
+  font-family: 'Material Icons';
+  content: '\E863';
+  color: #FFF;
+  font-size: 28px; }
+
+#button-panel .simple-button input,
+#button-panel .simple-button span {
+  display: none; }
+
+#button-panel #zoom-mode-button:before {
+  content: '\E89F'; }
+
+#button-panel #brush-mode-button:before {
+  content: '\E913'; }
+
+#button-panel #build-mode-button:before {
+  content: '\E869'; }
+
+#button-panel #rotate-mode-button:before {
+  content: '\E863'; }
+
+#button-panel #text-mode-button:before {
+  content: '\E165'; }
+
+#button-panel #zoom-in-button:before {
+  content: '\E8FF'; }
+
+#button-panel #zoom-out-button:before {
+  content: '\E900'; }
+
+#button-panel #extend-button:before {
+  content: '\E56B'; }
+
+#button-panel #arrow-left-button:before {
+  content: '\E5C4'; }
+
+#button-panel #arrow-right-button:before {
+  content: '\E5C8'; }
+
+#button-panel #arrow-up-button:before {
+  content: '\E5D8'; }
+
+#button-panel #arrow-down-button:before {
+  content: '\E5DB'; }
+
+#button-panel .btn-group-vertical {
+  margin: 10px 0;
+  text-align: middle; }
 
 pv-map .map-container {
   border: 1px solid grey; }

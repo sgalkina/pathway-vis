@@ -390,8 +390,7 @@ resizes. */
 .escher-container ul#button-panel {
   position: absolute;
   left: 4px;
-  top: 20%;
-  margin-top: -30px;
+  top: 5%;
   /* top: 81px; //max */
   /* top: 20px; //min */
   pointer-events: none;
@@ -459,4 +458,106 @@ resizes. */
   .escher-container #quick-jump-menu {
       display: none;
   }
+}
+
+/* Radio buttons without Bootstrap */
+#button-panel {
+
+    label,
+    button {
+        display: table;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .simple-button {
+        &:before {
+            font-family: 'Material Icons';
+            content: '\E863';
+            color: #FFF;
+            font-size: 28px;
+        }
+
+        input,
+        span {
+            display: none;
+        }
+    }
+
+    #zoom-mode-button {
+        &:before {
+            content: '\E89F';
+        }
+    }
+
+    #brush-mode-button {
+        &:before {
+            content: '\E913';
+        }
+    }
+
+    #build-mode-button {
+        &:before {
+            content: '\E869';
+        }
+    }
+
+    #rotate-mode-button {
+        &:before {
+            content: '\E863';
+        }
+    }
+
+    #text-mode-button {
+        &:before {
+            content: '\E165';
+        }
+    }
+
+    #zoom-in-button {
+        &:before {
+            content: '\E8FF';
+        }
+    }
+
+    #zoom-out-button {
+        &:before {
+            content: '\E900';
+        }
+    }
+
+    #extend-button {
+        &:before {
+            content: '\E56B';
+        }
+    }
+
+    #arrow-left-button {
+        &:before {
+            content: '\E5C4';
+        }
+    }
+
+    #arrow-right-button {
+        &:before {
+            content: '\E5C8';
+        }
+    }
+
+    #arrow-up-button {
+        &:before {
+            content: '\E5D8';
+        }
+    }
+
+    #arrow-down-button {
+        &:before {
+            content: '\E5DB';
+        }
+    }
+
+    .btn-group-vertical {
+        margin: 10px 0;
+        text-align: middle;
+    }
 }
