@@ -84,7 +84,6 @@ class SidebarComponentCtrl {
         });
     }
 
-    // Loads iJO1366 predefined map and model from API
     public onLoadDataSubmit($event?): void {
         const mapUris = {
             'ECO': `${dirname(module.id)}/assets/maps/iJO1366.Central metabolism.json`,
@@ -116,16 +115,6 @@ class SidebarComponentCtrl {
             this.shared.model = responses[1].data['model'];
             this.shared.model.uid = responses[1].data['model-id'];
             this.shared.map.reactionData = responses[1].data['fluxes'];
-
-            // Check removed and added reactions and genes
-            const changes = this.shared.model.notes.changes;
-
-            if (!_.isEmpty(changes)) {
-                this.shared.map.removedReactions = _.map(changes.removed.reactions, (reaction: types.Reaction) => {
-                    return reaction.id;
-                });
-            }
-
             this.shared.method = this.selected.method;
             this.info = responses[2].data;
 

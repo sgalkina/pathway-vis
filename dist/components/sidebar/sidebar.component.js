@@ -51,7 +51,6 @@ var SidebarComponentCtrl = (function () {
             }
         });
     }
-    // Loads iJO1366 predefined map and model from API
     SidebarComponentCtrl.prototype.onLoadDataSubmit = function ($event) {
         var _this = this;
         var mapUris = {
@@ -79,13 +78,6 @@ var SidebarComponentCtrl = (function () {
             _this.shared.model = responses[1].data['model'];
             _this.shared.model.uid = responses[1].data['model-id'];
             _this.shared.map.reactionData = responses[1].data['fluxes'];
-            // Check removed and added reactions and genes
-            var changes = _this.shared.model.notes.changes;
-            if (!_.isEmpty(changes)) {
-                _this.shared.map.removedReactions = _.map(changes.removed.reactions, function (reaction) {
-                    return reaction.id;
-                });
-            }
             _this.shared.method = _this.selected.method;
             _this.info = responses[2].data;
             _this.shared.loading--;

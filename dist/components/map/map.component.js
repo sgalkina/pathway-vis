@@ -30,11 +30,16 @@ var MapComponentCtrl = (function () {
             }
         }, true);
         // Reaction data watcher
-        $scope.$watch('[ctrl.shared.map.reactionData, shared.map.reactionData]', function () {
+        $scope.$watch('ctrl.shared.map.reactionData', function () {
             if (_this.shared.map.reactionData) {
                 _this._loadData();
             }
         }, true);
+        $scope.$watch('ctrl.shared.model.uid', function () {
+            if (_this.shared.model.uid) {
+                _this._loadModel();
+            }
+        });
         // Default map settings
         this.shared.map.settings = {
             menu: 'all',
@@ -44,6 +49,7 @@ var MapComponentCtrl = (function () {
             identifiers_on_map: 'bigg_id',
             hide_all_labels: false,
             hide_secondary_metabolites: false,
+            highlight_missing: true,
             reaction_scale: [
                 { type: 'min', color: '#D4E6F0', size: 20 },
                 { type: 'median', color: '#78b2d1', size: 20 },
@@ -87,7 +93,19 @@ var MapComponentCtrl = (function () {
      * Loads model to the map
      */
     MapComponentCtrl.prototype._loadModel = function () {
+        // Load model data
         this._builder.load_model(this.shared.model);
+        // Empty previously removed reactions
+        this.shared.map.removedReactions = [];
+        // Check removed and added reactions and genes from model
+        var changes = this.shared.model.notes.changes;
+        if (!_.isEmpty(changes)) {
+            this.shared.map.removedReactions = _.map(changes.removed.reactions, function (reaction) {
+                return reaction.id;
+            });
+        }
+        // Set knocked-out reactions from model
+        this._builder.set_knockout_reactions(this.shared.map.removedReactions);
     };
     /**
      * Loads data to the map
