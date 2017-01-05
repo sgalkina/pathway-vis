@@ -9,13 +9,14 @@ var component = angular.module('pathwayvis.components.sidebar', []);
  */
 var SidebarComponentCtrl = (function () {
     /* @ngInject */
-    function SidebarComponentCtrl($scope, $http, $q, api) {
+    function SidebarComponentCtrl($scope, $http, $q, toastr, api) {
         var _this = this;
         this.loadData = {};
         this.selected = {};
         this._api = api;
         this._http = $http;
         this._q = $q;
+        this._toastr = toastr;
         this.methods = [
             { 'id': 'fba', 'name': 'FBA' },
             { 'id': 'pfba', 'name': 'pFBA' },
@@ -38,6 +39,11 @@ var SidebarComponentCtrl = (function () {
                     _this.samples.forEach(function (value) {
                         _this.samplesSpecies[value.id] = value.organism;
                     });
+                }, function (error) {
+                    _this._toastr.error('Oops! Sorry, there was a problem loading selected experiment.', '', {
+                        closeButton: true,
+                        timeOut: 10500
+                    });
                 });
             }
         });
@@ -47,6 +53,12 @@ var SidebarComponentCtrl = (function () {
                     sampleId: _this.selected.sample
                 }).then(function (response) {
                     _this.phases = response.data;
+                }, function (error) {
+                    _this._toastr.error('Oops! Sorry, there was a problem loading selected sample.', '', {
+                        closeButton: true,
+                        timeOut: 10500
+                    });
+                    _this.shared.loading--;
                 });
             }
         });
@@ -80,6 +92,12 @@ var SidebarComponentCtrl = (function () {
             _this.shared.map.reactionData = responses[1].data['fluxes'];
             _this.shared.method = _this.selected.method;
             _this.info = responses[2].data;
+            _this.shared.loading--;
+        }, function (error) {
+            _this._toastr.error('Oops! Sorry, there was a problem with fetching the data.', '', {
+                closeButton: true,
+                timeOut: 10500
+            });
             _this.shared.loading--;
         });
     };

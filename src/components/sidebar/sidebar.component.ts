@@ -38,12 +38,20 @@ class SidebarComponentCtrl {
     private _api: APIService;
     private _http: angular.IHttpService;
     private _q: angular.IQService;
+    private _toastr: angular.toastr.IToastrService;
 
     /* @ngInject */
-    constructor ($scope: angular.IScope, $http: angular.IHttpService, $q: angular.IQService, api: APIService) {
+    constructor ($scope: angular.IScope,
+                 $http: angular.IHttpService,
+                 $q: angular.IQService,
+                 toastr: angular.toastr.IToastrService,
+                 api: APIService) {
+
         this._api = api;
         this._http = $http;
         this._q = $q;
+        this._toastr = toastr;
+
         this.methods = [
             {'id': 'fba', 'name': 'FBA'},
             {'id': 'pfba', 'name': 'pFBA'},
@@ -54,7 +62,7 @@ class SidebarComponentCtrl {
         ];
         this.selected.method = 'pfba';
 
-        this._api.get('experiments').then((response: any) => {
+        this._api.get('experiments').then((response: angular.IHttpPromiseCallbackArg<types.Experiment[]>) => {
             this.experiments = response.data;
         });
 
@@ -64,11 +72,16 @@ class SidebarComponentCtrl {
             if (!_.isEmpty(this.selected.experiment)) {
                 this._api.get('experiments/:experimentId/samples', {
                     experimentId: this.selected.experiment
-                }).then((response: any) => {
+                }).then((response: angular.IHttpPromiseCallbackArg<types.Sample[]>) => {
                     this.samples = response.data;
                     this.samples.forEach((value) => {
                         this.samplesSpecies[value.id] = value.organism;
-                    })
+                    });
+                }, (error) => {
+                    this._toastr.error('Oops! Sorry, there was a problem loading selected experiment.', '', {
+                        closeButton: true,
+                        timeOut: 10500
+                    });
                 });
             }
         });
@@ -77,8 +90,15 @@ class SidebarComponentCtrl {
             if (!_.isEmpty(this.selected.sample)) {
                 this._api.get('samples/:sampleId/phases', {
                     sampleId: this.selected.sample
-                }).then((response: any) => {
+                }).then((response: angular.IHttpPromiseCallbackArg<types.Phase[]>) => {
                     this.phases = response.data;
+                }, (error) => {
+                    this._toastr.error('Oops! Sorry, there was a problem loading selected sample.', '', {
+                        closeButton: true,
+                        timeOut: 10500
+                    });
+
+                    this.shared.loading--;
                 });
             }
         });
@@ -117,6 +137,13 @@ class SidebarComponentCtrl {
             this.shared.map.reactionData = responses[1].data['fluxes'];
             this.shared.method = this.selected.method;
             this.info = responses[2].data;
+
+            this.shared.loading--;
+        }, (error) => {
+            this._toastr.error('Oops! Sorry, there was a problem with fetching the data.', '', {
+                closeButton: true,
+                timeOut: 10500
+            });
 
             this.shared.loading--;
         });
