@@ -63,6 +63,12 @@ class MapComponentCtrl {
             }
         });
 
+        $scope.$watch('ctrl.shared.map.removedReactions', () => {
+            if (this._builder) {
+                this._builder.set_knockout_reactions(this.shared.map.removedReactions);
+            }
+        });
+
         // Default map settings
         this.shared.map.settings = {
             menu: 'all',
@@ -79,10 +85,10 @@ class MapComponentCtrl {
                 { type: 'max', color: '#0776AC', size: 20 }
             ],
             reaction_no_data_color: '#CBCBCB',
-            reaction_no_data_size: 10,
+            reaction_no_data_size: 10
         };
 
-        $scope.$on("$destroy", function handler() {
+        $scope.$on('$destroy', function handler() {
             ws.close();
         });
     }
@@ -90,7 +96,8 @@ class MapComponentCtrl {
     /**
      * Callback function for clicked action button in context menu
      */
-    public onActionClick(action, data) {
+    public processActionClick(action, data) {
+
         let shared = {
             element: data,
             shared: this.shared
@@ -99,7 +106,7 @@ class MapComponentCtrl {
         this.actions.callAction(action, shared).then((response) => {
             this.shared.map.growthRate = parseFloat(response['growth-rate']);
             this.shared.map.removedReactions = response['removed-reactions'];
-            this.shared.map.reactionData = response['fluxes'];
+            this.shared.map.reactionData = response.fluxes;
             this.$scope.$apply();
 
             this._builder.set_knockout_reactions(this.shared.map.removedReactions);
@@ -135,7 +142,7 @@ class MapComponentCtrl {
         }
 
         // Set knocked-out reactions from model
-        this._builder.set_knockout_reactions(this.shared.map.removedReactions);
+        // this._builder.set_knockout_reactions(this.shared.map.removedReactions);
 
         // Open WS connection for model
         this._ws.connect(true, this.shared.model.uid);
@@ -174,7 +181,7 @@ class MapComponentCtrl {
 
                 if (this.contextElement) {
                     this._renderContextMenu(contextMenu, selection);
-                    d3.event.preventDefault();
+                    (<Event> d3.event).preventDefault();
                 }
             });
 
@@ -189,21 +196,21 @@ class MapComponentCtrl {
     private _renderContextMenu(contextMenu, selection): void {
         const position = d3.mouse(selection.node());
         contextMenu.style('position', 'absolute')
-            .style('left', position[0] + "px")
-            .style('top', position[1] + "px")
+            .style('left', position[0] + 'px')
+            .style('top', position[1] + 'px')
             .style('visibility', 'visible');
         this.$scope.$apply();
     }
 }
 
-const MapComponent: angular.IComponentOptions = {
+const mapComponent: angular.IComponentOptions = {
     controller: MapComponentCtrl,
     controllerAs: 'ctrl',
     templateUrl: `${dirname(module.id)}/views/map.component.html`,
     bindings: {
         shared: '='
     }
-}
+};
 
 // Register component
-component.component('pvMap', MapComponent);
+component.component('pvMap', mapComponent);

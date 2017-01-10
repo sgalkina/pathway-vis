@@ -1,7 +1,7 @@
 "use strict";
 // Never remove this import of `angular` from here.
 // NOTE: the import form angular also makes the `angular` namespace available globally
-require('angular');
+var angular = require('angular');
 require('angular-material');
 require('angular-ui-router');
 // Turn of WS TS inspection for the 'decaf-common' import.
@@ -51,9 +51,9 @@ app.config(function ($urlMatcherFactoryProvider, $urlRouterProvider, $stateProvi
 var AppController = (function () {
     function AppController($window, $scope, config) {
         var _this = this;
-        this.config = config;
         this.isSidebarVisible = true;
         $window.document.title = "Platform \u2013 Component({name: " + src_1.default.name + "})";
+        this.config = config;
         // noinspection TypeScriptUnresolvedFunction
         config.set('componentConfig', {});
         // Hide sidebar if there is no navigation set from the component.
@@ -86,7 +86,7 @@ app.component('app', {
         'navigation': '?appNavigation',
         'toolbar': '?appToolbar'
     },
-    template: "\n\t\t<div layout=\"row\" flex ui-view=\"root\">\n\t\t\t<md-sidenav ng-if=\"app.isSidebarVisible\" layout=\"column\" class=\"md-sidenav-left md-whiteframe-z2\" md-component-id=\"left\" md-is-locked-open=\"$mdMedia('gt-sm')\">\n\t\t\t\t<div ng-transclude=\"navigation\"></div>\n\t\t\t\t<div ui-view=\"navigation\"></div>\n\t\t\t</md-sidenav>\n\t\t\t<div layout=\"column\" flex id=\"content\">\n\t\t\t\t<md-toolbar class=\"component-color\" ng-style=\"{'background-color': app.color || app.component.color}\">\n\t\t\t\t\t<div class=\"md-toolbar-tools\" ui-view=\"toolbar\">\n\t\t\t\t\t\t<h1 flex>\n\t\t\t\t\t\t\t{{app.component.navigation.label}}\n\t\t\t\t\t\t</h1>\n\t\t\t\t\t\t<div ng-transclude=\"toolbar\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</md-toolbar>\n\t\t\t\t<md-content layout=\"column\"\n\t\t\t\t\t\t\tui-view=\"content\"\n\t\t\t\t\t\t\tflex>\n\t\t\t\t</md-content>\n\t\t\t</div>\n\t\t</div>\n\t"
+    template: "\n        <div layout=\"row\" flex ui-view=\"root\">\n            <md-sidenav ng-if=\"app.isSidebarVisible\" layout=\"column\" class=\"md-sidenav-left md-whiteframe-z2\" md-component-id=\"left\" md-is-locked-open=\"$mdMedia('gt-sm')\">\n                <div ng-transclude=\"navigation\"></div>\n                <div ui-view=\"navigation\"></div>\n            </md-sidenav>\n            <div layout=\"column\" flex id=\"content\">\n                <md-toolbar class=\"component-color\" ng-style=\"{'background-color': app.color || app.component.color}\">\n                    <div class=\"md-toolbar-tools\" ui-view=\"toolbar\">\n                        <h1 flex>\n                            {{app.component.navigation.label}}\n                        </h1>\n                        <div ng-transclude=\"toolbar\"></div>\n                    </div>\n                </md-toolbar>\n                <md-content layout=\"column\"\n                            ui-view=\"content\"\n                            flex>\n                </md-content>\n            </div>\n        </div>\n    "
 });
 // Bootstrap
 angular.element(document).ready(function () {

@@ -7,8 +7,24 @@
         </div>
         <div layout="column" ng-if="ctrl.removedReactions" class="sidebar-cell">
             <h3 class="md-no-sticky">Removed reactions</h3>
-            <md-chips ng-model="ctrl.removedReactions" readonly="true" md-removable="false">
-            </md-chips>
+
+            <!-- <span ng-repeat="reaction in ctrl.removedReactions">{{reaction}}</span> -->
+            <div class="md-chips">
+                <md-chip ng-repeat="reaction in ctrl.removedReactions">
+                    <div aria-hidden="true" class="md-chip-content" role="button" tabindex="-1">
+                        <span>{{reaction}}</span>
+                    </div>
+                    <div class="md-chip-remove-container">
+                        <button aria-hidden="Undo Knockout"
+                                tabindex="-1"
+                                type="button"
+                                class="md-chip-remove"
+                                ng-click="ctrl.onReactionRemoveClick(reaction)">
+                            <md-icon md-svg-icon="md-close"></md-icon>
+                        </button>
+                    </div>
+                </md-chip>
+            </div>
         </div>
     </div>
 </div>

@@ -1,9 +1,12 @@
 import * as _ from 'lodash';
 
-import {WSService} from '../../../services/ws';
-import * as types from '../../../types';
-// noinspection TypeScriptCheckImport
 import {dirname} from 'decaf-common';
+import {WSService} from '../../../services/ws';
+import {ActionsService} from '../../../services/actions/actions.service';
+
+import * as types from '../../../types';
+
+import './views/knockout.section.css!';
 
 const section = angular.module('pathwayvis.components.sections.knockout', [
 ]);
@@ -16,10 +19,14 @@ class KnockoutComponentCtrl {
     public growthRate: number;
     public removedReactions: string[];
     private _ws: WSService;
+    private _actions: ActionsService;
+    private $scope: angular.IScope;
 
     /* @ngInject */
-    constructor ($scope: angular.IScope, toastr: angular.toastr.IToastrService, ws: WSService) {
+    constructor ($scope: angular.IScope, toastr: angular.toastr.IToastrService, actions: ActionsService, ws: WSService) {
         this._ws = ws;
+        this._actions = actions;
+        this.$scope = $scope;
 
         // Reaction data watcher
         $scope.$watch('[ctrl.shared.map.growthRate, ctrl.shared.map.removedReactions]', () => {
@@ -37,6 +44,24 @@ class KnockoutComponentCtrl {
             }
         }, true);
     }
+
+    public onReactionRemoveClick(selectedReaction: string): void {
+
+        const undoKnockoutAction = this._actions.getAction('reaction:knockout:undo');
+        let shared = {
+            element: {
+                bigg_id: selectedReaction
+            },
+            shared: this.shared
+        };
+
+        this._actions.callAction(undoKnockoutAction, shared).then((response) => {
+            this.shared.map.growthRate = parseFloat(response['growth-rate']);
+            this.shared.map.removedReactions = response['removed-reactions'];
+            this.shared.map.reactionData = response.fluxes;
+            this.$scope.$apply();
+        });
+    }
 }
 
 const KnockoutComponent: angular.IComponentOptions = {
@@ -46,7 +71,7 @@ const KnockoutComponent: angular.IComponentOptions = {
     bindings: {
         shared: '='
     }
-}
+};
 
 // Register component
 section.component('pvKnockout', KnockoutComponent);

@@ -40,6 +40,11 @@ var MapComponentCtrl = (function () {
                 _this._loadModel();
             }
         });
+        $scope.$watch('ctrl.shared.map.removedReactions', function () {
+            if (_this._builder) {
+                _this._builder.set_knockout_reactions(_this.shared.map.removedReactions);
+            }
+        });
         // Default map settings
         this.shared.map.settings = {
             menu: 'all',
@@ -56,16 +61,16 @@ var MapComponentCtrl = (function () {
                 { type: 'max', color: '#0776AC', size: 20 }
             ],
             reaction_no_data_color: '#CBCBCB',
-            reaction_no_data_size: 10,
+            reaction_no_data_size: 10
         };
-        $scope.$on("$destroy", function handler() {
+        $scope.$on('$destroy', function handler() {
             ws.close();
         });
     }
     /**
      * Callback function for clicked action button in context menu
      */
-    MapComponentCtrl.prototype.onActionClick = function (action, data) {
+    MapComponentCtrl.prototype.processActionClick = function (action, data) {
         var _this = this;
         var shared = {
             element: data,
@@ -74,7 +79,7 @@ var MapComponentCtrl = (function () {
         this.actions.callAction(action, shared).then(function (response) {
             _this.shared.map.growthRate = parseFloat(response['growth-rate']);
             _this.shared.map.removedReactions = response['removed-reactions'];
-            _this.shared.map.reactionData = response['fluxes'];
+            _this.shared.map.reactionData = response.fluxes;
             _this.$scope.$apply();
             _this._builder.set_knockout_reactions(_this.shared.map.removedReactions);
         });
@@ -104,7 +109,7 @@ var MapComponentCtrl = (function () {
             });
         }
         // Set knocked-out reactions from model
-        this._builder.set_knockout_reactions(this.shared.map.removedReactions);
+        // this._builder.set_knockout_reactions(this.shared.map.removedReactions);
         // Open WS connection for model
         this._ws.connect(true, this.shared.model.uid);
     };
@@ -151,14 +156,14 @@ var MapComponentCtrl = (function () {
     MapComponentCtrl.prototype._renderContextMenu = function (contextMenu, selection) {
         var position = d3.mouse(selection.node());
         contextMenu.style('position', 'absolute')
-            .style('left', position[0] + "px")
-            .style('top', position[1] + "px")
+            .style('left', position[0] + 'px')
+            .style('top', position[1] + 'px')
             .style('visibility', 'visible');
         this.$scope.$apply();
     };
     return MapComponentCtrl;
 }());
-var MapComponent = {
+var mapComponent = {
     controller: MapComponentCtrl,
     controllerAs: 'ctrl',
     templateUrl: decaf_common_1.dirname(module.id) + "/views/map.component.html",
@@ -167,6 +172,6 @@ var MapComponent = {
     }
 };
 // Register component
-component.component('pvMap', MapComponent);
+component.component('pvMap', mapComponent);
 
 //# sourceMappingURL=map.component.js.map

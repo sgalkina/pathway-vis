@@ -28,7 +28,6 @@ export class WSService {
     private _url: string;
     private _callbacks: Callback[] = [];
     private _q: angular.IQService;
-    private _requestID: string;
     private _toastr: angular.toastr.IToastrService;
 
     public onopen: (ev: Event) => void = function (event: Event) {};
@@ -40,10 +39,6 @@ export class WSService {
     constructor($q: angular.IQService, toastr: angular.toastr.IToastrService) {
         this._q = $q;
         this._toastr = toastr;
-    }
-
-    private _generateID(): string {
-        return Math.random().toString(36).slice(2);
     }
 
     public connect(reconnectAttempt: boolean, path: string) {
@@ -130,16 +125,6 @@ export class WSService {
         }
     }
 
-    private _processRequests(): void {
-        if (!this._callbacks.length) {
-            return;
-        }
-
-        for (let request of this._callbacks) {
-            this._ws.send(request.data);
-        }
-    }
-
     /**
      * Returns boolean, whether websocket was FORCEFULLY closed.
      */
@@ -165,6 +150,20 @@ export class WSService {
             return true;
         }
         return false;
+    }
+
+    private _processRequests(): void {
+        if (!this._callbacks.length) {
+            return;
+        }
+
+        for (let request of this._callbacks) {
+            this._ws.send(request.data);
+        }
+    }
+
+    private _generateID(): string {
+        return Math.random().toString(36).slice(2);
     }
 }
 

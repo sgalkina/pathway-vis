@@ -39,11 +39,20 @@ export class ActionsService {
     }
 
     /**
+     * Returns specific action by given type
+     * @param  {[type]} type used to filter actions by
+     * @return {types.Action} Action
+     */
+    public getAction(type: string): types.Action {
+        return _.first(_.filter(actionsList, (action: types.Action) => action.type === type));
+    }
+
+    /**
      * Invokes action callback with injected arguments
      * @param {[type]} action Callback function from action
      * @param {Object} args Object with arguments that is applied to `this` in action class
      */
-    public callAction(action: Knockout, args: Object)  {
+    public callAction(action: Action, args: Object)  {
         return this.$injector.invoke(action.callback, args);
     }
 }
@@ -59,19 +68,21 @@ class Knockout extends ReactionAction implements Action {
     public label = 'Knockout';
     public type: string = 'reaction:knockout:do';
     public element: any;
-	public shared: types.Shared;
+    public shared: types.Shared;
 
     // @ngInject
     public callback(ws: WSService, $timeout: angular.ITimeoutService): any {
         const data = {
-            'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
-			'simulation-method': this.shared.method,
+            'to-return': ['fluxes', 'growth-rate', 'removed-reactions'],
+            'simulation-method': this.shared.method,
             'reactions-knockout': [this.element.bigg_id]
         };
 
         return $timeout(() => {
             return ws.send(data).then((data) => {
                 return data;
+            }, (error) => {
+                // TODO: set error
             });
         }, 0, false);
     }
@@ -90,15 +101,15 @@ class UndoKnockout extends Action {
     public ws: WSService;
     public label = 'Undo knockout';
     public type: string = 'reaction:knockout:undo';
-    public element: any;
+    public element: any; // TODO: change type
     public shared: types.Shared;
 
     // @ngInject
     public callback(ws: WSService, $timeout: angular.ITimeoutService): any {
         const data = {
-            'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
-			'simulation-method': this.shared.method,
-            'reactions-knockout-undo': [this.element.bigg_id],
+            'to-return': ['fluxes', 'growth-rate', 'removed-reactions'],
+            'simulation-method': this.shared.method,
+            'reactions-knockout-undo': [this.element.bigg_id]
         };
 
         return $timeout(() => {

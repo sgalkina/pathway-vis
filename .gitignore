@@ -9,6 +9,7 @@ nosetests.xml
 
 ## Directory-based project format:
 .idea
+.vscode
 
 
 ## OS X

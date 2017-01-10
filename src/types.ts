@@ -24,15 +24,15 @@ export interface Model {
 }
 
 export interface Reaction {
-        annotation: Object;
-        gene_reaction_rule: any;
-        id: string;
-        lower_bound: number;
-        metabolites: Object;
-        name: string;
-        notes: Object;
-        subsystem: string;
-        upper_bound: number;
+    annotation: Object;
+    gene_reaction_rule: any;
+    id: string;
+    lower_bound: number;
+    metabolites: Object;
+    name: string;
+    notes: Object;
+    subsystem: string;
+    upper_bound: number;
 }
 
 export interface Shared {

@@ -43,6 +43,14 @@ var ActionsService = (function () {
         return _.filter(exports.actionsList, function (action) { return action.canDisplay(context); });
     };
     /**
+     * Returns specific action by given type
+     * @param  {[type]} type used to filter actions by
+     * @return {types.Action} Action
+     */
+    ActionsService.prototype.getAction = function (type) {
+        return _.first(_.filter(exports.actionsList, function (action) { return action.type === type; }));
+    };
+    /**
      * Invokes action callback with injected arguments
      * @param {[type]} action Callback function from action
      * @param {Object} args Object with arguments that is applied to `this` in action class
@@ -67,13 +75,15 @@ var Knockout = (function (_super) {
     // @ngInject
     Knockout.prototype.callback = function (ws, $timeout) {
         var data = {
-            'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
+            'to-return': ['fluxes', 'growth-rate', 'removed-reactions'],
             'simulation-method': this.shared.method,
             'reactions-knockout': [this.element.bigg_id]
         };
         return $timeout(function () {
             return ws.send(data).then(function (data) {
                 return data;
+            }, function (error) {
+                // TODO: set error
             });
         }, 0, false);
     };
@@ -100,9 +110,9 @@ var UndoKnockout = (function (_super) {
     // @ngInject
     UndoKnockout.prototype.callback = function (ws, $timeout) {
         var data = {
-            'to-return': ['fluxes', 'growth-rate', "removed-reactions"],
+            'to-return': ['fluxes', 'growth-rate', 'removed-reactions'],
             'simulation-method': this.shared.method,
-            'reactions-knockout-undo': [this.element.bigg_id],
+            'reactions-knockout-undo': [this.element.bigg_id]
         };
         return $timeout(function () {
             return ws.send(data).then(function (data) {

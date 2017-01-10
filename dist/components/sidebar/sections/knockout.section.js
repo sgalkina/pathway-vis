@@ -1,16 +1,18 @@
 "use strict";
 var _ = require('lodash');
-// noinspection TypeScriptCheckImport
 var decaf_common_1 = require('decaf-common');
+require('./views/knockout.section.css!');
 var section = angular.module('pathwayvis.components.sections.knockout', []);
 /**
  * Knockout component
  */
 var KnockoutComponentCtrl = (function () {
     /* @ngInject */
-    function KnockoutComponentCtrl($scope, toastr, ws) {
+    function KnockoutComponentCtrl($scope, toastr, actions, ws) {
         var _this = this;
         this._ws = ws;
+        this._actions = actions;
+        this.$scope = $scope;
         // Reaction data watcher
         $scope.$watch('[ctrl.shared.map.growthRate, ctrl.shared.map.removedReactions]', function () {
             if (_this.shared.map.growthRate) {
@@ -26,6 +28,22 @@ var KnockoutComponentCtrl = (function () {
             }
         }, true);
     }
+    KnockoutComponentCtrl.prototype.onReactionRemoveClick = function (selectedReaction) {
+        var _this = this;
+        var undoKnockoutAction = this._actions.getAction('reaction:knockout:undo');
+        var shared = {
+            element: {
+                bigg_id: selectedReaction
+            },
+            shared: this.shared
+        };
+        this._actions.callAction(undoKnockoutAction, shared).then(function (response) {
+            _this.shared.map.growthRate = parseFloat(response['growth-rate']);
+            _this.shared.map.removedReactions = response['removed-reactions'];
+            _this.shared.map.reactionData = response.fluxes;
+            _this.$scope.$apply();
+        });
+    };
     return KnockoutComponentCtrl;
 }());
 var KnockoutComponent = {

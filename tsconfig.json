@@ -10,8 +10,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"decaf-common": [
-				"dist/jspm_packages/github/biosustain/decaf-frontend-common@master/dist",
-				"jspm_packages/github/biosustain/decaf-frontend-common@master/dist"
+				"dist/jspm_packages/github/biosustain/decaf-frontend-common@master/src",
+				"jspm_packages/github/biosustain/decaf-frontend-common@master/src"
 			],
 			"src/*": ["src/*"]
 		}

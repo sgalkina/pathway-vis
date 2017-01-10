@@ -8,6 +8,26 @@ var APIService = (function () {
     function APIService($http) {
         this._http = $http;
     }
+    APIService.prototype.get = function (path, parameters) {
+        if (parameters === void 0) { parameters = {}; }
+        return this._request('GET', path, undefined, parameters);
+    };
+    APIService.prototype.post = function (path, data, parameters) {
+        if (parameters === void 0) { parameters = {}; }
+        return this._request('POST', path, data, parameters);
+    };
+    APIService.prototype.put = function (path, data, parameters) {
+        if (parameters === void 0) { parameters = {}; }
+        return this._request('PUT', path, data, parameters);
+    };
+    APIService.prototype.patch = function (path, data, parameters) {
+        if (parameters === void 0) { parameters = {}; }
+        return this._request('PATCH', path, data, parameters);
+    };
+    APIService.prototype.delete = function (path, data, parameters) {
+        if (parameters === void 0) { parameters = {}; }
+        return this._request('DELETE', path, data, parameters);
+    };
     APIService.prototype._request = function (method, path, data, params) {
         var reqDetails = this._handleParams(path, params);
         return this._http({
@@ -34,26 +54,6 @@ var APIService = (function () {
             'path': path,
             'params': params
         };
-    };
-    APIService.prototype.get = function (path, parameters) {
-        if (parameters === void 0) { parameters = {}; }
-        return this._request('GET', path, undefined, parameters);
-    };
-    APIService.prototype.post = function (path, data, parameters) {
-        if (parameters === void 0) { parameters = {}; }
-        return this._request('POST', path, data, parameters);
-    };
-    APIService.prototype.put = function (path, data, parameters) {
-        if (parameters === void 0) { parameters = {}; }
-        return this._request('PUT', path, data, parameters);
-    };
-    APIService.prototype.patch = function (path, data, parameters) {
-        if (parameters === void 0) { parameters = {}; }
-        return this._request('PATCH', path, data, parameters);
-    };
-    APIService.prototype.delete = function (path, data, parameters) {
-        if (parameters === void 0) { parameters = {}; }
-        return this._request('DELETE', path, data, parameters);
     };
     return APIService;
 }());

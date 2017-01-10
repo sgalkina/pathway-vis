@@ -58,7 +58,7 @@ class SidebarComponentCtrl {
             {'id': 'fva', 'name': 'FVA'},
             {'id': 'moma', 'name': 'MOMA'},
             {'id': 'lmoma', 'name': 'lMOMA'},
-            {'id': 'room', 'name': 'ROOM'},
+            {'id': 'room', 'name': 'ROOM'}
         ];
         this.selected.method = 'pfba';
 
@@ -107,7 +107,7 @@ class SidebarComponentCtrl {
     public onLoadDataSubmit($event?): void {
         const mapUris = {
             'ECO': `${dirname(module.id)}/assets/maps/iJO1366.Central metabolism.json`,
-            'SCE': `${dirname(module.id)}/assets/maps/iMM904.Central carbon metabolism.json`,
+            'SCE': `${dirname(module.id)}/assets/maps/iMM904.Central carbon metabolism.json`
         };
         this.shared.loading++;
 
@@ -125,16 +125,16 @@ class SidebarComponentCtrl {
 
         const infoPromise = this._api.get('samples/:sampleId/info', {
             'sampleId': this.selected.sample,
-            'phase-id': this.selected.phase,
+            'phase-id': this.selected.phase
         });
 
         this._q.all([mapPromise, modelPromise, infoPromise]).then((responses: any) => {
 
             // Add loaded data to shared scope
             this.shared.map.map = responses[0].data;
-            this.shared.model = responses[1].data['model'];
+            this.shared.model = responses[1].data.model;
             this.shared.model.uid = responses[1].data['model-id'];
-            this.shared.map.reactionData = responses[1].data['fluxes'];
+            this.shared.map.reactionData = responses[1].data.fluxes;
             this.shared.method = this.selected.method;
             this.info = responses[2].data;
 
@@ -157,7 +157,7 @@ const SidebarComponent: angular.IComponentOptions = {
     bindings: {
         shared: '='
     }
-}
+};
 
 // Register component
 component.component('pvSidebar', SidebarComponent);

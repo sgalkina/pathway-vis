@@ -20,9 +20,6 @@ var WSService = (function () {
         this._q = $q;
         this._toastr = toastr;
     }
-    WSService.prototype._generateID = function () {
-        return Math.random().toString(36).slice(2);
-    };
     WSService.prototype.connect = function (reconnectAttempt, path) {
         var _this = this;
         this.readyState = WebSocket.CONNECTING;
@@ -92,15 +89,6 @@ var WSService = (function () {
             return callback.deffered.promise;
         }
     };
-    WSService.prototype._processRequests = function () {
-        if (!this._callbacks.length) {
-            return;
-        }
-        for (var _i = 0, _a = this._callbacks; _i < _a.length; _i++) {
-            var request = _a[_i];
-            this._ws.send(request.data);
-        }
-    };
     /**
      * Returns boolean, whether websocket was FORCEFULLY closed.
      */
@@ -125,6 +113,18 @@ var WSService = (function () {
             return true;
         }
         return false;
+    };
+    WSService.prototype._processRequests = function () {
+        if (!this._callbacks.length) {
+            return;
+        }
+        for (var _i = 0, _a = this._callbacks; _i < _a.length; _i++) {
+            var request = _a[_i];
+            this._ws.send(request.data);
+        }
+    };
+    WSService.prototype._generateID = function () {
+        return Math.random().toString(36).slice(2);
     };
     return WSService;
 }());
