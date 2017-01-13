@@ -67,7 +67,7 @@ class MapComponentCtrl {
             if (this._builder) {
                 this._builder.set_knockout_reactions(this.shared.map.removedReactions);
             }
-        });
+        }, true);
 
         // Default map settings
         this.shared.map.settings = {
@@ -80,9 +80,9 @@ class MapComponentCtrl {
             hide_secondary_metabolites: false,
             highlight_missing: true,
             reaction_scale: [
-                { type: 'min', color: '#D4E6F0', size: 20 },
-                { type: 'median', color: '#78b2d1', size: 20 },
-                { type: 'max', color: '#0776AC', size: 20 }
+                { type: 'min', color: '#af8dc3', size: 20 },
+                { type: 'median', color: '#f7f7f7', size: 20 },
+                { type: 'max', color: '#7fbf7b', size: 20 }
             ],
             reaction_no_data_color: '#CBCBCB',
             reaction_no_data_size: 10
@@ -98,20 +98,17 @@ class MapComponentCtrl {
      */
     public processActionClick(action, data) {
 
-        let shared = {
-            element: data,
-            shared: this.shared
-        };
+        const shared = _.cloneDeep(this.shared);
 
-        this.actions.callAction(action, shared).then((response) => {
+        if (action.type === 'reaction:knockout:do') shared.map.removedReactions.push(data.bigg_id);
+        if (action.type === 'reaction:knockout:undo') _.remove(shared.map.removedReactions, (id) => id === data.bigg_id);
+
+        this.actions.callAction(action, {shared: shared}).then((response) => {
             this.shared.map.growthRate = parseFloat(response['growth-rate']);
-            this.shared.map.removedReactions = response['removed-reactions'];
             this.shared.map.reactionData = response.fluxes;
+            this.shared.map.removedReactions = response['removed-reactions'];
             this.$scope.$apply();
-
-            this._builder.set_knockout_reactions(this.shared.map.removedReactions);
         });
-
     }
 
     /**
@@ -140,9 +137,6 @@ class MapComponentCtrl {
                 return reaction.id;
             });
         }
-
-        // Set knocked-out reactions from model
-        // this._builder.set_knockout_reactions(this.shared.map.removedReactions);
 
         // Open WS connection for model
         this._ws.connect(true, this.shared.model.uid);

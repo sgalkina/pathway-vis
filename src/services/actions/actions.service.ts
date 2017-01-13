@@ -67,15 +67,15 @@ class Knockout extends ReactionAction implements Action {
     public ws: WSService;
     public label = 'Knockout';
     public type: string = 'reaction:knockout:do';
-    public element: any;
     public shared: types.Shared;
 
     // @ngInject
     public callback(ws: WSService, $timeout: angular.ITimeoutService): any {
+
         const data = {
             'to-return': ['fluxes', 'growth-rate', 'removed-reactions'],
             'simulation-method': this.shared.method,
-            'reactions-knockout': [this.element.bigg_id]
+            'reactions-knockout': this.shared.map.removedReactions
         };
 
         return $timeout(() => {
@@ -97,27 +97,9 @@ class Knockout extends ReactionAction implements Action {
  * Undo knockout reaction
  */
 @registerAction
-class UndoKnockout extends Action {
-    public ws: WSService;
+class UndoKnockout extends Knockout {
     public label = 'Undo knockout';
     public type: string = 'reaction:knockout:undo';
-    public element: any; // TODO: change type
-    public shared: types.Shared;
-
-    // @ngInject
-    public callback(ws: WSService, $timeout: angular.ITimeoutService): any {
-        const data = {
-            'to-return': ['fluxes', 'growth-rate', 'removed-reactions'],
-            'simulation-method': this.shared.method,
-            'reactions-knockout-undo': [this.element.bigg_id]
-        };
-
-        return $timeout(() => {
-            return ws.send(data).then((data) => {
-                return data;
-            });
-        }, 0, false);
-    }
 
     public canDisplay(context) {
         if (context.shared.map.removedReactions) {

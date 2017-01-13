@@ -44,7 +44,7 @@ var MapComponentCtrl = (function () {
             if (_this._builder) {
                 _this._builder.set_knockout_reactions(_this.shared.map.removedReactions);
             }
-        });
+        }, true);
         // Default map settings
         this.shared.map.settings = {
             menu: 'all',
@@ -56,9 +56,9 @@ var MapComponentCtrl = (function () {
             hide_secondary_metabolites: false,
             highlight_missing: true,
             reaction_scale: [
-                { type: 'min', color: '#D4E6F0', size: 20 },
-                { type: 'median', color: '#78b2d1', size: 20 },
-                { type: 'max', color: '#0776AC', size: 20 }
+                { type: 'min', color: '#af8dc3', size: 20 },
+                { type: 'median', color: '#f7f7f7', size: 20 },
+                { type: 'max', color: '#7fbf7b', size: 20 }
             ],
             reaction_no_data_color: '#CBCBCB',
             reaction_no_data_size: 10
@@ -72,16 +72,16 @@ var MapComponentCtrl = (function () {
      */
     MapComponentCtrl.prototype.processActionClick = function (action, data) {
         var _this = this;
-        var shared = {
-            element: data,
-            shared: this.shared
-        };
-        this.actions.callAction(action, shared).then(function (response) {
+        var shared = _.cloneDeep(this.shared);
+        if (action.type === 'reaction:knockout:do')
+            shared.map.removedReactions.push(data.bigg_id);
+        if (action.type === 'reaction:knockout:undo')
+            _.remove(shared.map.removedReactions, function (id) { return id === data.bigg_id; });
+        this.actions.callAction(action, { shared: shared }).then(function (response) {
             _this.shared.map.growthRate = parseFloat(response['growth-rate']);
-            _this.shared.map.removedReactions = response['removed-reactions'];
             _this.shared.map.reactionData = response.fluxes;
+            _this.shared.map.removedReactions = response['removed-reactions'];
             _this.$scope.$apply();
-            _this._builder.set_knockout_reactions(_this.shared.map.removedReactions);
         });
     };
     /**
@@ -108,8 +108,6 @@ var MapComponentCtrl = (function () {
                 return reaction.id;
             });
         }
-        // Set knocked-out reactions from model
-        // this._builder.set_knockout_reactions(this.shared.map.removedReactions);
         // Open WS connection for model
         this._ws.connect(true, this.shared.model.uid);
     };

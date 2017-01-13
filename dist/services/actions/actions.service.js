@@ -77,7 +77,7 @@ var Knockout = (function (_super) {
         var data = {
             'to-return': ['fluxes', 'growth-rate', 'removed-reactions'],
             'simulation-method': this.shared.method,
-            'reactions-knockout': [this.element.bigg_id]
+            'reactions-knockout': this.shared.map.removedReactions
         };
         return $timeout(function () {
             return ws.send(data).then(function (data) {
@@ -107,19 +107,6 @@ var UndoKnockout = (function (_super) {
         this.label = 'Undo knockout';
         this.type = 'reaction:knockout:undo';
     }
-    // @ngInject
-    UndoKnockout.prototype.callback = function (ws, $timeout) {
-        var data = {
-            'to-return': ['fluxes', 'growth-rate', 'removed-reactions'],
-            'simulation-method': this.shared.method,
-            'reactions-knockout-undo': [this.element.bigg_id]
-        };
-        return $timeout(function () {
-            return ws.send(data).then(function (data) {
-                return data;
-            });
-        }, 0, false);
-    };
     UndoKnockout.prototype.canDisplay = function (context) {
         if (context.shared.map.removedReactions) {
             var isRemoved = _.includes(context.shared.map.removedReactions, context.element.bigg_id);
@@ -132,6 +119,6 @@ var UndoKnockout = (function (_super) {
         __metadata('design:paramtypes', [])
     ], UndoKnockout);
     return UndoKnockout;
-}(base_1.Action));
+}(Knockout));
 
 //# sourceMappingURL=actions.service.js.map
