@@ -116,8 +116,23 @@ var MapComponentCtrl = (function () {
      * TODO: handle metabolite and gene data
      */
     MapComponentCtrl.prototype._loadData = function () {
+        var reactionData = this.shared.map.reactionData;
+        // Handle FVA method response
+        if (this.shared.method === 'fva') {
+            // const fvaData = reactionData;
+            var fvaData = _.pickBy(reactionData, function (data) {
+                if (Math.abs((data.upper_bound + data.lower_bound) / 2) > Math.pow(10, -7))
+                    return true;
+            });
+            reactionData = _.mapValues(fvaData, function (data) {
+                return (data.upper_bound + data.lower_bound) / 2;
+            });
+            this._builder.set_reaction_data(reactionData);
+            this._builder.set_reaction_fva_data(fvaData);
+            return;
+        }
         // Remove zero values
-        var reactionData = _.pickBy(this.shared.map.reactionData, function (value) {
+        reactionData = _.pickBy(reactionData, function (value) {
             if (Math.abs(value) > Math.pow(10, -7))
                 return true;
         });

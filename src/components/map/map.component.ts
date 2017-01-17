@@ -148,8 +148,28 @@ class MapComponentCtrl {
      */
     private _loadData(): void {
 
+        let reactionData = this.shared.map.reactionData;
+
+        // Handle FVA method response
+        if (this.shared.method === 'fva') {
+
+            // const fvaData = reactionData;
+            const fvaData = _.pickBy(reactionData, (data) => {
+                if (Math.abs((data.upper_bound + data.lower_bound) / 2) > Math.pow(10, -7)) return true;
+            });
+
+            reactionData = _.mapValues(fvaData, (data) => {
+                return (data.upper_bound + data.lower_bound) / 2;
+            });
+
+            this._builder.set_reaction_data(reactionData);
+            this._builder.set_reaction_fva_data(fvaData);
+
+            return;
+        }
+
         // Remove zero values
-        let reactionData = _.pickBy(this.shared.map.reactionData, (value: number) => {
+        reactionData = _.pickBy(reactionData, (value: number) => {
             if (Math.abs(value) > Math.pow(10, -7)) return true;
         });
 
