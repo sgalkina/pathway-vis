@@ -56,9 +56,10 @@ var MapComponentCtrl = (function () {
             hide_secondary_metabolites: false,
             highlight_missing: true,
             reaction_scale: [
-                { type: 'min', color: '#af8dc3', size: 20 },
-                { type: 'median', color: '#f7f7f7', size: 20 },
-                { type: 'max', color: '#7fbf7b', size: 20 }
+                { type: 'min', color: '#A841D0', size: 20 },
+                { type: 'Q1', color: '#868BB2', size: 20 },
+                { type: 'Q3', color: '#6DBFB0', size: 20 },
+                { type: 'max', color: '#54B151', size: 20 }
             ],
             reaction_no_data_color: '#CBCBCB',
             reaction_no_data_size: 10
