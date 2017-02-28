@@ -6,6 +6,7 @@ import {mapComponent} from './components/map/map.component';
 import {KnockoutComponent} from './components/sidebar/sections/knockout.section';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {ActionsService} from './services/actions/actions.service';
+import DONUT_LARGE from '../../img/icons/donut_large.svg';
 
 
 export const PathwayVisModule = angular.module('pathwayvis', [])
@@ -17,10 +18,11 @@ export const PathwayVisModule = angular.module('pathwayvis', [])
 	.component('pvKnockout', KnockoutComponent)
 	.component('pvSidebar', SidebarComponent)
 	.config(function ($mdIconProvider, $stateProvider, appNavigationProvider) {
+		$mdIconProvider.icon('donut_large', DONUT_LARGE, 24);
 
         appNavigationProvider.register('app.project.pathwayvis', {
             title: 'Interactive Map',
-            icon: 'timeline',
+            icon: 'donut_large',
             requiresProject: true
         });
 
