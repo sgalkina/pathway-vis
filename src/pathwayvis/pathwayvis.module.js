@@ -1,4 +1,5 @@
 import angular from 'angular';
+import toastr from 'angular-toastr';
 import {APIService} from './services/api';
 import {WSService} from './services/ws';
 import {PathwayVisComponent} from './pathwayvis.component'
@@ -8,8 +9,11 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {ActionsService} from './services/actions/actions.service';
 import DONUT_LARGE from '../../img/icons/donut_large.svg';
 
+console.log(toastr);
 
-export const PathwayVisModule = angular.module('pathwayvis', [])
+export const PathwayVisModule = angular.module('pathwayvis', [
+		toastr
+	])
 	.service('api', APIService)
 	.service('ws', WSService)
 	.service('actions', ActionsService)

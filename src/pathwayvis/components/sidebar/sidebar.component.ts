@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import 'angular-toastr';
 
 import {APIService} from '../../services/api';
 import * as types from '../../types';
@@ -37,21 +38,19 @@ class SidebarComponentCtrl {
     private _api: APIService;
     private _http: angular.IHttpService;
     private _q: angular.IQService;
-    private _toastr: any;
-    // private _toastr: angular.toastr.IToastrService;
+    private _toastr: angular.toastr.IToastrService;
 
     /* @ngInject */
     constructor ($scope: angular.IScope,
                  $http: angular.IHttpService,
                  $q: angular.IQService,
-                 // toastr: any,
-                 // toastr: angular.toastr.IToastrService,
+                 toastr: angular.toastr.IToastrService,
                  api: APIService) {
 
         this._api = api;
         this._http = $http;
         this._q = $q;
-        this._toastr = {};
+        this._toastr = toastr;
 
         this.methods = [
             {'id': 'fba', 'name': 'FBA'},

@@ -69,7 +69,6 @@ class MapComponentCtrl {
         $scope.$on('$destroy', function handler() {
             ws.close();
         });
-        console.log('shared', this.shared);
     }
 
     /**
@@ -145,8 +144,6 @@ class MapComponentCtrl {
      * TODO: handle metabolite and gene data
      */
     private _loadData(): void {
-        console.log(this);
-
         let reactionData = this.shared.map.reactionData;
 
         // Handle FVA method response

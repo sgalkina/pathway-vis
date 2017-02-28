@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import 'angular-toastr';
 
 interface RequestDetails {
     path: string;
@@ -27,8 +28,7 @@ export class WSService {
     private _url: string;
     private _callbacks: Callback[] = [];
     private _q: angular.IQService;
-    private _toastr: any;
-    // private _toastr: toastr.IToastrService;
+    private _toastr: angular.toastr.IToastrService;
 
     public onopen: (ev: Event) => void = function (event: Event) {};
     public onclose: (ev: CloseEvent) => void = function (event: CloseEvent) {};
@@ -36,11 +36,9 @@ export class WSService {
     public onmessage: (ev: MessageEvent) => void = function (event: MessageEvent) {};
     public onerror: (ev: ErrorEvent) => void = function (event: ErrorEvent) {};
 
-    constructor($q: angular.IQService) {
-    // constructor($q: angular.IQService, toastr) {
+    constructor($q: angular.IQService, toastr: angular.toastr.IToastrService) {
         this._q = $q;
-        this._toastr = {};
-        // this._toastr = toastr;
+        this._toastr = toastr;
     }
 
     public connect(reconnectAttempt: boolean, path: string) {

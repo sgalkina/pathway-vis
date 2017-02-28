@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import 'angular-toastr';
 
 import {WSService} from '../../../services/ws';
 import {ActionsService} from '../../../services/actions/actions.service';
@@ -21,8 +22,7 @@ class KnockoutComponentCtrl {
     private $scope: angular.IScope;
 
     /* @ngInject */
-    constructor ($scope: angular.IScope, actions: ActionsService, ws: WSService) {
-    // constructor ($scope: angular.IScope, toastr: angular.toastr.IToastrService, actions: ActionsService, ws: WSService) {
+    constructor ($scope: angular.IScope, toastr: angular.toastr.IToastrService, actions: ActionsService, ws: WSService) {
         this._ws = ws;
         this._actions = actions;
         this.$scope = $scope;
@@ -32,13 +32,14 @@ class KnockoutComponentCtrl {
             if (!_.isUndefined(this.shared.map.growthRate)) {
                 this.growthRate = this.shared.map.growthRate;
                 this.removedReactions = this.shared.map.removedReactions;
-
+                console.log(_.round(this.growthRate, 5));
                 if (_.round(this.growthRate, 5) === 0) {
-                    // toastr.warning('Growth rate is 0!', '', {
-                    //     closeButton: true,
-                    //     timeOut: 0,
-                    //     extendedTimeOut: 0
-                    // });
+                    console.log('here');
+                    toastr.warning('Growth rate is 0!', '', {
+                        closeButton: true,
+                        timeOut: 0,
+                        extendedTimeOut: 0
+                    });
                 }
             }
         }, true);
