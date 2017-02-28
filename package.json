@@ -1,5 +1,5 @@
 {
-  "name": "module-theoretical-yield",
+  "name": "module-interactive-map",
   "version": "1.0.0",
   "main": "src/index.js",
   "dependencies": {
