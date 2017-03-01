@@ -32,9 +32,7 @@ class KnockoutComponentCtrl {
             if (!_.isUndefined(this.shared.map.growthRate)) {
                 this.growthRate = this.shared.map.growthRate;
                 this.removedReactions = this.shared.map.removedReactions;
-                console.log(_.round(this.growthRate, 5));
                 if (_.round(this.growthRate, 5) === 0) {
-                    console.log('here');
                     toastr.warning('Growth rate is 0!', '', {
                         closeButton: true,
                         timeOut: 0,

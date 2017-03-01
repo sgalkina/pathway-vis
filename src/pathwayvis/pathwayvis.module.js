@@ -9,7 +9,6 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {ActionsService} from './services/actions/actions.service';
 import DONUT_LARGE from '../../img/icons/donut_large.svg';
 
-console.log(toastr);
 
 export const PathwayVisModule = angular.module('pathwayvis', [
 		toastr
@@ -24,15 +23,14 @@ export const PathwayVisModule = angular.module('pathwayvis', [
 	.config(function ($mdIconProvider, $stateProvider, appNavigationProvider) {
 		$mdIconProvider.icon('donut_large', DONUT_LARGE, 24);
 
-        appNavigationProvider.register('app.project.pathwayvis', {
+        appNavigationProvider.register('app.pathwayvis', {
             title: 'Interactive Map',
-            icon: 'donut_large',
-            requiresProject: true
+            icon: 'donut_large'
         });
 
         $stateProvider
             .state({
-                name: 'app.project.pathwayvis',
+                name: 'app.pathwayvis',
                 url: '/pathwayvis',
                 component: 'pathwayvis',
                 data: {
