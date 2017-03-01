@@ -204,10 +204,9 @@ class MapComponentCtrl {
      * Renders and positions context menu based on selected element
      */
     private _renderContextMenu(contextMenu, selection): void {
-        const position = d3.mouse(selection.node());
         contextMenu.style('position', 'absolute')
-            .style('left', position[0] + 'px')
-            .style('top', position[1] + 'px')
+            .style('left', (<MouseEvent> d3.event).x + 'px')
+            .style('top', (<MouseEvent> d3.event).y + 'px')
             .style('visibility', 'visible');
         this.$scope.$apply();
     }
@@ -218,7 +217,6 @@ export const mapComponent: angular.IComponentOptions = {
     controllerAs: 'ctrl',
     template: template.toString(),
     bindings: {
-        shared: '=',
-        project: '<project'
+        shared: '='
     }
 };

@@ -4,13 +4,14 @@
 pv-map {
     .map-container {
         border: 1px solid grey;
+		height: 85vh;
     }
 
     .map-context-menu {
         background-color: #FFFFFF;
         z-index: 199;
         visibility: hidden;
-        min-width: 200px;
+        width: 200px;
     }
 
     .ko-sign {
