@@ -1,20 +1,20 @@
 import * as _ from 'lodash';
+import {DecafAPIProvider} from '../providers/decafapi.provider';
 
 interface RequestDetails {
     path: string;
     params: Object;
 }
 
-// API url
-export const API_ROOT_URL = 'https://api.dd-decaf.eu/';
-
 export class APIService {
     private _http: angular.IHttpService;
+    private api: DecafAPIProvider;
 
-    constructor($http: angular.IHttpService) {
+    constructor($http: angular.IHttpService, decafAPI: DecafAPIProvider) {
         this._http = $http;
+        this.api = decafAPI;
     }
-    
+
     public get(path: string, parameters: Object = {}): angular.IPromise<Object> {
         return this._request('GET', path, undefined, parameters);
     }
@@ -42,7 +42,7 @@ export class APIService {
         return this._http({
             method: method,
             data: data,
-            url: API_ROOT_URL + reqDetails.path,
+            url: this.api + '/' + reqDetails.path,
             params: reqDetails.params
         });
     }

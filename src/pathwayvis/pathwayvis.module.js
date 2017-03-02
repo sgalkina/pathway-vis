@@ -8,11 +8,13 @@ import {KnockoutComponent} from './components/sidebar/sections/knockout.section'
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {ActionsService} from './services/actions/actions.service';
 import DONUT_LARGE from '../../img/icons/donut_large.svg';
+import {DecafAPIProvider} from './providers/decafapi.provider';
 
 
 export const PathwayVisModule = angular.module('pathwayvis', [
 		toastr
 	])
+	.provider('decafAPI', DecafAPIProvider)
 	.service('api', APIService)
 	.service('ws', WSService)
 	.service('actions', ActionsService)
