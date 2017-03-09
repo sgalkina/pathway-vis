@@ -19,21 +19,28 @@
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Samples</label>
+                        <label>Sample</label>
                         <md-select name="samples" ng-model="ctrl.selected.sample" ng-disabled="!ctrl.samples || ctrl.samples.length === 0" required>
                             <md-option ng-repeat="sample in ctrl.samples" value="{{sample.id}}">{{sample.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
                     <md-input-container>
-                        <label>Phases</label>
+                        <label>Phase</label>
                         <md-select name="phase" ng-model="ctrl.selected.phase" ng-disabled="!ctrl.phases || ctrl.phases.length === 0" required>
                             <md-option ng-repeat="phase in ctrl.phases" value="{{phase.id}}">{{phase.name}}</md-option>
                         </md-select>
                     </md-input-container>
 
+					<md-input-container>
+                        <label>Map</label>
+                        <md-select name="map" ng-model="ctrl.selected.map" ng-disabled="!ctrl.maps || ctrl.maps.length === 0" required>
+                            <md-option ng-repeat="map in ctrl.maps" value="{{map}}">{{map}}</md-option>
+                        </md-select>
+                    </md-input-container>
+
                     <md-input-container>
-                        <md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.phase">Load map</md-button>
+                        <md-button type="submit" class="md-raised md-accent" ng-disabled="!ctrl.selected.phase">Calculate fluxes</md-button>
                     </md-input-container>
                 </form>
             </div>

@@ -6,20 +6,21 @@ import * as types from '../../types';
 
 import './views/sidebar.component.scss';
 import * as template from './views/sidebar.component.html';
-import * as ECO from './assets/maps/iJO1366.Central metabolism.json';
-import * as SCE from './assets/maps/iMM904.Central carbon metabolism.json';
 
 interface SelectedItems {
     experiment?: number;
     sample?: number;
     phase?: number;
     method?: string;
+    map?: string;
 }
 
 interface Method {
     id: string;
     name: string;
 }
+
+export const MAPS_URL = 'https://api.dd-decaf.eu/maps';
 
 /**
  * sidebar component
@@ -32,6 +33,9 @@ class SidebarComponentCtrl {
     public experiments: types.Experiment[];
     public samples: types.Sample[];
     public samplesSpecies: any;
+    public organismModel: any;
+    public allMaps: any;
+    public maps: any;
     public phases: types.Phase[];
     public info: Object;
 
@@ -66,10 +70,21 @@ class SidebarComponentCtrl {
             this.experiments = response.data;
         });
 
+        this._api.get('species').then((response: angular.IHttpPromiseCallbackArg<any>) => {
+            this.organismModel = response.data;
+        });
+
+        this._api.request_model('maps', {}).then((response: angular.IHttpPromiseCallbackArg<any>) => {
+            this.allMaps = response.data;
+        });
+
         this.samplesSpecies = {};
 
         $scope.$watch('ctrl.selected.experiment', () => {
             if (!_.isEmpty(this.selected.experiment)) {
+                this.shared.map.reactionData = [];
+                this.phases = [];
+                this.maps = [];
                 this._api.get('experiments/:experimentId/samples', {
                     experimentId: this.selected.experiment
                 }).then((response: angular.IHttpPromiseCallbackArg<types.Sample[]>) => {
@@ -88,6 +103,7 @@ class SidebarComponentCtrl {
 
         $scope.$watch('ctrl.selected.sample', () => {
             if (!_.isEmpty(this.selected.sample)) {
+                this.maps = this.allMaps[this.organismModel[this.samplesSpecies[this.selected.sample]]];
                 this._api.get('samples/:sampleId/phases', {
                     sampleId: this.selected.sample
                 }).then((response: angular.IHttpPromiseCallbackArg<types.Phase[]>) => {
@@ -102,19 +118,65 @@ class SidebarComponentCtrl {
                 });
             }
         });
+
+        $scope.$watch('ctrl.selected.map', () => {
+            if (!_.isEmpty(this.selected.map)) {
+                this.shared.loading++;
+                this._api.request_model('map', {
+                    'model': this.organismModel[this.samplesSpecies[this.selected.sample]],
+                    'map': this.selected.map,
+                }).then((response: angular.IHttpPromiseCallbackArg<types.Phase[]>) => {
+                    this.shared.map.map = response.data;
+                    this.shared.loading--;
+                }, (error) => {
+                    this._toastr.error('Oops! Sorry, there was a problem loading selected map.', '', {
+                        closeButton: true,
+                        timeOut: 10500
+                    });
+
+                    this.shared.loading--;
+                });
+                if (this.selected.method == 'fva') {
+                    this.shared.map.removedReactions = [];
+                    this.shared.loading++;
+                    this._api.get('samples/:sampleId/model', {
+                        'sampleId': this.selected.sample,
+                        'phase-id': this.selected.phase,
+                        'method': this.selected.method,
+                        'map': this.selected.map,
+                        'with-fluxes': 1
+                    }).then((response: angular.IHttpPromiseCallbackArg<any>) => {
+                        this.shared.model = response.data.model;
+                        this.shared.model.uid = response.data['model-id'];
+                        this.shared.map.reactionData = response.data.fluxes;
+                        this.shared.loading--;
+                    }, (error) => {
+                        this._toastr.error('Oops! Sorry, there was a problem loading selected map.', '', {
+                            closeButton: true,
+                            timeOut: 10500
+                        });
+
+                        this.shared.loading--;
+                    });
+                }
+            }
+        });
     }
 
     public onLoadDataSubmit($event?): void {
-        const maps = {
-            'ECO': ECO,
-            'SCE': SCE
-        };
+        this.shared.map.removedReactions = [];
         this.shared.loading++;
+
+        const mapPromise = this._api.request_model('map', {
+            'model': this.organismModel[this.samplesSpecies[this.selected.sample]],
+            'map': this.selected.map,
+        });
 
         const modelPromise = this._api.get('samples/:sampleId/model', {
             'sampleId': this.selected.sample,
             'phase-id': this.selected.phase,
             'method': this.selected.method,
+            'map': this.selected.map,
             'with-fluxes': 1
         });
 
@@ -123,15 +185,15 @@ class SidebarComponentCtrl {
             'phase-id': this.selected.phase
         });
 
-        this._q.all([modelPromise, infoPromise]).then((responses: any) => {
+        this._q.all([mapPromise, modelPromise, infoPromise]).then((responses: any) => {
 
             // Add loaded data to shared scope
-            this.shared.map.map = maps[this.samplesSpecies[this.selected.sample]];
-            this.shared.model = responses[0].data.model;
-            this.shared.model.uid = responses[0].data['model-id'];
-            this.shared.map.reactionData = responses[0].data.fluxes;
+            this.shared.map.map = responses[0].data;
+            this.shared.model = responses[1].data.model;
+            this.shared.model.uid = responses[1].data['model-id'];
+            this.shared.map.reactionData = responses[1].data.fluxes;
             this.shared.method = this.selected.method;
-            this.info = responses[1].data;
+            this.info = responses[2].data;
 
             this.shared.loading--;
         }, (error) => {
