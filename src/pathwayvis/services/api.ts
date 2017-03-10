@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import {DecafAPIProvider} from '../providers/decafapi.provider';
+import {ModelAPIProvider} from '../providers/modelapi.provider';
 
 interface RequestDetails {
     path: string;
@@ -9,10 +10,12 @@ interface RequestDetails {
 export class APIService {
     private _http: angular.IHttpService;
     private api: DecafAPIProvider;
+    private model: ModelAPIProvider;
 
-    constructor($http: angular.IHttpService, decafAPI: DecafAPIProvider) {
+    constructor($http: angular.IHttpService, decafAPI: DecafAPIProvider, modelAPI: ModelAPIProvider) {
         this._http = $http;
         this.api = decafAPI;
+        this.model = modelAPI;
     }
 
     public get(path: string, parameters: Object = {}): angular.IPromise<Object> {
@@ -43,6 +46,17 @@ export class APIService {
             method: method,
             data: data,
             url: this.api + '/' + reqDetails.path,
+            params: reqDetails.params
+        });
+    }
+
+    public request_model(path: string, params: Object): angular.IHttpPromise<any> {
+
+        const reqDetails = this._handleParams(path, params);
+
+        return this._http({
+            method: 'GET',
+            url: this.model + '/' + reqDetails.path,
             params: reqDetails.params
         });
     }
