@@ -41,6 +41,10 @@ class KnockoutComponentCtrl {
                 }
             }
         }, true);
+
+        $scope.$watch('ctrl.shared.map.removedReactions', () => {
+            this.removedReactions = this.shared.map.removedReactions;
+        })
     }
 
     public onReactionRemoveClick(selectedReaction: string): void {
