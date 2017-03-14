@@ -70,7 +70,7 @@ class Knockout extends ReactionAction implements Action {
         const data = {
             'to-return': ['fluxes', 'growth-rate', 'removed-reactions'],
             'simulation-method': this.shared.method,
-            'reactions-knockout': this.shared.map.removedReactions
+            'reactions-knockout': this.shared.removedReactions
         };
 
         return $timeout(() => {
@@ -83,7 +83,7 @@ class Knockout extends ReactionAction implements Action {
     }
 
     public canDisplay(context) {
-        const isRemoved = !_.includes(context.shared.map.removedReactions, context.element.bigg_id);
+        const isRemoved = !_.includes(context.shared.removedReactions, context.element.bigg_id);
         return context.type === 'map:reaction' && isRemoved;
     }
 }
@@ -97,8 +97,8 @@ class UndoKnockout extends Knockout {
     public type: string = 'reaction:knockout:undo';
 
     public canDisplay(context) {
-        if (context.shared.map.removedReactions) {
-            const isRemoved = _.includes(context.shared.map.removedReactions, context.element.bigg_id);
+        if (context.shared.removedReactions) {
+            const isRemoved = _.includes(context.shared.removedReactions, context.element.bigg_id);
             return context.type === 'map:reaction' && isRemoved;
         }
 

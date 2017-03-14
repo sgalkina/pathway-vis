@@ -43,6 +43,7 @@ class SidebarComponentCtrl {
     private _http: angular.IHttpService;
     private _q: angular.IQService;
     private _toastr: angular.toastr.IToastrService;
+    private _scope: angular.IScope;
 
     /* @ngInject */
     constructor ($scope: angular.IScope,
@@ -55,6 +56,7 @@ class SidebarComponentCtrl {
         this._http = $http;
         this._q = $q;
         this._toastr = toastr;
+        this._scope = $scope;
 
         this.methods = [
             {'id': 'fba', 'name': 'FBA'},
@@ -119,7 +121,7 @@ class SidebarComponentCtrl {
             }
         });
 
-        $scope.$watch('ctrl.selected.map', () => {
+        $scope.$watch('ctrl.selected.map', () => {;
             if (!_.isEmpty(this.selected.map)) {
                 this.shared.loading++;
                 this._api.request_model('map', {
@@ -127,6 +129,7 @@ class SidebarComponentCtrl {
                     'map': this.selected.map,
                 }).then((response: angular.IHttpPromiseCallbackArg<types.Phase[]>) => {
                     this.shared.map.map = response.data;
+                    $scope.$emit('draw_knockout');
                     this.shared.loading--;
                 }, (error) => {
                     this._toastr.error('Oops! Sorry, there was a problem loading selected map.', '', {
@@ -137,7 +140,7 @@ class SidebarComponentCtrl {
                     this.shared.loading--;
                 });
                 if (this.selected.method == 'fva') {
-                    this.shared.map.removedReactions = [];
+                    this.shared.removedReactions = [];
                     this.shared.loading++;
                     this._api.get('samples/:sampleId/model', {
                         'sampleId': this.selected.sample,
@@ -164,7 +167,7 @@ class SidebarComponentCtrl {
     }
 
     public onLoadDataSubmit($event?): void {
-        this.shared.map.removedReactions = [];
+        this.shared.removedReactions = [];
         this.shared.loading++;
 
         const mapPromise = this._api.request_model('map', {
