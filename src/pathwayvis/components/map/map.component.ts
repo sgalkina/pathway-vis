@@ -46,6 +46,10 @@ class MapComponentCtrl {
                 if (this.shared.map.reactionData) {
                     this._loadData();
                 }
+
+                if (this._builder){
+                    this._builder.draw_knockout_reactions();
+                }
             }
         }, true);
 
@@ -62,15 +66,33 @@ class MapComponentCtrl {
             }
         });
 
-        $scope.$watch('ctrl.shared.map.removedReactions', () => {
+        $scope.$watch('ctrl.shared.removedReactions', () => {
             if (this._builder) {
-                this._builder.set_knockout_reactions(this.shared.map.removedReactions);
+                this._builder.set_knockout_reactions(this.shared.removedReactions);
             }
         }, true);
 
         $scope.$on('$destroy', function handler() {
             ws.close();
         });
+
+        $scope.$on('knockout', function handler(event, reaction){
+            if (this._builder){
+                this._builder.knockout_reaction(reaction);
+            }
+        });
+
+        $scope.$on('undo_knockout', function handler(event, reaction){
+            if (this._builder){
+                this._builder.undo_knockout_reaction(reaction);
+            }
+        });
+
+        $scope.$on('draw_knockout', function handler(){
+            if (this._builder){
+                this._builder.draw_knockout_reaction();
+            }
+        })
     }
 
     /**
@@ -81,13 +103,13 @@ class MapComponentCtrl {
 
         const shared = _.cloneDeep(this.shared);
 
-        if (action.type === 'reaction:knockout:do') shared.map.removedReactions.push(data.bigg_id);
-        if (action.type === 'reaction:knockout:undo') _.remove(shared.map.removedReactions, (id) => id === data.bigg_id);
+        if (action.type === 'reaction:knockout:do') shared.removedReactions.push(data.bigg_id);
+        if (action.type === 'reaction:knockout:undo') _.remove(shared.removedReactions, (id) => id === data.bigg_id);
 
         this.actions.callAction(action, {shared: shared}).then((response) => {
             this.shared.map.growthRate = parseFloat(response['growth-rate']);
             this.shared.map.reactionData = response.fluxes;
-            this.shared.map.removedReactions = response['removed-reactions'];
+            this.shared.removedReactions = response['removed-reactions'];
             this.$scope.$apply();
         });
         this.shared.loading--;
@@ -115,7 +137,7 @@ class MapComponentCtrl {
             ],
             reaction_no_data_color: '#CBCBCB',
             reaction_no_data_size: 10,
-            reaction_knockout: this.shared.map.removedReactions ? this.shared.map.removedReactions : []
+            reaction_knockout: this.shared.removedReactions ? this.shared.removedReactions : []
         };
         this._builder = escher.Builder(this.shared.map.map, null, null, this._mapElement, settings);
         if (!_.isEmpty(this.shared.model)) this._loadModel(false);
@@ -130,14 +152,14 @@ class MapComponentCtrl {
         this._builder.load_model(this.shared.model);
 
         // Empty previously removed reactions
-        if (restore_knockouts) this.shared.map.removedReactions = [];
+        if (restore_knockouts) this.shared.removedReactions = [];
         // Check removed and added reactions and genes from model
         const changes = this.shared.model.notes.changes;
 
-        if (!_.isEmpty(changes)) {
-            this.shared.map.removedReactions.concat(_.map(changes.removed.reactions, (reaction: types.Reaction) => {
+        if (!_.isEmpty(changes) && _.isEmpty(this.shared.removedReactions)) {
+            this.shared.removedReactions = _.map(changes.removed.reactions, (reaction: types.Reaction) => {
                 return reaction.id;
-            }));
+            });
         }
 
         // Open WS connection for model if it is not opened

@@ -31,7 +31,7 @@ class KnockoutComponentCtrl {
         $scope.$watch('ctrl.shared.map.growthRate', () => {
             if (!_.isUndefined(this.shared.map.growthRate)) {
                 this.growthRate = this.shared.map.growthRate;
-                this.removedReactions = this.shared.map.removedReactions;
+                this.removedReactions = this.shared.removedReactions;
                 if (_.round(this.growthRate, 5) === 0) {
                     toastr.warning('Growth rate is 0!', '', {
                         closeButton: true,
@@ -42,8 +42,8 @@ class KnockoutComponentCtrl {
             }
         }, true);
 
-        $scope.$watch('ctrl.shared.map.removedReactions', () => {
-            this.removedReactions = this.shared.map.removedReactions;
+        $scope.$watch('ctrl.shared.removedReactions', () => {
+            this.removedReactions = this.shared.removedReactions;
         })
     }
 
@@ -52,7 +52,7 @@ class KnockoutComponentCtrl {
         const undoKnockoutAction = this._actions.getAction('reaction:knockout:undo');
         const shared = _.cloneDeep(this.shared);
 
-        _.remove(shared.map.removedReactions, (id) => id === selectedReaction);
+        _.remove(shared.removedReactions, (id) => id === selectedReaction);
 
         let sharedKO = {
             element: {
@@ -64,7 +64,7 @@ class KnockoutComponentCtrl {
         this._actions.callAction(undoKnockoutAction, sharedKO).then((response) => {
             this.shared.map.growthRate = parseFloat(response['growth-rate']);
             this.shared.map.reactionData = response.fluxes;
-            this.shared.map.removedReactions = response['removed-reactions'];
+            this.shared.removedReactions = response['removed-reactions'];
             this.$scope.$apply();
         });
     }

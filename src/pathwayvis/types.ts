@@ -41,6 +41,7 @@ export interface Shared {
     model?: Model;
     sections?: any;
     method?: string;
+    removedReactions?: string[];
 }
 
 interface APIitem {
