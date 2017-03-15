@@ -62,6 +62,7 @@ class SidebarComponentCtrl {
             {'id': 'fba', 'name': 'FBA'},
             {'id': 'pfba', 'name': 'pFBA'},
             {'id': 'fva', 'name': 'FVA'},
+            {'id': 'pfba-fva', 'name': 'pFBA-FVA'},
             {'id': 'moma', 'name': 'MOMA'},
             {'id': 'lmoma', 'name': 'lMOMA'},
             {'id': 'room', 'name': 'ROOM'}
@@ -139,7 +140,7 @@ class SidebarComponentCtrl {
 
                     this.shared.loading--;
                 });
-                if (this.selected.method == 'fva') {
+                if (this.selected.method == 'fva' || this.selected.method == 'pfba-fva') {
                     this.shared.removedReactions = [];
                     this.shared.loading++;
                     this._api.get('samples/:sampleId/model', {
